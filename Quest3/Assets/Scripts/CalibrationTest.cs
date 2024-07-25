@@ -7,6 +7,7 @@ public class Calibration : MonoBehaviour
     public GameObject frankaPrefab;
     private GameObject franka;
     private bool isSpawned = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,21 +17,21 @@ public class Calibration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (isSpawned)
+        if (isSpawned)
         {
-            textComponent.text = "Only one Franka is allowed for now.\nPress A to exit.";
             if (OVRInput.GetDown(OVRInput.Button.One))
             {
-                textComponent.text = "";
                 DeactivateManager();
             }
         } else
-        {}*/
-        if (OVRInput.GetDown(OVRInput.Button.One))
         {
-            SpawnFranka();
-            //DeactivateManager();
+            if (OVRInput.GetDown(OVRInput.Button.One))
+            {
+                SpawnFranka();
+                DeactivateManager();
+            }
         }
+        
         
     }
 
@@ -63,12 +64,18 @@ public class Calibration : MonoBehaviour
             visJointPos = franka.GetComponent<VisualiseJointPositions>();
             visManip = franka.GetComponent<VisualiseManipulability>();
             
-            isSpawned = true;
+            
             ActivateToggles();*/
+            isSpawned = true;
         }
         else
         {
             Debug.LogError("Prefab or RightHandAnchor is not set.");
         }
+    }
+
+    private void DeactivateManager()
+    {
+        gameObject.SetActive(false);
     }
 }
