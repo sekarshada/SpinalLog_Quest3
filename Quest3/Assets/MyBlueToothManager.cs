@@ -11,13 +11,21 @@ public class MyBlueToothManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         try
         {
-            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Antony");
+            //Debug.Log("2");
+            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Antony"); //device name
+            BTHelper.OnConnected += OnConnected;
+            BTHelper.setTerminatorBasedStream("\n");
+
+            /*
             if (BTHelper.isDevicePaired())
-                if (BTHelper.isConnected())
-                    BTHelper.StartListening();
+            {
+                BTHelper.Connect();
+                Debug.Log("Connected!!!");
+            }*/
+         
+          
         }
         catch (BluetoothHelper.BlueToothNotEnabledException ex) { 
             Console.WriteLine("BlueTooth not enabled"); 
@@ -30,6 +38,14 @@ public class MyBlueToothManager : MonoBehaviour
         }
     }
 
+    void OnConnected()
+    {
+        BTHelper.StartListening();
+        BTHelper.SendData("Hi esp32! "); // this can be called anywhere
+    }
+
+
+
     // Update is called once per frame
     void Update()
     {
@@ -37,13 +53,13 @@ public class MyBlueToothManager : MonoBehaviour
         {
             if (BTHelper.Available)
             {
-                message = BTHelper.Read();
-                Console.WriteLine(message);
+                message = BTHelper.Read(); //receive message from esp32
                 Debug.Log(message);
             }
         }
     }
 
+    
     void OnGUI()
     {
 
@@ -58,12 +74,14 @@ public class MyBlueToothManager : MonoBehaviour
             {
                 if (BTHelper.isDevicePaired())
                     BTHelper.Connect(); // tries to connect
+                    Debug.Log("Connected!!!");
             }
 
         if (BTHelper.isConnected())
             if (GUI.Button(new Rect(Screen.width / 2 - Screen.width / 10, Screen.height - 2 * Screen.height / 10, Screen.width / 5, Screen.height / 10), "Disconnect"))
             {
                 BTHelper.Disconnect();
+                Debug.Log("DisConnected.");
             }
     }
 
