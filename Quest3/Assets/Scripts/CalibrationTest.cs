@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Calibration : MonoBehaviour
 {
-    public GameObject frankaPrefab;
-    private GameObject franka;
+    public GameObject cubePrefab;
+    private GameObject cube;
     private bool isSpawned = false;
 
     // Start is called before the first frame update
@@ -27,7 +27,7 @@ public class Calibration : MonoBehaviour
         {
             if (OVRInput.GetDown(OVRInput.Button.One))
             {
-                SpawnFranka();
+                Spawncube();
                 DeactivateManager();
             }
         }
@@ -35,37 +35,18 @@ public class Calibration : MonoBehaviour
         
     }
 
-    private void SpawnFranka()
+    private void Spawncube()
     {
-        if (frankaPrefab != null)
+        if (cubePrefab != null)
         {
             Vector3 handPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
             handPosition.x -= 0.0033f;
             handPosition.y -= 0.1474954f;
             handPosition.z -= 0.104012f;
 
-            franka = Instantiate(frankaPrefab, handPosition, Quaternion.Euler(0, 180, 0));
-            franka.SetActive(true);
+            cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
+            cube.SetActive(true);
 
-            /*jointController = franka.GetComponent<JointController>();
-            gripperController = franka.GetComponent<GripperController>();
-            moveToStart = franka.GetComponent<MoveToStart>();
-            syncFromFranka = franka.GetComponent<SyncFromFranka>();
-            
-            moveBase = franka.GetComponent<MoveBase>();
-            reachTarget = franka.GetComponent<ReachTarget>();
-            followTarget = franka.GetComponent<FollowTarget>();
-            followTrajectory = franka.GetComponent<FollowTrajectory>();
-            // jointsPublisher = franka.GetComponent<JointsPublisher>();
-
-            invisibleFranka = franka.GetComponent<InvisibleFranka>();
-            planeManager = franka.GetComponent<PlaneManager>();
-
-            visJointPos = franka.GetComponent<VisualiseJointPositions>();
-            visManip = franka.GetComponent<VisualiseManipulability>();
-            
-            
-            ActivateToggles();*/
             isSpawned = true;
         }
         else
@@ -78,4 +59,24 @@ public class Calibration : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void fixPosition() {
+        Debug.Log("clicked1");
+        Transform grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
+
+        if (grabFunction != null) {
+            grabFunction.gameObject.SetActive(false);
+        }
+    }
+
+    public void movePosition() {
+        Debug.Log("clicked2");
+        Transform grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
+
+        if (grabFunction != null) {
+            grabFunction.gameObject.SetActive(true);
+        }
+    }
+
+    
 }
