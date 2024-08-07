@@ -8,6 +8,8 @@ public class MyBlueToothManager : MonoBehaviour
 {
     string message;
     private BluetoothHelper BTHelper;
+
+    public GameObject boneL2;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,13 +56,18 @@ public class MyBlueToothManager : MonoBehaviour
             if (BTHelper.Available)
             {
                 message = BTHelper.Read(); //receive message from esp32
-                Debug.Log(message);
+                
+                int[] numbers = toIntArray(message);
+                Debug.Log(message + " bone1: " + numbers[0] + ',' + numbers[1]);
+
+                rotate(boneL2, numbers[0], numbers[1]);
+
             }
         }
     }
 
     
-    /*void OnGUI()
+    void OnGUI()
     {
 
         if (BTHelper == null)
@@ -83,7 +90,7 @@ public class MyBlueToothManager : MonoBehaviour
                 BTHelper.Disconnect();
                 Debug.Log("DisConnected.");
             }
-    }*/
+    }
 
     void OnDestroy()
     {
@@ -91,7 +98,7 @@ public class MyBlueToothManager : MonoBehaviour
             BTHelper.Disconnect();
     }
 
-    public void connectBT() {
+    void connectBT() {
         if (!BTHelper.isConnected()) {
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
@@ -100,11 +107,30 @@ public class MyBlueToothManager : MonoBehaviour
         }       
     }
 
-    public void disconnectBT() {
+    void disconnectBT() {
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
             Debug.Log("DisConnected.");
         }       
+    }
+
+    int[] toIntArray(String message) {
+        String[] input = message.Split(',');
+
+        int[] output = new int[input.Length];
+
+        for (int i = 0; i < input.Length; i++) {
+            output[i] = int.Parse(input[i]);
+        }
+        return output;
+    }
+
+    void rotate(GameObject bone, int left, int right) {
+        float distanceDifference = left - right;
+        
+
+
+
     }
 
 }
