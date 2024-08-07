@@ -17,20 +17,20 @@ public class Calibration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isSpawned)
+        /*if (isSpawned)
         {
             if (OVRInput.GetDown(OVRInput.Button.One))
             {
                 DeactivateManager();
             }
         } else
-        {
+        {*/
             if (OVRInput.GetDown(OVRInput.Button.One))
             {
                 Spawncube();
-                DeactivateManager();
+                //DeactivateManager();
             }
-        }
+        //}
         
         
     }
@@ -40,14 +40,14 @@ public class Calibration : MonoBehaviour
         if (cubePrefab != null)
         {
             Vector3 handPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
-            handPosition.x -= 0.0033f;
-            handPosition.y -= 0.1474954f;
-            handPosition.z -= 0.104012f;
+            handPosition.x -= 0.1f;
+            //handPosition.y -= 0.1474954f;
+            //handPosition.z -= 0.104012f;
 
             cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
             cube.SetActive(true);
 
-            isSpawned = true;
+            //isSpawned = true;
         }
         else
         {

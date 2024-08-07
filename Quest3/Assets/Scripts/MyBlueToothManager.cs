@@ -60,7 +60,7 @@ public class MyBlueToothManager : MonoBehaviour
     }
 
     
-    void OnGUI()
+    /*void OnGUI()
     {
 
         if (BTHelper == null)
@@ -83,12 +83,28 @@ public class MyBlueToothManager : MonoBehaviour
                 BTHelper.Disconnect();
                 Debug.Log("DisConnected.");
             }
-    }
+    }*/
 
     void OnDestroy()
     {
         if (BTHelper != null)
             BTHelper.Disconnect();
+    }
+
+    public void connectBT() {
+        if (!BTHelper.isConnected()) {
+            if (BTHelper.isDevicePaired()) {
+                BTHelper.Connect(); // tries to connect
+                Debug.Log("Connected!!!");
+            }
+        }       
+    }
+
+    public void disconnectBT() {
+        if (BTHelper.isConnected()) {
+            BTHelper.Disconnect();
+            Debug.Log("DisConnected.");
+        }       
     }
 
 }
