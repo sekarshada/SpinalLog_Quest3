@@ -2137,6 +2137,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 722643157}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &118537835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5260475176861877720, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+  m_PrefabInstance: {fileID: 1209871765955913312}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &118556959
 GameObject:
   m_ObjectHideFlags: 0
@@ -9943,6 +9948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9272bca08a52746a095a1bd667c792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boneL2: {fileID: 118537835}
 --- !u!4 &723887341
 Transform:
   m_ObjectHideFlags: 0
@@ -27166,6 +27172,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 403148345883817434, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424487359533304638, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629627354376883931, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3064075603679088026, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: Camera2Follow
       value: 
