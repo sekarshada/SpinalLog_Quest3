@@ -72,6 +72,10 @@ public class MyBlueToothManager : MonoBehaviour
                 upDownMove(boneL4, numbers[4], numbers[5]);
                 upDownMove(boneL5, numbers[6], numbers[7]);
 
+                rotationY(boneL2, numbers[0], numbers[1]);
+                rotationY(boneL3, numbers[2], numbers[3]);
+                rotationY(boneL4, numbers[4], numbers[5]);
+                rotationY(boneL5, numbers[6], numbers[7]);
 
 
             }
@@ -146,7 +150,7 @@ public class MyBlueToothManager : MonoBehaviour
     void upDownMove(GameObject bone, int left, int right)
     {
         float moveDist = 0;
-        int maxDistance = 35;
+        //int maxDistance = 35;
         float halfDistance = Math.Abs((left - right) / 2);
         if (left == right) {
             moveDist = left;
@@ -157,10 +161,37 @@ public class MyBlueToothManager : MonoBehaviour
             moveDist = left + halfDistance;
         }
 
-        Vector3 originalPosition = bone.transform.position;
+        Vector3 originalPosition = bone.transform.localPosition;
 
-        bone.transform.position = new Vector3(originalPosition.x, moveDist * 0.001f, originalPosition.z);
+        bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.001f);
         //UnityDebug.Log("----origin: " + originalPosition.y + ", now: " + bone.transform.position.y);
+    }
+
+    void rotationY (GameObject bone, int left, int right)
+    {
+        float halfDistance = Math.Abs(left - right);
+        float rotateAngle = 0;
+        int boneLength = 50;
+        if (left == 0 || right == 0)
+        {
+            rotateAngle = Mathf.Sin(left / boneLength);
+        } else
+        {
+            rotateAngle = Mathf.Sin(halfDistance / boneLength);
+        } 
+        float originalDegree = bone.transform.eulerAngles.y;
+
+        if (left > right)
+        {
+            bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *10f, 0f);
+            UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
+        } else
+        {
+            bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *10f, 0f);
+            UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
+        }
+        
+        
     }
 
 }
