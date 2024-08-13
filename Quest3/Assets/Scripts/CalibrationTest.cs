@@ -17,20 +17,20 @@ public class Calibration : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (isSpawned)
+        if (isSpawned)
         {
             if (OVRInput.GetDown(OVRInput.Button.One))
             {
                 DeactivateManager();
             }
         } else
-        {*/
+        {
             if (OVRInput.GetDown(OVRInput.Button.One))
             {
                 Spawncube();
                 //DeactivateManager();
             }
-        //}
+        }
         
         
     }
@@ -47,7 +47,7 @@ public class Calibration : MonoBehaviour
             cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
             cube.SetActive(true);
 
-            //isSpawned = true;
+            isSpawned = true;
         }
         else
         {

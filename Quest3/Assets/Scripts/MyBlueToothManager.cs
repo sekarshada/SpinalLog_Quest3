@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArduinoBluetoothAPI;
 using System;
+using System.Security.Cryptography;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using UnityDebug = UnityEngine.Debug;
 
 public class MyBlueToothManager : MonoBehaviour
 {
@@ -10,6 +14,9 @@ public class MyBlueToothManager : MonoBehaviour
     private BluetoothHelper BTHelper;
 
     public GameObject boneL2;
+    public GameObject boneL3;
+    public GameObject boneL4;
+    public GameObject boneL5;
     // Start is called before the first frame update
     void Start()
     {
@@ -58,16 +65,21 @@ public class MyBlueToothManager : MonoBehaviour
                 message = BTHelper.Read(); //receive message from esp32
                 
                 int[] numbers = toIntArray(message);
-                Debug.Log(message + " bone1: " + numbers[0] + ',' + numbers[1]);
+                UnityDebug.Log(message + " bone1: " + numbers[0] + ',' + numbers[1]);
 
-                rotate(boneL2, numbers[0], numbers[1]);
+                upDownMove(boneL2, numbers[0], numbers[1]);
+                upDownMove(boneL3, numbers[2], numbers[3]);
+                upDownMove(boneL4, numbers[4], numbers[5]);
+                upDownMove(boneL5, numbers[6], numbers[7]);
+
+
 
             }
         }
     }
 
     
-    void OnGUI()
+    /*void OnGUI()
     {
 
         if (BTHelper == null)
@@ -81,16 +93,16 @@ public class MyBlueToothManager : MonoBehaviour
             {
                 if (BTHelper.isDevicePaired())
                     BTHelper.Connect(); // tries to connect
-                    Debug.Log("Connected!!!");
+                    UnityDebug.Log("Connected!!!");
             }
 
         if (BTHelper.isConnected())
             if (GUI.Button(new Rect(Screen.width / 2 - Screen.width / 10, Screen.height - 2 * Screen.height / 10, Screen.width / 5, Screen.height / 10), "Disconnect"))
             {
                 BTHelper.Disconnect();
-                Debug.Log("DisConnected.");
+                UnityDebug.Log("DisConnected.");
             }
-    }
+    }*/
 
     void OnDestroy()
     {
@@ -102,15 +114,15 @@ public class MyBlueToothManager : MonoBehaviour
         if (!BTHelper.isConnected()) {
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
-                Debug.Log("Connected!!!");
+                UnityDebug.Log("Connected!!!");
             }
         }       
     }
 
-    void disconnectBT() {
+    public void disconnectBT() {
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
-            Debug.Log("DisConnected.");
+            UnityDebug.Log("DisConnected.");
         }       
     }
 
@@ -125,12 +137,30 @@ public class MyBlueToothManager : MonoBehaviour
         return output;
     }
 
-    void rotate(GameObject bone, int left, int right) {
+    void rotateY(GameObject bone, int left, int right) {
         float distanceDifference = left - right;
-        
+    
 
+    }
 
+    void upDownMove(GameObject bone, int left, int right)
+    {
+        float moveDist = 0;
+        int maxDistance = 35;
+        float halfDistance = Math.Abs((left - right) / 2);
+        if (left == right) {
+            moveDist = left;
+        } else if (left > right) {
+            moveDist = right + halfDistance;
+        } else
+        {
+            moveDist = left + halfDistance;
+        }
 
+        Vector3 originalPosition = bone.transform.position;
+
+        bone.transform.position = new Vector3(originalPosition.x, moveDist * 0.001f, originalPosition.z);
+        //UnityDebug.Log("----origin: " + originalPosition.y + ", now: " + bone.transform.position.y);
     }
 
 }

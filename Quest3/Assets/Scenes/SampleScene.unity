@@ -9949,6 +9949,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boneL2: {fileID: 118537835}
+  boneL3: {fileID: 1209871765955913315}
+  boneL4: {fileID: 1209871765955913314}
+  boneL5: {fileID: 1209871765955913313}
 --- !u!4 &723887341
 Transform:
   m_ObjectHideFlags: 0
@@ -12957,6 +12960,26 @@ PrefabInstance:
     - target: {fileID: 5824888960163335098, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824888960169585549, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
+      propertyPath: _whenUnselect.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824888960169585549, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824888960169585549, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 723887340}
+    - target: {fileID: 5824888960169585549, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: disconnectBT
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824888960169585549, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
+      propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MyBlueToothManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5824888960325756696, guid: 4bf459842f45eb648a8e314fa01c55b6, type: 3}
       propertyPath: m_text
@@ -18729,19 +18752,7 @@ MonoBehaviour:
         m_CallState: 2
   _whenUnselect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1427255821}
-        m_TargetAssemblyTypeName: Oculus.Interaction.AudioTrigger, Oculus.Interaction.Samples
-        m_MethodName: PlayAudio
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _whenInteractorViewAdded:
     m_PersistentCalls:
       m_Calls: []
@@ -27174,20 +27185,32 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 403148345883817434, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 424487359533304638, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1629627354376883931, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3064075603679088026, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: Camera2Follow
       value: 
       objectReference: {fileID: 110867139}
+    - target: {fileID: 4776954580790189922, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776954580790189922, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0406
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776954580790189922, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 7355876508971437723, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: m_Name
       value: BoneGroup
@@ -27198,7 +27221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8860198479579428362, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.35759807
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8860198479579428362, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -27237,6 +27260,21 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+--- !u!1 &1209871765955913313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1629627354376883931, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+  m_PrefabInstance: {fileID: 1209871765955913312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1209871765955913314 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 403148345883817434, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+  m_PrefabInstance: {fileID: 1209871765955913312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1209871765955913315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 424487359533304638, guid: 64cdb81261847b74d89bfdf49d1debd8, type: 3}
+  m_PrefabInstance: {fileID: 1209871765955913312}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
