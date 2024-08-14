@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Calibration : MonoBehaviour
 {
-    public GameObject cubePrefab;
-    private GameObject cube;
+    public GameObject cube;
     private bool isSpawned = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Renderer curRenderer = cube.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -37,14 +36,15 @@ public class Calibration : MonoBehaviour
 
     private void Spawncube()
     {
-        if (cubePrefab != null)
+        if (!cube.activeInHierarchy)
         {
             Vector3 handPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
             handPosition.x -= 0.1f;
             //handPosition.y -= 0.1474954f;
             //handPosition.z -= 0.104012f;
+            cube.transform.position = handPosition;
 
-            cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
+            //cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
             cube.SetActive(true);
 
             isSpawned = true;
@@ -66,6 +66,9 @@ public class Calibration : MonoBehaviour
 
         if (grabFunction != null) {
             grabFunction.gameObject.SetActive(false);
+
+            cube.GetComponent<Renderer>().enabled = false;
+            
         }
     }
 
@@ -75,6 +78,8 @@ public class Calibration : MonoBehaviour
 
         if (grabFunction != null) {
             grabFunction.gameObject.SetActive(true);
+
+            cube.GetComponent<Renderer>().enabled = true;
         }
     }
 
