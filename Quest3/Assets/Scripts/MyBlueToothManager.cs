@@ -14,7 +14,7 @@ public class MyBlueToothManager : MonoBehaviour
     private BluetoothHelper BTHelper;
 
     private bool firstConnect = true;
-    private float[] numbers = new float[8];
+    public float[] numbers = new float[8];
     private float[] firstDistance = new float[8];
 
     public GameObject boneL2;
@@ -86,10 +86,10 @@ public class MyBlueToothManager : MonoBehaviour
                 upDownMove(boneL4, numbers[4], numbers[5], firstDistance[4], firstDistance[5]);
                 upDownMove(boneL5, numbers[6], numbers[7], firstDistance[6], firstDistance[7]);
 
-                rotationY(boneL2, numbers[0], numbers[1]);
-                rotationY(boneL3, numbers[2], numbers[3]);
-                rotationY(boneL4, numbers[4], numbers[5]);
-                rotationY(boneL5, numbers[6], numbers[7]);
+                selfRotation(boneL2, numbers[0], numbers[1]);
+                selfRotation(boneL3, numbers[2], numbers[3]);
+                selfRotation(boneL4, numbers[4], numbers[5]);
+                selfRotation(boneL5, numbers[6], numbers[7]);
                 
 
             }
@@ -97,30 +97,7 @@ public class MyBlueToothManager : MonoBehaviour
     }
 
     
-    /*void OnGUI()
-    {
 
-        if (BTHelper == null)
-            return;
-
-
-        BTHelper.DrawGUI();
-
-        if (!BTHelper.isConnected())
-            if (GUI.Button(new Rect(Screen.width / 2 - Screen.width / 10, Screen.height / 10, Screen.width / 5, Screen.height / 10), "Connect"))
-            {
-                if (BTHelper.isDevicePaired())
-                    BTHelper.Connect(); // tries to connect
-                    UnityDebug.Log("Connected!!!");
-            }
-
-        if (BTHelper.isConnected())
-            if (GUI.Button(new Rect(Screen.width / 2 - Screen.width / 10, Screen.height - 2 * Screen.height / 10, Screen.width / 5, Screen.height / 10), "Disconnect"))
-            {
-                BTHelper.Disconnect();
-                UnityDebug.Log("DisConnected.");
-            }
-    }*/
 
     void OnDestroy()
     {
@@ -182,16 +159,12 @@ public class MyBlueToothManager : MonoBehaviour
         
         bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
 
-        //bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.007f);
 
-        UnityDebug.Log("left: " + left + ", right: " + right + ", movedist: " + moveDist );
-       
-        UnityDebug.Log("----origin: " + originalPosition.z + ", now: " + bone.transform.position.z );
     }
 
-    void rotationY (GameObject bone, float left, float right)
+    void selfRotation(GameObject bone, float left, float right)
     {
-        float halfDistance = Math.Abs(left - right);
+        float halfDistance = Math.Abs(left - right)/2;
         float rotateAngle = 0;
         int boneLength = 50;
         if (left == 0 || right == 0)
@@ -206,13 +179,15 @@ public class MyBlueToothManager : MonoBehaviour
         if (left > right)
         {
             bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
-            //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
+            UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
         } else
         {
             bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
-            //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
+            UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
         }
-        
+    }
+
+    void groupRotation() {
         
     }
 
