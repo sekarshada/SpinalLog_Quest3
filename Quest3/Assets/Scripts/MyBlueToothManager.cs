@@ -14,6 +14,8 @@ public class MyBlueToothManager : MonoBehaviour
     private BluetoothHelper BTHelper;
 
     private bool firstConnect = true;
+    private float[] numbers = new float[8];
+    private float[] firstDistance = new float[8];
 
     public GameObject boneL2;
     public GameObject boneL3;
@@ -64,23 +66,31 @@ public class MyBlueToothManager : MonoBehaviour
         {
             if (BTHelper.Available)
             {
+               
                 message = BTHelper.Read(); //receive message from esp32
-
-                float[] numbers = toFloatArray(message);
+                if (firstConnect)
+                {
+                    firstDistance = toFloatArray(message);
+                    firstConnect = false;
+                }
+                else
+                {
+                    numbers = toFloatArray(message);
+                }
                 UnityDebug.Log(message);
                 
 
 
-                upDownMove(boneL2, numbers[0], numbers[1]);
-                upDownMove(boneL3, numbers[2], numbers[3]);
-                upDownMove(boneL4, numbers[4], numbers[5]);
-                upDownMove(boneL5, numbers[6], numbers[7]);
+                upDownMove(boneL2, numbers[0], numbers[1], firstDistance[0], firstDistance[1]);
+                upDownMove(boneL3, numbers[2], numbers[3], firstDistance[2], firstDistance[3]);
+                upDownMove(boneL4, numbers[4], numbers[5], firstDistance[4], firstDistance[5]);
+                upDownMove(boneL5, numbers[6], numbers[7], firstDistance[6], firstDistance[7]);
 
                 rotationY(boneL2, numbers[0], numbers[1]);
                 rotationY(boneL3, numbers[2], numbers[3]);
                 rotationY(boneL4, numbers[4], numbers[5]);
                 rotationY(boneL5, numbers[6], numbers[7]);
-
+                
 
             }
         }
@@ -145,27 +155,37 @@ public class MyBlueToothManager : MonoBehaviour
         return output;
     }
 
-    void upDownMove(GameObject bone, float left, float right)
+    void upDownMove(GameObject bone, float left, float right, float firstLeft, float firstRight)
     {
         float moveDist = 0;
         //int maxDistance = 35;
         float halfDistance = Math.Abs((left - right) / 2);
-        if (left == right) {
-            moveDist = left;
-        } else if (left > right) {
-            moveDist = right + halfDistance;
-        } else
+
+        if (left == firstLeft && right == firstRight)
         {
-            moveDist = left + halfDistance;
+            moveDist = 0;
+        }
+        else
+        {
+            if (left == right) {
+                moveDist = firstLeft - left;
+            } 
+            else if (left > right) {
+                moveDist = firstLeft - left + halfDistance;
+            } else
+            {
+                moveDist = firstRight - right + halfDistance;
+            }
         }
 
         Vector3 originalPosition = bone.transform.localPosition;
         
-        bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.07f);
-         
+        bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
+
         //bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.007f);
-        
-        UnityDebug.Log(moveDist);
+
+        UnityDebug.Log("left: " + left + ", right: " + right + ", movedist: " + moveDist );
+       
         UnityDebug.Log("----origin: " + originalPosition.z + ", now: " + bone.transform.position.z );
     }
 
@@ -185,11 +205,11 @@ public class MyBlueToothManager : MonoBehaviour
 
         if (left > right)
         {
-            bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *1000f, 0f);
+            bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
             //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
         } else
         {
-            bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *1000f, 0f);
+            bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
             //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
         }
         
