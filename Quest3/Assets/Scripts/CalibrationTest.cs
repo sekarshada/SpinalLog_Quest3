@@ -83,5 +83,25 @@ public class Calibration : MonoBehaviour
         }
     }
 
+    void GetFocusBone(float[] numbers) {
+        float[] bonesDepth = new float[4];
+  
+        bonesDepth[0] = (numbers[0] + numbers[1])/2;
+        bonesDepth[1] = (numbers[2] + numbers[3])/2;
+        bonesDepth[2] = (numbers[4] + numbers[5])/2;
+        bonesDepth[3] = (numbers[6] + numbers[7])/2;
+
+        int DepthPosition = 0;
+        float smallestDist = 0;
+        for (int i = 0; i < bonesDepth.Length; i++) {
+            if (smallestDist == 0 || bonesDepth[i] < smallestDist) {
+                DepthPosition = i;
+                smallestDist = bonesDepth[i];
+            }
+        }
+        
+
+    }
+
     
 }
