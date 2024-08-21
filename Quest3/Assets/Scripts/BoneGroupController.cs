@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityDebug = UnityEngine.Debug;
 
 public class BoneGroupController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class BoneGroupController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        boneGroup = {boneL2, boneL3, boneL4, boneL5};
+        boneGroup = new GameObject[] {boneL2, boneL3, boneL4, boneL5};
     }
 
     // Update is called once per frame
@@ -36,8 +37,7 @@ public class BoneGroupController : MonoBehaviour
             SetCurBoneDepth(BTManager.numbers);
         }
         // count rotation degree
-        focusBone = FindFocusBoneDepth();
-        
+    
 
     }
 
@@ -53,7 +53,7 @@ public class BoneGroupController : MonoBehaviour
         }
     }
 
-    GameObject FindFocusBoneDepth() {
+    float FindFocusBoneDepth() {
         float smallestDepth = 0;
         GameObject focusBone;
         for (int i = 0; i < boneGroup.Length; i++) {
@@ -63,6 +63,6 @@ public class BoneGroupController : MonoBehaviour
                 focusBone = boneGroup[i];
             }
         }
-        return focusBone;
+        return smallestDepth;
     }
 }

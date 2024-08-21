@@ -17,7 +17,9 @@ public class BoneController : MonoBehaviour
     void Start() {}
 
     void Update() {
+        UnityDebug.Log(gameObject.name + ": " + leftDepth);
         if (initialLeftDepth != 0 && averageDepth != 0) {
+            
             UpDownMove();
         }
         
