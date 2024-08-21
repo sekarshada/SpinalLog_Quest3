@@ -19,15 +19,16 @@ public class BoneController : MonoBehaviour
     }
 
     void Update() {
-        //UnityDebug.Log(gameObject.name + ": " + leftDepth);
-        UnityDebug.Log(gameObject.name + " initial left: " + initialLeftDepth);
-        if (initialLeftDepth != 0 && averageDepth != 0) {
+        //UnityDebug.Log(gameObject.name + " left: " + leftDepth + ", initial left: " + initialLeftDepth);
+        //UnityDebug.Log(gameObject.name + " initial left: " + initialLeftDepth);
+        /*if (initialLeftDepth != 0 && averageDepth != 0) {
             UpDownMove();
-        }
+        }*/
         
     }
 
     public void SetInitialDepth(float leftInput, float rightInput) {
+        UnityDebug.Log("leftinput" + leftInput +"rightinput" + rightInput);
         this.initialLeftDepth = leftInput;
         this.initialRightDepth = rightInput;
     }
@@ -42,12 +43,15 @@ public class BoneController : MonoBehaviour
         float moveDist = 0;
         //int maxDistance = 35;
 
-        if (averageDepth == initialLeftDepth)
+        if (initialLeftDepth - leftDepth <= 0.02)
         {
             moveDist = 0;
         }
         else
         {
+            //.Log("88888888888888888");
+            //UnityDebug.Log("left depth" + leftDepth + "initialLeftDepth=" + initialLeftDepth);
+            //UnityDebug.Log("movedistance" + moveDist);
             moveDist = initialLeftDepth - averageDepth;
 
             /*if (leftDepth == rightDepth) {
@@ -59,11 +63,12 @@ public class BoneController : MonoBehaviour
             {
                 moveDist = initialRightDepth - rightDepth + halfDistance;
             }*/
+            Vector3 originalPosition = transform.localPosition;
+        
+            transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
         }
 
-        Vector3 originalPosition = transform.localPosition;
         
-        transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
     }
 
     public float SelfRotationDegree() {
@@ -110,10 +115,11 @@ public class BoneController : MonoBehaviour
 
     public void rotation(float focusBoneDepth, int focusBoneID) {
         float xDegree = GroupRotationDegree(focusBoneDepth, focusBoneID);
-        float yDegree = SelfRotationDegree();
-        //UnityDebug.Log("xDegree: " + xDegree);
+        //float yDegree = SelfRotationDegree();
+        UnityDebug.Log("xDegree: " + xDegree);
         //UnityDebug.Log("yDegree: " + yDegree);
 
-        transform.localRotation = Quaternion.Euler(xDegree*4000f, yDegree *4000f, 0f);
+        //transform.localRotation = Quaternion.Euler(xDegree*40000f, 0f, 0f);
+        transform.Rotate(xDegree*40000f, 0, 0, Space.Self);
     }
 }

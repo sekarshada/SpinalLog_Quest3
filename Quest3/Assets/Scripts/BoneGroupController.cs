@@ -27,8 +27,9 @@ public class BoneGroupController : MonoBehaviour
     void Update()
     {
         // update depth of each sensor, have to store initial distance with no pressure
-        if (firstConnect)
+        if (BTManager.BTHelper.Available && firstConnect)
         {
+            //UnityDebug.Log("11111");
             SetInitialBoneDepth(BTManager.numbers);
             firstConnect = false;
         }
@@ -39,12 +40,10 @@ public class BoneGroupController : MonoBehaviour
         focusBone = FindFocusBoneDepth();
 
         // count rotation degree
-        foreach (GameObject bone in boneGroup) {
-            //float yPos = bone.transform.position.y;
-            //UnityDebug.Log(bone.name + " y position: " + yPos);
+       foreach (GameObject bone in boneGroup) {
+
             bone.GetComponent<BoneController>().rotation(focusBone.GetComponent<BoneController>().averageDepth, focusBone.GetComponent<BoneController>().boneID);
         }
-    
 
     }
 

@@ -12,7 +12,7 @@ public class MyBlueToothManager : MonoBehaviour
 {
     private string message;
     public float[] numbers = new float[8];
-    private BluetoothHelper BTHelper;
+    public BluetoothHelper BTHelper;
 
 
     // Start is called before the first frame update
@@ -21,7 +21,7 @@ public class MyBlueToothManager : MonoBehaviour
         try
         {
             //Debug.Log("2");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
+            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device name
             BTHelper.OnConnected += OnConnected;
             BTHelper.setTerminatorBasedStream("\n");
 
@@ -62,7 +62,7 @@ public class MyBlueToothManager : MonoBehaviour
             {
                 message = BTHelper.Read(); //receive message from esp32
                 numbers = toFloatArray(message);
-                //UnityDebug.Log(message);
+                UnityDebug.Log(message);
 
             }
         }
