@@ -37,19 +37,23 @@ public class BoneGroupController : MonoBehaviour
             SetCurBoneDepth(BTManager.numbers);
         }
         // count rotation degree
+        /*foreach (GameObject bone in boneGroup) {
+            float yPos = bone.transform.position.y;
+            UnityDebug.Log(bone.name + " y position: " + yPos);
+        }*/
     
 
     }
 
     public void SetInitialBoneDepth(float[] depths) {
         for (int i = 0; i < boneGroup.Length; i++) {
-            boneGroup[i].GetComponent<BoneController>().setInitialDepth(depths[i*2], depths[i*2+1]);
+            boneGroup[i].GetComponent<BoneController>().SetInitialDepth(depths[i*2], depths[i*2+1]);
         }
     }
 
     public void SetCurBoneDepth(float[] depths) {
         for (int i = 0; i < boneGroup.Length; i++) {
-            boneGroup[i].GetComponent<BoneController>().setCurDepth(depths[i*2], depths[i*2+1]);
+            boneGroup[i].GetComponent<BoneController>().SetCurDepth(depths[i*2], depths[i*2+1]);
         }
     }
 

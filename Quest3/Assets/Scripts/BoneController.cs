@@ -6,7 +6,7 @@ using UnityDebug = UnityEngine.Debug;
 
 public class BoneController : MonoBehaviour
 {
-    //private int boneID;
+    private int boneID;
     //private GameObject bone;
     private float leftDepth;
     private float rightDepth;
@@ -14,23 +14,25 @@ public class BoneController : MonoBehaviour
     private float initialLeftDepth;
     private float initialRightDepth;
 
-    void Start() {}
+    void Start() {
+        this.boneID = int.Parse(gameObject.name.Substring(1));
+    }
 
     void Update() {
-        UnityDebug.Log(gameObject.name + ": " + leftDepth);
+        //UnityDebug.Log(gameObject.name + ": " + leftDepth);
+        UnityDebug.Log(gameObject.name + " initial left: " + initialLeftDepth);
         if (initialLeftDepth != 0 && averageDepth != 0) {
-            
             UpDownMove();
         }
         
     }
 
-    public void setInitialDepth(float leftInput, float rightInput) {
+    public void SetInitialDepth(float leftInput, float rightInput) {
         this.initialLeftDepth = leftInput;
         this.initialRightDepth = rightInput;
     }
 
-    public void setCurDepth(float leftInput, float rightInput) {
+    public void SetCurDepth(float leftInput, float rightInput) {
         this.leftDepth = leftInput;
         this.rightDepth = rightInput;
         this.averageDepth = (leftDepth + rightDepth) / 2;
@@ -64,7 +66,7 @@ public class BoneController : MonoBehaviour
         transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
     }
 
-    public float SelfRotation() {
+    public float SelfRotationDegree() {
         float halfDistance = Math.Abs(leftDepth - rightDepth)/2;
         float rotateAngle = 0;
         int boneLength = 50;
@@ -89,7 +91,7 @@ public class BoneController : MonoBehaviour
         }
     }
 
-    public float groupRotation(float focusBoneDepth) {
+    public float GroupRotationDegree(float focusBoneDepth, int focusBoneID) {
         float rotateAngle = 0;
         float boneGap = 40; // change here
         if (averageDepth == focusBoneDepth) {
@@ -97,7 +99,21 @@ public class BoneController : MonoBehaviour
         } else {
             float difference = averageDepth - focusBoneDepth;
             rotateAngle = Mathf.Tan(difference/boneGap);
-            return rotateAngle;
+            if (boneID < focusBoneID) {
+                return -rotateAngle;
+            } else {
+                return rotateAngle;
+            }
+            
         }
+    }
+
+    public void rotation(float focusBoneDepth, int focusBoneID) {
+        float xDegree = GroupRotationDegree(focusBoneDepth, focusBoneID);
+        float yDegree = SelfRotationDegree();
+        //UnityDebug.Log("xDegree: " + xDegree);
+        //UnityDebug.Log("yDegree: " + yDegree);
+
+        transform.localRotation = Quaternion.Euler(xDegree*4000f, yDegree *4000f, 0f);
     }
 }
