@@ -6,31 +6,47 @@ using UnityDebug = UnityEngine.Debug;
 
 public class BoneController : MonoBehaviour
 {
-    private int boneID;
-    private GameObject bone;
+    //private int boneID;
+    //private GameObject bone;
     private float leftDepth;
     private float rightDepth;
-    private float averageDepth;
+    public float averageDepth;
     private float initialLeftDepth;
     private float initialRightDepth;
 
-    void Start() {
-        bone = gameObject;
+    void Start() {}
+
+    void Update() {
+        if (initialLeftDepth != 0 && averageDepth != 0) {
+            UpDownMove();
+        }
+        
     }
 
-    void UpDownMove(GameObject bone, float leftDepth, float rightDepth, float initialLeftDepth, float initialRightDepth)
-    {
+    public void setInitialDepth(float leftInput, float rightInput) {
+        this.initialLeftDepth = leftInput;
+        this.initialRightDepth = rightInput;
+    }
+
+    public void setCurDepth(float leftInput, float rightInput) {
+        this.leftDepth = leftInput;
+        this.rightDepth = rightInput;
+        this.averageDepth = (leftDepth + rightDepth) / 2;
+    }
+
+    void UpDownMove() {
         float moveDist = 0;
         //int maxDistance = 35;
-        float halfDistance = Math.Abs((leftDepth - rightDepth) / 2);
 
-        if (leftDepth == initialLeftDepth && rightDepth == initialRightDepth)
+        if (averageDepth == initialLeftDepth)
         {
             moveDist = 0;
         }
         else
         {
-            if (leftDepth == rightDepth) {
+            moveDist = initialLeftDepth - averageDepth;
+
+            /*if (leftDepth == rightDepth) {
                 moveDist = initialLeftDepth - leftDepth;
             } 
             else if (leftDepth > rightDepth) {
@@ -38,18 +54,15 @@ public class BoneController : MonoBehaviour
             } else
             {
                 moveDist = initialRightDepth - rightDepth + halfDistance;
-            }
+            }*/
         }
 
-        Vector3 originalPosition = bone.transform.localPosition;
+        Vector3 originalPosition = transform.localPosition;
         
-        bone.transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
-
-
+        transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
     }
 
-    void SelfRotation(GameObject bone, float leftDepth, float rightDepth)
-    {
+    public float SelfRotation() {
         float halfDistance = Math.Abs(leftDepth - rightDepth)/2;
         float rotateAngle = 0;
         int boneLength = 50;
@@ -60,16 +73,29 @@ public class BoneController : MonoBehaviour
         {
             rotateAngle = Mathf.Sin(halfDistance / boneLength);
         } 
-        float originalDegree = bone.transform.eulerAngles.y;
 
         if (leftDepth > rightDepth)
         {
-            bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
-            UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
+            //bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
+            //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
+            return rotateAngle;
         } else
         {
-            bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
-            UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
+            //bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
+            //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
+            return -rotateAngle;
+        }
+    }
+
+    public float groupRotation(float focusBoneDepth) {
+        float rotateAngle = 0;
+        float boneGap = 40; // change here
+        if (averageDepth == focusBoneDepth) {
+            return rotateAngle;
+        } else {
+            float difference = averageDepth - focusBoneDepth;
+            rotateAngle = Mathf.Tan(difference/boneGap);
+            return rotateAngle;
         }
     }
 }

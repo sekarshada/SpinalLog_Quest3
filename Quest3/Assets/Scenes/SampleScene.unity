@@ -9938,7 +9938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9272bca08a52746a095a1bd667c792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boneGroupController: {fileID: 0}
   numbers:
   - 0
   - 0
@@ -9948,10 +9947,6 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  boneL2: {fileID: 6470166038776341432}
-  boneL3: {fileID: 1526235351020203358}
-  boneL4: {fileID: 1536315431904826298}
-  boneL5: {fileID: 457056571935385787}
 --- !u!4 &723887341
 Transform:
   m_ObjectHideFlags: 0
@@ -30830,7 +30825,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd38baeaafb7254698dc218db91a670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boneGroup: []
+  boneL2: {fileID: 6470166038776341432}
+  boneL3: {fileID: 1526235351020203358}
+  boneL4: {fileID: 1536315431904826298}
+  boneL5: {fileID: 457056571935385787}
+  BTManager: {fileID: 723887340}
 --- !u!65 &8748183657496177430
 BoxCollider:
   m_ObjectHideFlags: 0

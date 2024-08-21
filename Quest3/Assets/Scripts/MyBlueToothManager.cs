@@ -10,19 +10,11 @@ using UnityDebug = UnityEngine.Debug;
 
 public class MyBlueToothManager : MonoBehaviour
 {
-    string message;
+    private string message;
+    public float[] numbers = new float[8];
     private BluetoothHelper BTHelper;
 
-    public BoneGroupController boneGroupController;
 
-    private bool firstConnect = true;
-    public float[] numbers = new float[8];
-    private float[] firstDistance = new float[8];
-
-    public GameObject boneL2;
-    public GameObject boneL3;
-    public GameObject boneL4;
-    public GameObject boneL5;
     // Start is called before the first frame update
     void Start()
     {
@@ -68,32 +60,9 @@ public class MyBlueToothManager : MonoBehaviour
         {
             if (BTHelper.Available)
             {
-               
                 message = BTHelper.Read(); //receive message from esp32
+                numbers = toFloatArray(message);
                 //UnityDebug.Log(message);
-                if (firstConnect)
-                {
-                    firstDistance = toFloatArray(message);
-                    firstConnect = false;
-                }
-                else
-                {
-                    numbers = toFloatArray(message);
-                }
-                UnityDebug.Log(message);
-                
-
-
-                /*upDownMove(boneL2, numbers[0], numbers[1], firstDistance[0], firstDistance[1]);
-                upDownMove(boneL3, numbers[2], numbers[3], firstDistance[2], firstDistance[3]);
-                upDownMove(boneL4, numbers[4], numbers[5], firstDistance[4], firstDistance[5]);
-                upDownMove(boneL5, numbers[6], numbers[7], firstDistance[6], firstDistance[7]);
-
-                selfRotation(boneL2, numbers[0], numbers[1]);
-                selfRotation(boneL3, numbers[2], numbers[3]);
-                selfRotation(boneL4, numbers[4], numbers[5]);
-                selfRotation(boneL5, numbers[6], numbers[7]);*/
-                
 
             }
         }
