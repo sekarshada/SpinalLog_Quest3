@@ -36,11 +36,14 @@ public class BoneGroupController : MonoBehaviour
         {
             SetCurBoneDepth(BTManager.numbers);
         }
+        focusBone = FindFocusBoneDepth();
+
         // count rotation degree
-        /*foreach (GameObject bone in boneGroup) {
-            float yPos = bone.transform.position.y;
-            UnityDebug.Log(bone.name + " y position: " + yPos);
-        }*/
+        foreach (GameObject bone in boneGroup) {
+            //float yPos = bone.transform.position.y;
+            //UnityDebug.Log(bone.name + " y position: " + yPos);
+            bone.GetComponent<BoneController>().rotation(focusBone.GetComponent<BoneController>().averageDepth, focusBone.GetComponent<BoneController>().boneID);
+        }
     
 
     }
@@ -57,16 +60,17 @@ public class BoneGroupController : MonoBehaviour
         }
     }
 
-    float FindFocusBoneDepth() {
+    GameObject FindFocusBoneDepth() {
         float smallestDepth = 0;
-        GameObject focusBone;
+        GameObject target = null;
         for (int i = 0; i < boneGroup.Length; i++) {
             float depth = boneGroup[i].GetComponent<BoneController>().averageDepth;
             if (smallestDepth == 0 || smallestDepth > depth) {
                 smallestDepth = depth;
-                focusBone = boneGroup[i];
+                target = boneGroup[i];
             }
         }
-        return smallestDepth;
+
+        return target;
     }
 }

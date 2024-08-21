@@ -6,7 +6,7 @@ using UnityDebug = UnityEngine.Debug;
 
 public class BoneController : MonoBehaviour
 {
-    private int boneID;
+    public int boneID;
     //private GameObject bone;
     private float leftDepth;
     private float rightDepth;
