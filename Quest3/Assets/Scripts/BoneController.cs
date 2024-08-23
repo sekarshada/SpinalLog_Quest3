@@ -65,7 +65,7 @@ public class BoneController : MonoBehaviour
             }*/
             Vector3 originalPosition = transform.localPosition;
         
-            transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, moveDist * 0.02f);
+            transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.01f);
         }
 
         
@@ -75,51 +75,64 @@ public class BoneController : MonoBehaviour
         float halfDistance = Math.Abs(leftDepth - rightDepth)/2;
         float rotateAngle = 0;
         int boneLength = 50;
-        if (leftDepth == 0 || rightDepth == 0)
+        
+        if (initialLeftDepth - leftDepth <= 0.02)
         {
-            rotateAngle = Mathf.Sin(leftDepth / boneLength);
-        } else
-        {
-            rotateAngle = Mathf.Sin(halfDistance / boneLength);
-        } 
-
-        if (leftDepth > rightDepth)
-        {
-            //bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
-            //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
             return rotateAngle;
-        } else
-        {
-            //bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
-            //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
-            return -rotateAngle;
+        } else {
+            if (leftDepth == 0 || rightDepth == 0)
+            {
+                rotateAngle = Mathf.Sin(leftDepth / boneLength);
+            } else
+            {
+                rotateAngle = Mathf.Sin(halfDistance / boneLength);
+            } 
+
+            if (leftDepth > rightDepth)
+            {
+                //bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
+                //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
+                return rotateAngle;
+            } else
+            {
+                //bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
+                //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
+                return -rotateAngle;
+            }
         }
+        
+        
     }
 
     public float GroupRotationDegree(float focusBoneDepth, int focusBoneID) {
         float rotateAngle = 0;
         float boneGap = 40; // change here
-        if (averageDepth == focusBoneDepth) {
+        if (initialLeftDepth - leftDepth <= 0.02)
+        {
             return rotateAngle;
         } else {
-            float difference = averageDepth - focusBoneDepth;
-            rotateAngle = Mathf.Tan(difference/boneGap);
-            if (boneID < focusBoneID) {
-                return -rotateAngle;
-            } else {
+            if (averageDepth == focusBoneDepth) {
                 return rotateAngle;
+            } else {
+                float difference = averageDepth - focusBoneDepth;
+                rotateAngle = Mathf.Tan(difference/boneGap);
+                if (boneID < focusBoneID) {
+                    return -rotateAngle;
+                } else {
+                    return rotateAngle;
+                }
             }
-            
         }
+        
     }
 
-    public void rotation(float focusBoneDepth, int focusBoneID) {
-        //float xDegree = GroupRotationDegree(focusBoneDepth, focusBoneID);
+    public void Rotation(float focusBoneDepth, int focusBoneID) {
+        float xDegree = GroupRotationDegree(focusBoneDepth, focusBoneID);
         float yDegree = SelfRotationDegree();
         //UnityDebug.Log("xDegree: " + xDegree);
         //UnityDebug.Log("yDegree: " + yDegree);
 
-        transform.localRotation = Quaternion.Euler(0f, yDegree*40000f, 0f);
+        transform.localRotation = Quaternion.Euler(xDegree*1000f, yDegree*40000f, 0f);
         //transform.Rotate(xDegree*40000f, 0, 0, Space.Self);
     }
 }

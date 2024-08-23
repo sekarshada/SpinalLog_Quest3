@@ -42,7 +42,7 @@ public class BoneGroupController : MonoBehaviour
         // count rotation degree
        foreach (GameObject bone in boneGroup) {
 
-            bone.GetComponent<BoneController>().rotation(focusBone.GetComponent<BoneController>().averageDepth, focusBone.GetComponent<BoneController>().boneID);
+            bone.GetComponent<BoneController>().Rotation(focusBone.GetComponent<BoneController>().averageDepth, focusBone.GetComponent<BoneController>().boneID);
         }
 
     }
