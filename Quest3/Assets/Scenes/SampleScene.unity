@@ -20610,7 +20610,7 @@ Transform:
   m_GameObject: {fileID: 1638955054}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 1.747, y: 0.08, z: 0.023}
+  m_LocalPosition: {x: 1.079, y: 0.08, z: 0.023}
   m_LocalScale: {x: 5.555555, y: 6.250958, z: 7.1416035}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -30390,15 +30390,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8509260913562224539}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.885}
+  m_LocalRotation: {x: -0.0009963086, y: 0.31626245, z: -0.0063786795, w: 0.94864976}
+  m_LocalPosition: {x: 0.00056344434, y: 0.000051371702, z: -0.8832844}
   m_LocalScale: {x: 0.18, y: 0.14, z: 0.16}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1638955055}
   - {fileID: 5413603544724998460}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.123, y: 36.874, z: -0.73}
 --- !u!4 &7644719741800928889
 Transform:
   m_ObjectHideFlags: 0
@@ -30630,6 +30630,7 @@ GameObject:
   - component: {fileID: 5875751576344231638}
   - component: {fileID: 8748183657496177430}
   - component: {fileID: 3961421433584295166}
+  - component: {fileID: 8748183657496177431}
   m_Layer: 0
   m_Name: SpinalLogCube
   m_TagString: Untagged
@@ -30658,6 +30659,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8748183657496177431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509260913562224539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dc017b07227dfc4d8c8c0ea6d667fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &9041551523036409247
 Transform:
   m_ObjectHideFlags: 0
