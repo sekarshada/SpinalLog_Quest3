@@ -77,7 +77,7 @@ public class MyBlueToothManager : MonoBehaviour
             BTHelper.Disconnect();
     }
 
-    void connectBT() {
+    public void ConnectBT() {
         if (!BTHelper.isConnected()) {
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
@@ -86,7 +86,7 @@ public class MyBlueToothManager : MonoBehaviour
         }       
     }
 
-    public void disconnectBT() {
+    public void DisconnectBT() {
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
             UnityDebug.Log("DisConnected.");
