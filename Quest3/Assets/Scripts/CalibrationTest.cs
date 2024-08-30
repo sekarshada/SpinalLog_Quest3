@@ -5,11 +5,13 @@ using UnityEngine;
 public class Calibration : MonoBehaviour
 {
     public GameObject cube;
+    public GameObject generateCubeInstruction;
     private bool isSpawned = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        cube.SetActive(false);
         //Renderer curRenderer = cube.GetComponent<Renderer>();
     }
 
@@ -46,6 +48,7 @@ public class Calibration : MonoBehaviour
 
             //cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
             cube.SetActive(true);
+            generateCubeInstruction.SetActive(false);
 
             isSpawned = true;
         }
