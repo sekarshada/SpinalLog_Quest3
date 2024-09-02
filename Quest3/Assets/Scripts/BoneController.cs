@@ -14,6 +14,12 @@ public class BoneController : MonoBehaviour
     private float initialLeftDepth;
     private float initialRightDepth;
 
+    public Renderer objectRenderer;
+    public Renderer boneColorRenderer;
+    public Renderer redColorRenderer;
+    private float depthThreshold = 10.0f; // Depth at which color change starts
+    private float maxDepth = 1.0f; // The maximum depth for full color change
+
     void Start() {
         this.boneID = int.Parse(gameObject.name.Substring(1));
     }
@@ -24,11 +30,44 @@ public class BoneController : MonoBehaviour
         if (initialLeftDepth != 0 && averageDepth != 0) {
             UpDownMove();
         }
+
+        if (averageDepth < depthThreshold) {
+            // Calculate the interpolation factor based on how close averageDepth is to 0
+            float t = Mathf.InverseLerp(depthThreshold, 0, averageDepth);
+
+            // Interpolate between the white and red colors based on the depth
+            Color newColor = Color.Lerp(whiteRenderer.material.color, redRenderer.material.color, t);
+
+            // Apply the interpolated color to the object's renderer
+            objectRenderer.material.color = newColor;
+        } else
+        {
+            // If depth is greater than threshold, revert to the whiteRenderer color
+            objectRenderer.material.color = whiteRenderer.material.color;
+        }
+        /*
+        if (averageDepth < depthThreshold)
+        {
+            // Calculate the interpolation factor based on how close averageDepth is to 0
+            float t = Mathf.InverseLerp(depthThreshold, 0, averageDepth);
+
+            // Set the target color based on the depth (gradually move toward red)
+            targetColor = Color.Lerp(whiteRenderer.material.color, redRenderer.material.color, t);
+        }
+        else
+        {
+            // If depth is greater than threshold, target color should be the original white
+            targetColor = whiteRenderer.material.color;
+        }
+
+        // Gradually transition to the target color
+        objectRenderer.material.color = Color.Lerp(objectRenderer.material.color, targetColor, Time.deltaTime * colorChangeSpeed);
+    }
+        */
         
     }
 
     public void SetInitialDepth(float leftInput, float rightInput) {
-        UnityDebug.Log("leftinput" + leftInput +"rightinput" + rightInput);
         this.initialLeftDepth = leftInput;
         this.initialRightDepth = rightInput;
     }
@@ -49,20 +88,8 @@ public class BoneController : MonoBehaviour
         }
         else
         {
-            //.Log("88888888888888888");
-            //UnityDebug.Log("left depth" + leftDepth + "initialLeftDepth=" + initialLeftDepth);
-            //UnityDebug.Log("movedistance" + moveDist);
             moveDist = initialLeftDepth - averageDepth;
 
-            /*if (leftDepth == rightDepth) {
-                moveDist = initialLeftDepth - leftDepth;
-            } 
-            else if (leftDepth > rightDepth) {
-                moveDist = initialLeftDepth - leftDepth + halfDistance;
-            } else
-            {
-                moveDist = initialRightDepth - rightDepth + halfDistance;
-            }*/
             Vector3 originalPosition = transform.localPosition;
         
             transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.01f);
@@ -135,4 +162,5 @@ public class BoneController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xDegree*1000f, yDegree*40000f, 0f);
         //transform.Rotate(xDegree*40000f, 0, 0, Space.Self);
     }
+
 }
