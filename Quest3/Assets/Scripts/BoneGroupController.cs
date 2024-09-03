@@ -38,6 +38,7 @@ public class BoneGroupController : MonoBehaviour
             SetCurBoneDepth(BTManager.numbers);
         }
         focusBone = FindFocusBoneDepth();
+        UnityDebug.Log("focusBone: " + focusBone.GetComponent<BoneController>().boneID);
 
         // count rotation degree
        foreach (GameObject bone in boneGroup) {

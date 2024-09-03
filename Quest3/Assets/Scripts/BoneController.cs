@@ -94,7 +94,7 @@ public class BoneController : MonoBehaviour
         }       
     }
 
-    public float SelfRotationDegree() { //transverse rotation
+    public float TransverseRotationDegree() { //transverse rotation
         float halfDistance = Math.Abs(leftDepth - rightDepth)/2;
         float rotateAngle = 0;
         int boneLength = 50;
@@ -125,34 +125,36 @@ public class BoneController : MonoBehaviour
         }
     }
 
-    public float GroupRotationDegree(float focusBoneDepth, int focusBoneID) {
+    public float SaggitoRotationDegree(float focusBoneDepth, int focusBoneID) {
         float rotateAngle = 0;
         float boneGap = 40; // change here
-        if (initialLeftDepth - leftDepth <= 0.02)
-        {
-            return rotateAngle;
+        
+        
+        float difference = averageDepth - focusBoneDepth;
+        //rotateAngle = averageDepth - focusBoneDepth;
+        rotateAngle = Mathf.Tan(difference/boneGap);
+        if (boneID < focusBoneID) {
+            UnityDebug.Log("boneID: " + boneID + "focusbone: " + focusBoneID + " rotateAngle: " + -rotateAngle);
+            return -rotateAngle;
         } else {
-            if (averageDepth == focusBoneDepth) {
-                return rotateAngle;
-            } else {
-                float difference = averageDepth - focusBoneDepth;
-                rotateAngle = Mathf.Tan(difference/boneGap);
-                if (boneID < focusBoneID) {
-                    return -rotateAngle;
-                } else {
-                    return rotateAngle;
-                }
-            }
+            UnityDebug.Log("boneID: " + boneID + "focusbone: " + focusBoneID + " rotateAngle: " + rotateAngle);
+            return rotateAngle;
         }
+            
+        
         
     }
 
     public void Rotation(float focusBoneDepth, int focusBoneID) {
-        float xDegree = GroupRotationDegree(focusBoneDepth, focusBoneID);
-        float yDegree = SelfRotationDegree();
+        float xDegree = SaggitoRotationDegree(focusBoneDepth, focusBoneID);
+        float yDegree = TransverseRotationDegree();
         //UnityDebug.Log("xDegree: " + xDegree);
         //UnityDebug.Log("yDegree: " + yDegree);
-
+        Vector3 newRotation = transform.localEulerAngles;
+        newRotation.x = xDegree; // Assuming rotation in the sagittal plane is around the x-axis
+        newRotation.y = yDegree; 
+        //transform.localEulerAngles = newRotation;
+        //UnityDebug.Log(boneID + " localEulerAngles: " + transform.localEulerAngles);          
         transform.localRotation = Quaternion.Euler(xDegree*500f, yDegree*500f, 0f);
         //transform.Rotate(xDegree*40000f, 0, 0, Space.Self);
     }
