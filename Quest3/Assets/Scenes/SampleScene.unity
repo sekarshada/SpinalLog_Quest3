@@ -31035,7 +31035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1856816143
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32307,7 +32307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1930227641
 RectTransform:
   m_ObjectHideFlags: 0
@@ -41191,7 +41191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1915425725333330936
 Transform:
   m_ObjectHideFlags: 0
@@ -47629,6 +47629,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
+  objectRenderer: {fileID: 0}
+  whiteRenderer: {fileID: 0}
+  redRenderer: {fileID: 0}
+  depthThreshold: 10
 --- !u!4 &4333448553249576984
 Transform:
   m_ObjectHideFlags: 0
@@ -50391,6 +50395,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
+  objectRenderer: {fileID: 0}
+  whiteRenderer: {fileID: 0}
+  redRenderer: {fileID: 0}
+  depthThreshold: 10
 --- !u!1 &5592771209654184021
 GameObject:
   m_ObjectHideFlags: 0
@@ -57588,6 +57596,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
+  objectRenderer: {fileID: 0}
+  whiteRenderer: {fileID: 0}
+  redRenderer: {fileID: 0}
+  depthThreshold: 10
 --- !u!1 &7700113223027411029
 GameObject:
   m_ObjectHideFlags: 0
@@ -59481,6 +59493,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
+  objectRenderer: {fileID: 0}
+  whiteRenderer: {fileID: 0}
+  redRenderer: {fileID: 0}
+  depthThreshold: 10
 --- !u!1 &8499687924658139509
 GameObject:
   m_ObjectHideFlags: 0
