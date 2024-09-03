@@ -76,7 +76,7 @@ public class BoneController : MonoBehaviour
 
             Vector3 originalPosition = transform.localPosition;
         
-            transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.01f);
+            transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.005f);
         }       
     }
 
@@ -141,7 +141,7 @@ public class BoneController : MonoBehaviour
         newRotation.y = yDegree; 
         //transform.localEulerAngles = newRotation;
         //UnityDebug.Log(boneID + " localEulerAngles: " + transform.localEulerAngles);          
-        transform.localRotation = Quaternion.Euler(xDegree*500f, yDegree*500f, 0f);
+        transform.localRotation = Quaternion.Euler(xDegree*400f, yDegree*500f, 0f);
         //transform.Rotate(xDegree*40000f, 0, 0, Space.Self);
     }
 
