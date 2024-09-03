@@ -91,12 +91,10 @@ public class BoneController : MonoBehaviour
             Vector3 originalPosition = transform.localPosition;
         
             transform.localPosition = new Vector3(originalPosition.x, originalPosition.y, -moveDist * 0.01f);
-        }
-
-        
+        }       
     }
 
-    public float SelfRotationDegree() {
+    public float SelfRotationDegree() { //transverse rotation
         float halfDistance = Math.Abs(leftDepth - rightDepth)/2;
         float rotateAngle = 0;
         int boneLength = 50;
@@ -115,18 +113,16 @@ public class BoneController : MonoBehaviour
 
             if (leftDepth > rightDepth)
             {
-                //bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *4000f, 0f);
+                //bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *500f, 0f);
                 //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
                 return rotateAngle;
             } else
             {
-                //bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *4000f, 0f);
+                //bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *500f, 0f);
                 //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
                 return -rotateAngle;
             }
         }
-        
-        
     }
 
     public float GroupRotationDegree(float focusBoneDepth, int focusBoneID) {

@@ -8,7 +8,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using UnityDebug = UnityEngine.Debug;
 
-public class MyBlueToothManager : MonoBehaviour
+public class MyBluetoothManager : MonoBehaviour
 {
     private string message;
     public float[] numbers = new float[8];
