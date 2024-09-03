@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityDebug = UnityEngine.Debug;
 
@@ -15,9 +13,9 @@ public class BoneController : MonoBehaviour
     private float initialRightDepth;
 
     public Renderer objectRenderer;
-    public Renderer boneColorRenderer;
-    public Renderer redColorRenderer;
-    private float depthThreshold = 10.0f; // Depth at which color change starts
+    public Renderer whiteRenderer;
+    public Renderer redRenderer;
+    public float depthThreshold = 10.0f; // Depth at which color change starts
     private float maxDepth = 1.0f; // The maximum depth for full color change
 
     void Start() {
@@ -31,7 +29,7 @@ public class BoneController : MonoBehaviour
             UpDownMove();
         }
 
-        if (averageDepth < depthThreshold) {
+        /*if (averageDepth < depthThreshold) {
             // Calculate the interpolation factor based on how close averageDepth is to 0
             float t = Mathf.InverseLerp(depthThreshold, 0, averageDepth);
 
@@ -44,7 +42,7 @@ public class BoneController : MonoBehaviour
         {
             // If depth is greater than threshold, revert to the whiteRenderer color
             objectRenderer.material.color = whiteRenderer.material.color;
-        }
+        }*/
         /*
         if (averageDepth < depthThreshold)
         {
@@ -159,7 +157,7 @@ public class BoneController : MonoBehaviour
         //UnityDebug.Log("xDegree: " + xDegree);
         //UnityDebug.Log("yDegree: " + yDegree);
 
-        transform.localRotation = Quaternion.Euler(xDegree*1000f, yDegree*40000f, 0f);
+        transform.localRotation = Quaternion.Euler(xDegree*500f, yDegree*500f, 0f);
         //transform.Rotate(xDegree*40000f, 0, 0, Space.Self);
     }
 

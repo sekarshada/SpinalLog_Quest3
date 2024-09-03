@@ -7876,6 +7876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 8509260913562224539}
+  generateCubeInstruction: {fileID: 0}
 --- !u!4 &618276025
 Transform:
   m_ObjectHideFlags: 0
@@ -11801,6 +11802,7 @@ MonoBehaviour:
   Camera2Follow: {fileID: 110867139}
   CameraDistance: 10
   smoothTime: 0.3
+  downwardOffset: 1
 --- !u!1 &1016119655
 GameObject:
   m_ObjectHideFlags: 0
@@ -19102,6 +19104,7 @@ MonoBehaviour:
   Camera2Follow: {fileID: 110867139}
   CameraDistance: 0.45
   smoothTime: 0.2
+  downwardOffset: 1
 --- !u!1 &1608094682
 GameObject:
   m_ObjectHideFlags: 0
