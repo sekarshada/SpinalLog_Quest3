@@ -44326,7 +44326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
+  - {fileID: -714188369151359371, guid: 6a2578371b804be448f1128c117402cc, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -47629,10 +47629,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
-  objectRenderer: {fileID: 0}
-  whiteRenderer: {fileID: 0}
-  redRenderer: {fileID: 0}
-  depthThreshold: 10
+  objectMaterial: {fileID: -714188369151359371, guid: 6a2578371b804be448f1128c117402cc, type: 3}
+  whiteMaterial: {fileID: 2100000, guid: f19e58fe439a40f4aaeaa5845f5c6961, type: 2}
+  redMaterial: {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
 --- !u!4 &4333448553249576984
 Transform:
   m_ObjectHideFlags: 0
@@ -50395,10 +50394,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
-  objectRenderer: {fileID: 0}
-  whiteRenderer: {fileID: 0}
-  redRenderer: {fileID: 0}
-  depthThreshold: 10
+  objectMaterial: {fileID: -714188369151359371, guid: 667bf428d92b98d459f20e82fbc473cc, type: 3}
+  whiteMaterial: {fileID: 2100000, guid: f19e58fe439a40f4aaeaa5845f5c6961, type: 2}
+  redMaterial: {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
 --- !u!1 &5592771209654184021
 GameObject:
   m_ObjectHideFlags: 0
@@ -57596,10 +57594,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
-  objectRenderer: {fileID: 0}
-  whiteRenderer: {fileID: 0}
-  redRenderer: {fileID: 0}
-  depthThreshold: 10
+  objectMaterial: {fileID: -714188369151359371, guid: 67ca453fb0146204989279cb5d94d5e8, type: 3}
+  whiteMaterial: {fileID: 2100000, guid: f19e58fe439a40f4aaeaa5845f5c6961, type: 2}
+  redMaterial: {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
 --- !u!1 &7700113223027411029
 GameObject:
   m_ObjectHideFlags: 0
@@ -59493,10 +59490,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneID: 0
   averageDepth: 0
-  objectRenderer: {fileID: 0}
-  whiteRenderer: {fileID: 0}
-  redRenderer: {fileID: 0}
-  depthThreshold: 10
+  objectMaterial: {fileID: -714188369151359371, guid: 4e7963ccb8ec42c4a8373101441ae6d8, type: 3}
+  whiteMaterial: {fileID: 2100000, guid: f19e58fe439a40f4aaeaa5845f5c6961, type: 2}
+  redMaterial: {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
 --- !u!1 &8499687924658139509
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.XR;
 using UnityDebug = UnityEngine.Debug;
 
 public class BoneController : MonoBehaviour
@@ -12,57 +13,42 @@ public class BoneController : MonoBehaviour
     private float initialLeftDepth;
     private float initialRightDepth;
 
-    public Renderer objectRenderer;
-    public Renderer whiteRenderer;
-    public Renderer redRenderer;
-    public float depthThreshold = 10.0f; // Depth at which color change starts
-    private float maxDepth = 1.0f; // The maximum depth for full color change
+    public Material objectMaterial;
+    public Material whiteMaterial;
+    public Material redMaterial;
+    private float DEPTH_THRESHOLD = 27.0f; // Depth at which color change starts
+    private float MAX_DEPTH = 20.0f; // The maximum depth for full color change
 
     void Start() {
         this.boneID = int.Parse(gameObject.name.Substring(1));
+        objectMaterial.color = whiteMaterial.color;
+
     }
 
     void Update() {
         //UnityDebug.Log(gameObject.name + " left: " + leftDepth + ", initial left: " + initialLeftDepth);
         //UnityDebug.Log(gameObject.name + " initial left: " + initialLeftDepth);
-        if (initialLeftDepth != 0 && averageDepth != 0) {
-            UpDownMove();
-        }
+        if (initialLeftDepth != 0) {
+            if (averageDepth != 0) {
+                UpDownMove();
+            }
+            UnityDebug.Log(boneID + "leftDepth" + leftDepth + "depthThreshold" + DEPTH_THRESHOLD);
+            if (averageDepth < DEPTH_THRESHOLD) {
 
-        /*if (averageDepth < depthThreshold) {
-            // Calculate the interpolation factor based on how close averageDepth is to 0
-            float t = Mathf.InverseLerp(depthThreshold, 0, averageDepth);
+                // Calculate the interpolation factor based on how close averageDepth is to 0
+                float t = Mathf.InverseLerp(DEPTH_THRESHOLD, MAX_DEPTH, averageDepth);
 
-            // Interpolate between the white and red colors based on the depth
-            Color newColor = Color.Lerp(whiteRenderer.material.color, redRenderer.material.color, t);
+                // Interpolate between the white and red colors based on the depth
+                Color newColor = Color.Lerp(whiteMaterial.color, redMaterial.color, t);
+                UnityDebug.Log(boneID + " color: " + newColor);
 
-            // Apply the interpolated color to the object's renderer
-            objectRenderer.material.color = newColor;
-        } else
-        {
-            // If depth is greater than threshold, revert to the whiteRenderer color
-            objectRenderer.material.color = whiteRenderer.material.color;
-        }*/
-        /*
-        if (averageDepth < depthThreshold)
-        {
-            // Calculate the interpolation factor based on how close averageDepth is to 0
-            float t = Mathf.InverseLerp(depthThreshold, 0, averageDepth);
-
-            // Set the target color based on the depth (gradually move toward red)
-            targetColor = Color.Lerp(whiteRenderer.material.color, redRenderer.material.color, t);
-        }
-        else
-        {
-            // If depth is greater than threshold, target color should be the original white
-            targetColor = whiteRenderer.material.color;
-        }
-
-        // Gradually transition to the target color
-        objectRenderer.material.color = Color.Lerp(objectRenderer.material.color, targetColor, Time.deltaTime * colorChangeSpeed);
-    }
-        */
-        
+                // Apply the interpolated color to the object's renderer
+                objectMaterial.color = newColor;
+            } else
+            {
+                objectMaterial.color = whiteMaterial.color;
+            }
+        }     
     }
 
     public void SetInitialDepth(float leftInput, float rightInput) {
@@ -134,10 +120,10 @@ public class BoneController : MonoBehaviour
         //rotateAngle = averageDepth - focusBoneDepth;
         rotateAngle = Mathf.Tan(difference/boneGap);
         if (boneID < focusBoneID) {
-            UnityDebug.Log("boneID: " + boneID + "focusbone: " + focusBoneID + " rotateAngle: " + -rotateAngle);
+            //UnityDebug.Log("boneID: " + boneID + "focusbone: " + focusBoneID + " rotateAngle: " + -rotateAngle);
             return -rotateAngle;
         } else {
-            UnityDebug.Log("boneID: " + boneID + "focusbone: " + focusBoneID + " rotateAngle: " + rotateAngle);
+            //UnityDebug.Log("boneID: " + boneID + "focusbone: " + focusBoneID + " rotateAngle: " + rotateAngle);
             return rotateAngle;
         }
             
