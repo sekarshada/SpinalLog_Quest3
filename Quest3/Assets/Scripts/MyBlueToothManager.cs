@@ -12,6 +12,7 @@ public class MyBluetoothManager : MonoBehaviour
 {
     private string message;
     public float[] numbers = new float[8];
+    public float forceSum;
     public BluetoothHelper BTHelper;
 
 
@@ -61,14 +62,13 @@ public class MyBluetoothManager : MonoBehaviour
             if (BTHelper.Available)
             {
                 message = BTHelper.Read(); //receive message from esp32
-                numbers = toFloatArray(message);
-                UnityDebug.Log(message);
-
+                numbers = ToFloatArray(message);
+                forceSum = ForceSum(numbers);
+                //UnityDebug.Log(message);
+                UnityDebug.Log(forceSum);
             }
         }
     }
-
-    
 
 
     void OnDestroy()
@@ -93,7 +93,7 @@ public class MyBluetoothManager : MonoBehaviour
         }       
     }
 
-    float[] toFloatArray(String message) {
+    float[] ToFloatArray(String message) {
         String[] input = message.Split(',');
 
         float[] output = new float[input.Length];
@@ -102,5 +102,13 @@ public class MyBluetoothManager : MonoBehaviour
             output[i] = float.Parse(input[i]);
         }
         return output;
+    }
+
+    float ForceSum(float[] input) {
+        float sum = 0;
+        for (int i = 0; i < input.Length; i++) {
+            sum += input[i];
+        }
+        return sum;
     }
 }

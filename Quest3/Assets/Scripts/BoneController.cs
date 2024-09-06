@@ -32,7 +32,7 @@ public class BoneController : MonoBehaviour
             if (averageDepth != 0) {
                 UpDownMove();
             }
-            UnityDebug.Log(boneID + "leftDepth" + leftDepth + "depthThreshold" + DEPTH_THRESHOLD);
+            //UnityDebug.Log(boneID + "leftDepth" + leftDepth + "depthThreshold" + DEPTH_THRESHOLD);
             if (averageDepth < DEPTH_THRESHOLD) {
 
                 // Calculate the interpolation factor based on how close averageDepth is to 0
@@ -40,7 +40,7 @@ public class BoneController : MonoBehaviour
 
                 // Interpolate between the white and red colors based on the depth
                 Color newColor = Color.Lerp(whiteMaterial.color, redMaterial.color, t);
-                UnityDebug.Log(boneID + " color: " + newColor);
+                //UnityDebug.Log(boneID + " color: " + newColor);
 
                 // Apply the interpolated color to the object's renderer
                 objectMaterial.color = newColor;
