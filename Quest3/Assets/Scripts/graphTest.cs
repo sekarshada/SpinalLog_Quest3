@@ -7,7 +7,7 @@ public class LineChartController : MonoBehaviour
 {
     
     [SerializeField]
-    private MyBluetoothManager BTManager;
+    private SpinalLogBluetoothManager BTManager;
     public LineChart lineChart; // Reference to your LineChart component
 
     // Example data arrays

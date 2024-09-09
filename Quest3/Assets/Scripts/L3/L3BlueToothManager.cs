@@ -8,10 +8,10 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using UnityDebug = UnityEngine.Debug;
 
-public class MyBluetoothManager : MonoBehaviour
+public class L3BlueToothManager : MonoBehaviour
 {
     private string message;
-    public float[] numbers = new float[8];
+    public float[] numbers = new float[2];
     public float forceSum;
     public BluetoothHelper BTHelper;
 
@@ -22,7 +22,7 @@ public class MyBluetoothManager : MonoBehaviour
         try
         {
             //Debug.Log("2");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device name
+            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
             BTHelper.OnConnected += OnConnected;
             BTHelper.setTerminatorBasedStream("\n");
 
@@ -64,8 +64,8 @@ public class MyBluetoothManager : MonoBehaviour
                 message = BTHelper.Read(); //receive message from esp32
                 numbers = ToFloatArray(message);
                 forceSum = ForceSum(numbers);
-                //UnityDebug.Log(message);
-                UnityDebug.Log(forceSum);
+                UnityDebug.Log(message);
+                //UnityDebug.Log(forceSum);
             }
         }
     }
@@ -81,7 +81,7 @@ public class MyBluetoothManager : MonoBehaviour
         if (!BTHelper.isConnected()) {
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
-                UnityDebug.Log("Connected!!!");
+                UnityDebug.Log("L3 Connected!!!");
             }
         }       
     }

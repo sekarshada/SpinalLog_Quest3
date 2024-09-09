@@ -12,7 +12,7 @@ public class BoneGroupController : MonoBehaviour
     public GameObject boneL5;
 
     [SerializeField]
-    private MyBluetoothManager BTManager;
+    private SpinalLogBluetoothManager BTManager;
     private bool firstConnect = true;
 
     private GameObject[] boneGroup;

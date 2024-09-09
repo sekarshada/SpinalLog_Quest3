@@ -1595,6 +1595,73 @@ MonoBehaviour:
   installationRoutineCheckpoint:
     _installationRoutineId: 
     _installationVariants: []
+--- !u!1 &50618180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 50618183}
+  - component: {fileID: 50618182}
+  - component: {fileID: 50618181}
+  m_Layer: 0
+  m_Name: L3Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &50618181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50618180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f3cc971f3cfc642b44c7e2157ec62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  L3: {fileID: 47172155560982311}
+  averageChangeDepth: 0
+  objectMaterial: {fileID: -714188369151359371, guid: 4e7963ccb8ec42c4a8373101441ae6d8, type: 3}
+  whiteMaterial: {fileID: 2100000, guid: f19e58fe439a40f4aaeaa5845f5c6961, type: 2}
+  redMaterial: {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
+  BTManager: {fileID: 50618182}
+--- !u!114 &50618182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50618180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77fb20c3789c3374f88bd08a86c00053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numbers:
+  - 0
+  - 0
+  forceSum: 0
+--- !u!4 &50618183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50618180}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.681, y: 0.1149223, z: 0.13985378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &54619016
 GameObject:
   m_ObjectHideFlags: 0
@@ -4399,7 +4466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &193929528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10706,9 +10773,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 618276024}
-        m_TargetAssemblyTypeName: Calibration, Assembly-CSharp
-        m_MethodName: fixPosition
+      - m_Target: {fileID: 50618182}
+        m_TargetAssemblyTypeName: L3BlueToothManager, Assembly-CSharp
+        m_MethodName: ConnectBT
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15687,7 +15754,7 @@ GameObject:
   - component: {fileID: 723887341}
   - component: {fileID: 723887340}
   m_Layer: 0
-  m_Name: BluetoothManager
+  m_Name: SpinalLogManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25309,7 +25376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Show L3 Only
+  m_text: Connect L3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -32527,7 +32594,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1638955054}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dd38baeaafb7254698dc218db91a670, type: 3}
   m_Name: 
@@ -67171,7 +67238,7 @@ Transform:
   m_GameObject: {fileID: 47172155560982311}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1462, z: 0.0004}
+  m_LocalPosition: {x: 0, y: 0.1471, z: 0.0004}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69060,8 +69127,9 @@ SceneRoots:
   - {fileID: 769508664}
   - {fileID: 534772063}
   - {fileID: 1182352747}
-  - {fileID: 723887341}
   - {fileID: 7448507102786606928}
   - {fileID: 5635686429880982110}
   - {fileID: 316843429}
   - {fileID: 193929531}
+  - {fileID: 50618183}
+  - {fileID: 723887341}
