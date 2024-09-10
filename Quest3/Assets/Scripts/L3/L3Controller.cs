@@ -17,8 +17,8 @@ public class L3Controller : MonoBehaviour
     public Material objectMaterial;
     public Material whiteMaterial;
     public Material redMaterial;
-    private float DEPTH_THRESHOLD = 10.0f; // Depth at which color change starts
-    private float MAX_DEPTH = 27.0f; // The maximum depth for full color change
+    private float DEPTH_THRESHOLD = 1.0f; // Depth at which color change starts
+    private float MAX_DEPTH = 10.0f; // The maximum depth for full color change
 
     [SerializeField]
     private L3BlueToothManager BTManager;
@@ -114,7 +114,7 @@ public class L3Controller : MonoBehaviour
                 //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
                 L3.transform.localRotation = Quaternion.Euler(0f, -rotateAngle*500f, 0f);
             }
-            UnityDebug.Log("rotate++++++++++++++++++++++++++++");
+            //UnityDebug.Log("rotate++++++++++++++++++++++++++++");
         }
     }
 }

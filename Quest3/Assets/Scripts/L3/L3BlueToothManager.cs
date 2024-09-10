@@ -22,9 +22,9 @@ public class L3BlueToothManager : MonoBehaviour
         try
         {
             //Debug.Log("2");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
-            BTHelper.OnConnected += OnConnected;
-            BTHelper.setTerminatorBasedStream("\n");
+            //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
+            //BTHelper.OnConnected += OnConnected;
+            //BTHelper.setTerminatorBasedStream("\n");
 
             /*
             if (BTHelper.isDevicePaired())
@@ -78,6 +78,9 @@ public class L3BlueToothManager : MonoBehaviour
     }
 
     public void ConnectBT() {
+        BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
+        BTHelper.OnConnected += OnConnected;
+        BTHelper.setTerminatorBasedStream("\n");
         if (!BTHelper.isConnected()) {
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
@@ -110,5 +113,16 @@ public class L3BlueToothManager : MonoBehaviour
             sum += input[i];
         }
         return sum;
+    }
+
+
+    public void sendData1(){
+        BTHelper.SendData("1");
+    }
+    public void sendData2(){
+        BTHelper.SendData("2");
+    }
+    public void sendData3(){
+        BTHelper.SendData("3");
     }
 }

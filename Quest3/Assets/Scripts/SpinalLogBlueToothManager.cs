@@ -22,9 +22,9 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         try
         {
             //Debug.Log("2");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device name
-            BTHelper.OnConnected += OnConnected;
-            BTHelper.setTerminatorBasedStream("\n");
+            //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device name
+            //BTHelper.OnConnected += OnConnected;
+            //BTHelper.setTerminatorBasedStream("\n");
 
             /*
             if (BTHelper.isDevicePaired())
@@ -77,7 +77,11 @@ public class SpinalLogBluetoothManager : MonoBehaviour
             BTHelper.Disconnect();
     }
 
-    public void ConnectBT() {
+    public void ConnectBT() { 
+        BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device name
+        BTHelper.OnConnected += OnConnected;
+        BTHelper.setTerminatorBasedStream("\n");
+
         if (!BTHelper.isConnected()) {
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
