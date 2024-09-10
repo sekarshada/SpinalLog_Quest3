@@ -26,26 +26,29 @@ public class BoneGroupController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // update depth of each sensor, have to store initial distance with no pressure
-        if (BTManager.BTHelper.Available && firstConnect)
-        {
-            //UnityDebug.Log("11111");
-            SetInitialBoneDepth(BTManager.numbers);
-            firstConnect = false;
-        }
-        else
-        {
-            SetCurBoneDepth(BTManager.numbers);
-        }
-        focusBone = FindFocusBoneDepth();
-        //UnityDebug.Log("focusBone: " + focusBone.GetComponent<BoneController>().boneID);
+        if (BTManager.BTHelper != null){
+            // update depth of each sensor, have to store initial distance with no pressure
+            if (BTManager.BTHelper.Available && firstConnect)
+            {
+                //UnityDebug.Log("11111");
+                SetInitialBoneDepth(BTManager.numbers);
+                firstConnect = false;
+            }
+            else
+            {
+                SetCurBoneDepth(BTManager.numbers);
+            }
+            focusBone = FindFocusBoneDepth();
+            //UnityDebug.Log("focusBone: " + focusBone.GetComponent<BoneController>().boneID);
 
-        // count rotation degree
-       foreach (GameObject bone in boneGroup) {
+            // count rotation degree
+        foreach (GameObject bone in boneGroup) {
 
-            bone.GetComponent<BoneController>().Rotation(focusBone.GetComponent<BoneController>().averageDepth, focusBone.GetComponent<BoneController>().boneID);
+                bone.GetComponent<BoneController>().Rotation(focusBone.GetComponent<BoneController>().averageDepth, focusBone.GetComponent<BoneController>().boneID);
+            }
+
         }
-
+       
     }
 
     public void SetInitialBoneDepth(float[] depths) {

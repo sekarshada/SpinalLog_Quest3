@@ -33,36 +33,39 @@ public class L3Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // update depth of each sensor, have to store initial distance with no pressure
-        if (BTManager.BTHelper.Available)
-        {
-            SetCurDepth(BTManager.numbers);
-            // up-down movvement, rotation
-            
-
-
-            // colour change
-            if (averageChangeDepth > DEPTH_THRESHOLD) {
-                // Calculate the interpolation factor based on how close averageDepth is to 0
-                float t = Mathf.InverseLerp(DEPTH_THRESHOLD, MAX_DEPTH, averageChangeDepth);
-
-                // Interpolate between the white and red colors based on the depth
-                Color newColor = Color.Lerp(whiteMaterial.color, redMaterial.color, t);
-                //UnityDebug.Log(boneID + " color: " + newColor);
-
-                // Apply the interpolated color to the object's renderer
-                objectMaterial.color = newColor;
-            } else
+        if(BTManager.BTHelper != null){
+            // update depth of each sensor, have to store initial distance with no pressure
+            if (BTManager.BTHelper.Available)
             {
-                objectMaterial.color = whiteMaterial.color;
+                SetCurDepth(BTManager.numbers);
+                // up-down movvement, rotation
+                
+
+
+                // colour change
+                if (averageChangeDepth > DEPTH_THRESHOLD) {
+                    // Calculate the interpolation factor based on how close averageDepth is to 0
+                    float t = Mathf.InverseLerp(DEPTH_THRESHOLD, MAX_DEPTH, averageChangeDepth);
+
+                    // Interpolate between the white and red colors based on the depth
+                    Color newColor = Color.Lerp(whiteMaterial.color, redMaterial.color, t);
+                    //UnityDebug.Log(boneID + " color: " + newColor);
+
+                    // Apply the interpolated color to the object's renderer
+                    objectMaterial.color = newColor;
+                } else
+                {
+                    objectMaterial.color = whiteMaterial.color;
+                }
+            }
+
+            UnityDebug.Log("average: "+ averageChangeDepth);
+            if (averageChangeDepth > 0) {
+                UpDownMove();
+                TransverseRotation();
             }
         }
-
-        UnityDebug.Log("average: "+ averageChangeDepth);
-        if (averageChangeDepth > 0) {
-            UpDownMove();
-            TransverseRotation();
-        }
+        
     }
 
 

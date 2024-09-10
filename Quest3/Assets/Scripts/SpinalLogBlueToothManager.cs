@@ -15,6 +15,10 @@ public class SpinalLogBluetoothManager : MonoBehaviour
     public float forceSum;
     public BluetoothHelper BTHelper;
 
+    public GameObject BoneGroupL3;
+
+    public GameObject BoneGroup;
+
 
     // Start is called before the first frame update
     void Start()
@@ -86,9 +90,12 @@ public class SpinalLogBluetoothManager : MonoBehaviour
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("Connected!!!");
+                BoneGroup.SetActive(true);
+                BoneGroupL3.SetActive(false);
             }
         }       
     }
+
 
     public void DisconnectBT() {
         if (BTHelper.isConnected()) {

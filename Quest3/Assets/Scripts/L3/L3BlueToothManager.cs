@@ -15,6 +15,12 @@ public class L3BlueToothManager : MonoBehaviour
     public float forceSum;
     public BluetoothHelper BTHelper;
 
+    public GameObject BoneGroupL3;
+
+    public GameObject BoneGroup;
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -77,7 +83,12 @@ public class L3BlueToothManager : MonoBehaviour
             BTHelper.Disconnect();
     }
 
+
     public void ConnectBT() {
+        /*if (BTHelper.isConnected()) {
+            BTHelper.Disconnect();
+            UnityDebug.Log("DisConnected.");
+        }  */
         BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
@@ -85,9 +96,13 @@ public class L3BlueToothManager : MonoBehaviour
             if (BTHelper.isDevicePaired()) {
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("L3 Connected!!!");
+                BoneGroup.SetActive(false);
+                BoneGroupL3.SetActive(true);
             }
         }       
     }
+
+
 
     public void DisconnectBT() {
         if (BTHelper.isConnected()) {
