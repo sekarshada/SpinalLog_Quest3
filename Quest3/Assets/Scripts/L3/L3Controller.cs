@@ -59,7 +59,7 @@ public class L3Controller : MonoBehaviour
                 }
             }
 
-            UnityDebug.Log("average: "+ averageChangeDepth);
+            //UnityDebug.Log("average: "+ averageChangeDepth);
             if (averageChangeDepth > 0) {
                 UpDownMove();
                 TransverseRotation();
