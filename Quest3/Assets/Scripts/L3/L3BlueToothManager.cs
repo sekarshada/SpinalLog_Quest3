@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using UnityDebug = UnityEngine.Debug;
+using UnityEngine.UI;
 
 public class L3BlueToothManager : MonoBehaviour
 {
@@ -18,7 +19,6 @@ public class L3BlueToothManager : MonoBehaviour
     public GameObject BoneGroupL3;
 
     public GameObject BoneGroup;
-
 
 
 
@@ -102,6 +102,7 @@ public class L3BlueToothManager : MonoBehaviour
                 UnityDebug.Log("L3 Connected!!!");
                 BoneGroup.SetActive(false);
                 BoneGroupL3.SetActive(true);
+              
             }
         }  
         //if (!BTHelper.isConnected()) {
@@ -146,4 +147,6 @@ public class L3BlueToothManager : MonoBehaviour
     public void sendData3(){
         BTHelper.SendData("3");
     }
+
+ 
 }

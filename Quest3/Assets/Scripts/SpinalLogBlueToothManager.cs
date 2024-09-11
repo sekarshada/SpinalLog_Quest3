@@ -69,7 +69,7 @@ public class SpinalLogBluetoothManager : MonoBehaviour
                 numbers = ToFloatArray(message);
                 forceSum = ForceSum(numbers);
                 //UnityDebug.Log(message);
-                UnityDebug.Log(forceSum);
+                //UnityDebug.Log(forceSum);
             }
         }
     }
