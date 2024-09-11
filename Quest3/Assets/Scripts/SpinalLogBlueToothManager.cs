@@ -26,16 +26,16 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         try
         {
             //Debug.Log("2");
-            //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device name
-            //BTHelper.OnConnected += OnConnected;
-            //BTHelper.setTerminatorBasedStream("\n");
+             BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device 
+            BTHelper.setDeviceName("ESP32-SpinalLog-Kiichiro");
+            BTHelper.OnConnected += OnConnected;
+            BTHelper.setTerminatorBasedStream("\n");
 
-            /*
+            
             if (BTHelper.isDevicePaired())
             {
                 BTHelper.Connect();
-                Debug.Log("Connected!!!");
-            }*/
+            }
          
           
         }
@@ -82,6 +82,7 @@ public class SpinalLogBluetoothManager : MonoBehaviour
     }
 
     public void ConnectBT() { 
+        
         // Disable the script
         //BTHelper = BluetoothHelper.GetNewInstance("ESP32-SpinalLog-Kiichiro");
         BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Kiichiro"); //device 
@@ -89,14 +90,18 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
         UnityDebug.Log("                                                " + BTHelper.getDeviceName());
-        if (!BTHelper.isConnected()) {
+        if (BTHelper.isConnected()) {
+            BTHelper.Disconnect();
+            UnityDebug.Log("DisConnected.");
             if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-SpinalLog-Kiichiro") {
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("Connected!!!");
                 BoneGroup.SetActive(true);
                 BoneGroupL3.SetActive(false);
             }
-        }       
+        }  
+       //elseif (!BTHelper.isConnected()) {
+          
     }
 
 
