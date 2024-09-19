@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using XCharts;
@@ -10,9 +11,15 @@ public class LineChartController : MonoBehaviour
     private SpinalLogBluetoothManager BTManager;
     public LineChart lineChart; // Reference to your LineChart component
 
+    private float yaxis_force;
+    private float timer = 0f;
+    private float interval = 30f;
+
     // Example data arrays
     private float[] timeData = new float[8] { 0, 1, 2, 3, 4, 5, 6, 7 };
     private float[] forceData = new float[8] { 10, 20, 15, 25, 30, 10, 5, 20 };
+    public GameObject Graph;
+
 
     void Start()
     {
@@ -22,14 +29,24 @@ public class LineChartController : MonoBehaviour
         // Update the chart with data
         lineChart.RemoveData();
         lineChart.AddSerie<Line>("line");
+
         //UpdateChart();
     }
 
     void Update() {
-        if (BTManager.BTHelper.Available) {
-            lineChart.AddData(0, BTManager.forceSum);
+        timer += Time.deltaTime;
+        if (BTManager.BTHelper.Available && timer<interval) {
+            yaxis_force = 235-BTManager.forceSum;
+            Debug.Log("yaxis_force" + yaxis_force);
+            lineChart.AddData(0, yaxis_force);
             lineChart.RefreshChart();
         }
+        else if(timer >= interval){
+            lineChart.RemoveData();
+            lineChart.AddSerie<Line>("line");
+            timer = 0f;
+        }
+        
     }
 
     void SetupChart()
@@ -51,16 +68,16 @@ public class LineChartController : MonoBehaviour
         //xAxis.type = Axis.AxisType.Time;
         xAxis.minMaxType = Axis.AxisMinMaxType.Custom;
         xAxis.min = 0;
-        xAxis.max = 1500;
+        xAxis.max = 30;
         //xAxis.interval = 50;
         //xAxis.type = Axis.AxisType.Category;
         yAxis.type = Axis.AxisType.Value;
 
-        xAxis.splitNumber = 1500;
+        xAxis.splitNumber = 30;
         xAxis.boundaryGap = false;
      
     }
-
+/*
     void UpdateChart()
     {
         lineChart.RemoveData();
@@ -87,6 +104,14 @@ public class LineChartController : MonoBehaviour
         } 
         
         
+    }*/
+
+    public void showGraph(){
+        Graph.SetActive(true);
+    }
+
+    public void hideGraph(){
+        Graph.SetActive(false);
     }
 
 }
