@@ -4,7 +4,7 @@ using UnityEngine;
 using XCharts;
 using XCharts.Runtime; // Ensure this namespace matches your XCharts library
 
-public class LineChartController : MonoBehaviour
+public class L3Graph : MonoBehaviour
 {
     
     [SerializeField]
@@ -37,23 +37,25 @@ public class LineChartController : MonoBehaviour
     }
 
     void Update() {
-        yaxis_force = 235-BTManager.forceSum;
-        timer += Time.deltaTime;   
+        yaxis_force = BTManager.numbers[0];
+        //timer += Time.deltaTime;   
         
-       //Debug.Log("yaxis_force" + yaxis_force);
+       Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
-        if (yaxis_force > 5 && BTManager.BTHelper.Available) {
+        if (yaxis_force > 0 && BTManager.BTHelper.Available) {
             //timer += Time.deltaTime;
             //Debug.Log(timer);
         
-        /*
+        
             // clean up graph for each try
             if (isFirstPress) {
                 lineChart.RemoveData();
                 lineChart.AddSerie<Line>("line");
                 isFirstPress = false;
-            }*/
+                lineChart.AddData(0, 0);
+                lineChart.RefreshChart();
+            }
             
             //Debug.Log("yaxis_force" + yaxis_force + "counter" + counter +"timer" + timer);
             // draw graph
@@ -68,12 +70,15 @@ public class LineChartController : MonoBehaviour
             }
             
         } 
-        else if (yaxis_force < 5 || timer > interval){
-            Debug.Log("hhhhh");
-            Debug.Log(yaxis_force);
+        else if (yaxis_force < 0 && !isFirstPress){
+            //Debug.Log("hhhhh");
+            //Debug.Log(yaxis_force);
+            lineChart.AddData(0, 0);
+            lineChart.RefreshChart();
+
             timer = 0f;
             counter = 0;
-            //isFirstPress = true;
+            isFirstPress = true;
         }
 
 

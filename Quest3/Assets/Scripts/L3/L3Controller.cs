@@ -10,9 +10,12 @@ public class L3Controller : MonoBehaviour
 {
     public GameObject L3;
     //private GameObject bone;
-    private float leftChangeDepth;
-    private float rightChangeDepth;
-    public float averageChangeDepth;
+
+    public float changeDepth;
+
+    public float transverseAngle;
+
+    public float saggitalAngle;
 
     public Material objectMaterial;
     public Material whiteMaterial;
@@ -33,19 +36,21 @@ public class L3Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(BTManager.BTHelper != null){
             // update depth of each sensor, have to store initial distance with no pressure
             if (BTManager.BTHelper.Available)
             {
-                SetCurDepth(BTManager.numbers);
+                //Debug.Log(BTManager.numbers);
+                SetData(BTManager.numbers);
                 // up-down movvement, rotation
                 
 
 
                 // colour change
-                if (averageChangeDepth > DEPTH_THRESHOLD) {
+                if (changeDepth > DEPTH_THRESHOLD) {
                     // Calculate the interpolation factor based on how close averageDepth is to 0
-                    float t = Mathf.InverseLerp(DEPTH_THRESHOLD, MAX_DEPTH, averageChangeDepth);
+                    float t = Mathf.InverseLerp(DEPTH_THRESHOLD, MAX_DEPTH, changeDepth);
 
                     // Interpolate between the white and red colors based on the depth
                     Color newColor = Color.Lerp(whiteMaterial.color, redMaterial.color, t);
@@ -59,30 +64,33 @@ public class L3Controller : MonoBehaviour
                 }
             }
 
+            //Rotation();
+
             //UnityDebug.Log("average: "+ averageChangeDepth);
-            if (averageChangeDepth > 0) {
+            if (changeDepth > 0) {
                 UpDownMove();
-                TransverseRotation();
+                Rotation();
             }
         }
         
     }
 
 
-    public void SetCurDepth(float[] input) {
-        this.leftChangeDepth = input[0];
-        this.rightChangeDepth = input[1];
-        this.averageChangeDepth = (leftChangeDepth + rightChangeDepth) / 2;
+    public void SetData(float[] input) {
+        this.changeDepth = input[0];
+        this.transverseAngle = input[1];
+        this.saggitalAngle = input[2];
+        //Debug.Log(transverseAngle);
     }
 
     void UpDownMove() {
         float moveDist = 0;
         //int maxDistance = 35;
 
-        if (averageChangeDepth > 0)
+        if (changeDepth > 0)
         {
             
-            moveDist = averageChangeDepth;
+            moveDist = changeDepth;
 
             Vector3 originalPosition = L3.transform.localPosition;
 
@@ -91,33 +99,12 @@ public class L3Controller : MonoBehaviour
         }       
     }
 
-    void TransverseRotation() { //transverse rotation
-        float halfDistance = Math.Abs(leftChangeDepth - rightChangeDepth)/2;
-        float rotateAngle = 0;
-        int boneLength = 50;
+    void Rotation() { //transverse rotation
+
+
+        L3.transform.localRotation = Quaternion.Euler(saggitalAngle, transverseAngle, 0f);
+ 
+        //UnityDebug.Log("rotate++++++++++++++++++++++++++++");
         
-        if (averageChangeDepth > 0) {
-            if (leftChangeDepth == 0 || rightChangeDepth == 0)
-            {
-                rotateAngle = Mathf.Sin(leftChangeDepth / boneLength);
-            } else
-            {
-                rotateAngle = Mathf.Sin(halfDistance / boneLength);
-            } 
-
-            if (leftChangeDepth > rightChangeDepth)
-            {
-                //bone.transform.localRotation = Quaternion.Euler(0f, rotateAngle *500f, 0f);
-                //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + rotateAngle);
-
-                L3.transform.localRotation = Quaternion.Euler(0f, rotateAngle*500f, 0f);
-            } else
-            {
-                //bone.transform.localRotation = Quaternion.Euler(0f, -rotateAngle *500f, 0f);
-                //UnityDebug.Log("----origin: " + originalDegree + ", rotateAngle: " + -rotateAngle);
-                L3.transform.localRotation = Quaternion.Euler(0f, -rotateAngle*500f, 0f);
-            }
-            //UnityDebug.Log("rotate++++++++++++++++++++++++++++");
-        }
     }
 }

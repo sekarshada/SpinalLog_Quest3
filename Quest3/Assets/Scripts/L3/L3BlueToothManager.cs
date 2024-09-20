@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class L3BlueToothManager : MonoBehaviour
 {
     private string message;
-    public float[] numbers = new float[2];
+    public float[] numbers = new float[3];
     public float forceSum;
     public BluetoothHelper BTHelper;
 
@@ -29,6 +29,7 @@ public class L3BlueToothManager : MonoBehaviour
         {
             //Debug.Log("2");
             //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
+           // BTHelper.setDeviceName("ESP32-SpinalLog-Wenyuan");
             //BTHelper.OnConnected += OnConnected;
             //BTHelper.setTerminatorBasedStream("\n");
 
@@ -69,8 +70,7 @@ public class L3BlueToothManager : MonoBehaviour
             {
                 message = BTHelper.Read(); //receive message from esp32
                 numbers = ToFloatArray(message);
-                forceSum = ForceSum(numbers);
-                UnityDebug.Log(message);
+                //UnityDebug.Log(message);
                 //UnityDebug.Log(forceSum);
             }
         }
@@ -129,13 +129,6 @@ public class L3BlueToothManager : MonoBehaviour
         return output;
     }
 
-    float ForceSum(float[] input) {
-        float sum = 0;
-        for (int i = 0; i < input.Length; i++) {
-            sum += input[i];
-        }
-        return sum;
-    }
 
 
     public void sendData1(){
