@@ -18,6 +18,9 @@ public class LineChartController : MonoBehaviour
     // Example data arrays
     private float[] timeData = new float[8] { 0, 1, 2, 3, 4, 5, 6, 7 };
     private float[] forceData = new float[8] { 10, 20, 15, 25, 30, 10, 5, 20 };
+
+    private int counter = 0;
+    private bool isFirstPress = true;
     public GameObject Graph;
 
 
@@ -34,8 +37,35 @@ public class LineChartController : MonoBehaviour
     }
 
     void Update() {
+        yaxis_force = 235-BTManager.forceSum;
+
+        // start press
+        if (yaxis_force > 5 && BTManager.BTHelper.Available) {
+            // clean up graph for each try
+            if (isFirstPress) {
+                lineChart.RemoveData();
+                lineChart.AddSerie<Line>("line");
+                isFirstPress = false;
+            }
+            // draw graph
+            if (timer > counter && counter <= interval) {
+                Debug.Log("yaxis_force" + yaxis_force + "counter" + counter);
+                lineChart.AddData(0, yaxis_force);
+                lineChart.RefreshChart();
+
+                counter++;
+
+            }
+            
+        } else {
+            timer = 0f;
+            counter = 0;
+        }
+
         timer += Time.deltaTime;
-        if (BTManager.BTHelper.Available && timer<interval) {
+
+
+        /*if (BTManager.BTHelper.Available && timer<interval) {
             yaxis_force = 235-BTManager.forceSum;
             Debug.Log("yaxis_force" + yaxis_force);
             lineChart.AddData(0, yaxis_force);
@@ -45,7 +75,7 @@ public class LineChartController : MonoBehaviour
             lineChart.RemoveData();
             lineChart.AddSerie<Line>("line");
             timer = 0f;
-        }
+        }*/
         
     }
 
