@@ -20,11 +20,12 @@ public class ShowMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (/*leftHand.IsTracked &&*/ DetectHandFlip(leftHand)){
+        if (DetectHandFlip(leftHand)){
             menuButton.SetActive(true);
         }
         else{
             menuButton.SetActive(false);
+            menu.SetActive(false);
         }
        
     }
@@ -43,13 +44,12 @@ public class ShowMenu : MonoBehaviour
 
     bool DetectHandFlip(OVRHand hand)
     {
-        // 获取手的旋转四元数
+        // get hand rotation degree
         Quaternion handRotation = hand.transform.rotation;
-        // 将四元数转换为欧拉角（旋转角度）
         Vector3 handEulerAngles = handRotation.eulerAngles;
-        // 通过手的局部y轴角度来判断翻转
-        //Debug.Log(handEulerAngles);
-        if (handEulerAngles.x > 180 && handEulerAngles.x < 358)
+       
+        // hand face up
+        if (handEulerAngles.x > 180 && handEulerAngles.x < 359)
         {
             return true;
         }

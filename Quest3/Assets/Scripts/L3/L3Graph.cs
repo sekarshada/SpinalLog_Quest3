@@ -40,7 +40,7 @@ public class L3Graph : MonoBehaviour
         yaxis_force = BTManager.numbers[0];
         //timer += Time.deltaTime;   
         
-       Debug.Log("yaxis_force" + yaxis_force);
+       //Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
         if (yaxis_force > 0 && BTManager.BTHelper.Available) {
