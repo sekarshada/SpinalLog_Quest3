@@ -5,14 +5,17 @@ using UnityEngine;
 public class Calibration : MonoBehaviour
 {
     public GameObject cube;
-    public GameObject generateCubeInstruction;
     private bool isSpawned = false;
+    // UI
+    public GameObject generateCubeInstruction;
+    public GameObject menuInstruction;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         cube.SetActive(false);
-        //Renderer curRenderer = cube.GetComponent<Renderer>();
+        menuInstruction.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,7 +52,7 @@ public class Calibration : MonoBehaviour
             //cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
             cube.SetActive(true);
             generateCubeInstruction.SetActive(false);
-
+            menuInstruction.SetActive(true);
             isSpawned = true;
         }
         else
@@ -63,7 +66,7 @@ public class Calibration : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void fixPosition() {
+    public void FixPosition() {
         Debug.Log("clicked1");
         Transform grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
 
@@ -75,7 +78,7 @@ public class Calibration : MonoBehaviour
         }
     }
 
-    public void movePosition() {
+    public void MovePosition() {
         Debug.Log("clicked2");
         Transform grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
 

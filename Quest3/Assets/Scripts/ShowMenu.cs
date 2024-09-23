@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class ShowMenu : MonoBehaviour
 {
-
+    public GameObject menuInstruction;
     public GameObject menu;
     public GameObject menuButton;
     public OVRHand leftHand;
+    
     private bool isShown = false;
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,7 @@ public class ShowMenu : MonoBehaviour
         if (!isShown){
             menu.SetActive(true);
             isShown = true;
-
+            menuInstruction.SetActive(false);
         }
         else{
             menu.SetActive(false);
