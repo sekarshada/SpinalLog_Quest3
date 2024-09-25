@@ -11,13 +11,14 @@ public class Calibration : MonoBehaviour
     public GameObject menuInstruction;
 
     public GameObject CubeText; 
-    
+    public GameObject menuExplain;
 
     // Start is called before the first frame update
     void Start()
     {
         cube.SetActive(false);
         menuInstruction.SetActive(false);
+        menuExplain.SetActive(false);
     }
 
     // Update is called once per frame
@@ -77,6 +78,7 @@ public class Calibration : MonoBehaviour
 
             cube.GetComponent<Renderer>().enabled = false;
             CubeText.SetActive(false);
+            menuExplain.SetActive(false);
             
         }
     }

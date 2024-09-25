@@ -9,6 +9,8 @@ public class ShowMenu : MonoBehaviour
     public GameObject menu;
     public GameObject menuButton;
     public OVRHand leftHand;
+    private bool firstInstruct = true;
+    public GameObject MenuInstruct;
     
     private bool isShown = false;
     // Start is called before the first frame update
@@ -36,6 +38,10 @@ public class ShowMenu : MonoBehaviour
             menu.SetActive(true);
             isShown = true;
             menuInstruction.SetActive(false);
+            if(firstInstruct){
+                MenuInstruct.SetActive(true);
+                firstInstruct = false;
+            }
         }
         else{
             menu.SetActive(false);
