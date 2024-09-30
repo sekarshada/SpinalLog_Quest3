@@ -5,6 +5,7 @@ using UnityEngine;
 public class Calibration : MonoBehaviour
 {
     public GameObject cube;
+    public GameObject L3cube;
     private bool isSpawned = false;
     // UI
     public GameObject generateCubeInstruction;
@@ -71,12 +72,19 @@ public class Calibration : MonoBehaviour
 
     public void FixPosition() {
         Debug.Log("clicked1");
-        Transform grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
+        Transform grabFunction = null;
+        if (cube.activeInHierarchy) {
+            grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
+        } else if (L3cube.activeInHierarchy) {
+            grabFunction = L3cube.transform.Find("[BuildingBlock] HandGrab");
+        }
+        Debug.Log("=======================================fix: " + grabFunction.name);
 
+        
         if (grabFunction != null) {
             grabFunction.gameObject.SetActive(false);
 
-            cube.GetComponent<Renderer>().enabled = false;
+            grabFunction.gameObject.GetComponent<Renderer>().enabled = false;
             CubeText.SetActive(false);
             menuExplain.SetActive(false);
             
@@ -85,12 +93,19 @@ public class Calibration : MonoBehaviour
 
     public void MovePosition() {
         Debug.Log("clicked2");
-        Transform grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
+        Transform grabFunction = null;
+        if (cube.activeInHierarchy) {
+            grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
+        } else if (L3cube.activeInHierarchy) {
+            grabFunction = L3cube.transform.Find("[BuildingBlock] HandGrab");
+        }
+
+        Debug.Log("--------------------------------move: " + grabFunction.name);
 
         if (grabFunction != null) {
             grabFunction.gameObject.SetActive(true);
 
-            cube.GetComponent<Renderer>().enabled = true;
+            grabFunction.gameObject.GetComponent<Renderer>().enabled = true;
             CubeText.SetActive(true);
         }
     }

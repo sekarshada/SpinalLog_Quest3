@@ -16,15 +16,16 @@ public class L3BlueToothManager : MonoBehaviour
     public float forceSum;
     public BluetoothHelper BTHelper;
 
-    public GameObject BoneGroupL3;
+    public GameObject L3Cube;
 
-    public GameObject BoneGroup;
+    public GameObject spinalLogCube;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        L3Cube.SetActive(false);
         try
         {
             //Debug.Log("2");
@@ -70,7 +71,7 @@ public class L3BlueToothManager : MonoBehaviour
             {
                 message = BTHelper.Read(); //receive message from esp32
                 numbers = ToFloatArray(message);
-                //UnityDebug.Log(message);
+                UnityDebug.Log(message);
                 //UnityDebug.Log(forceSum);
             }
         }
@@ -100,8 +101,9 @@ public class L3BlueToothManager : MonoBehaviour
 
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("L3 Connected!!!");
-                BoneGroup.SetActive(false);
-                BoneGroupL3.SetActive(true);
+                spinalLogCube.SetActive(false);
+                L3Cube.transform.position = spinalLogCube.transform.position;
+                L3Cube.SetActive(true);
               
             }
         }  
