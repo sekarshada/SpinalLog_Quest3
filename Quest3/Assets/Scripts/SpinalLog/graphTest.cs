@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using XCharts;
+using System.IO;
 using XCharts.Runtime; // Ensure this namespace matches your XCharts library
 
 public class LineChartController : MonoBehaviour
@@ -24,6 +25,11 @@ public class LineChartController : MonoBehaviour
     private bool isPressing = false;
     public GameObject Graph;
 
+    private Line studentTrial;
+    private Line expertTrial;
+
+    private string csvFilePath = "Assets/Resources/expertTrial.csv"; // Path to your CSV file
+
 
     void Start()
     {
@@ -32,9 +38,9 @@ public class LineChartController : MonoBehaviour
         SetupChart();
         // Update the chart with data
         lineChart.RemoveData();
-        lineChart.AddSerie<Line>("line");
-
-        //UpdateChart();
+        studentTrial = lineChart.AddSerie<Line>("studentTrial");
+        expertTrial = lineChart.AddSerie<Line>("expertTrial"); 
+        LoadDataFromCSV(csvFilePath);
     }
 
     void Update() {
@@ -46,27 +52,28 @@ public class LineChartController : MonoBehaviour
        //Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
-        if (yaxis_force > 5 && BTManager.BTHelper.Available) {
+        if (yaxis_force > 3 && BTManager.BTHelper.Available) {
             //isPressing = true;
             // draw graph
-            if (timer < interval) {
+            if (counter < interval) {
                 
-                lineChart.AddData(0, yaxis_force);
-                lineChart.RefreshChart();
+                studentTrial.AddData(counter++, yaxis_force);
+                Debug.Log("count" + counter);
+                //lineChart.RefreshChart();
 
             }
             else{
-                timer = 0f;
-                lineChart.RemoveData();
-                lineChart.AddSerie<Line>("line");
+                counter = 0;
+                //lineChart.RemoveData();
+                studentTrial.ClearData();
+                //lineChart.AddSerie<Line>("line");
             }
         }
         /*
-        else{
+        else if (timer > interval){
             //isPressing = false;
             timer = 0f;
-            lineChart.RemoveData();
-            lineChart.AddSerie<Line>("line");
+            studentTrial.ClearData();
         }*/
 
         
@@ -102,6 +109,39 @@ public class LineChartController : MonoBehaviour
         xAxis.boundaryGap = false;
      
     }
+
+     void LoadDataFromCSV(string path)
+    {
+        Debug.Log("1");
+        if (!File.Exists(path))
+        {
+            Debug.LogError("CSV file not found at: " + path);
+            return;
+        }
+
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2)
+        {
+            Debug.LogError("CSV file must contain at least one header line and one data line.");
+            return;
+        }
+
+        // Use the index as X values
+        for (int i = 1; i < lines.Length; i++) // Start from 1 to skip header
+        {
+            if (float.TryParse(lines[i], out float y))
+            {
+                // Add data to the chart
+                expertTrial.AddData(i-1, y); // Using index as X value
+                Debug.Log("line: "+lines[i]);
+            }
+            else
+            {
+                Debug.LogWarning($"Could not parse value on line {i + 1}: {lines[i]}");
+            }
+        }
+    }
+
 
 
     public void showGraph(){
