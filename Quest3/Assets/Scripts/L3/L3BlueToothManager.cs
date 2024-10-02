@@ -71,7 +71,7 @@ public class L3BlueToothManager : MonoBehaviour
             {
                 message = BTHelper.Read(); //receive message from esp32
                 numbers = ToFloatArray(message);
-                UnityDebug.Log(message);
+                UnityDebug.Log(numbers[0] + numbers[1] + numbers[2]);
                 //UnityDebug.Log(forceSum);
             }
         }
@@ -86,10 +86,11 @@ public class L3BlueToothManager : MonoBehaviour
 
 
     public void ConnectBT() {
-       
-        //BTHelper = BluetoothHelper.GetNewInstance("ESP32-SpinalLog-Wenyuan");
-        BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
-        BTHelper.setDeviceName("ESP32-SpinalLog-Wenyuan");
+    
+        //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
+        //BTHelper.setDeviceName("ESP32-SpinalLog-Wenyuan");
+        BTHelper = BluetoothHelper.GetInstance("ESP32-10_2"); //device name
+        BTHelper.setDeviceName("ESP32-10_2");
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
         UnityDebug.Log("                                                " + BTHelper.getDeviceName());
@@ -97,7 +98,7 @@ public class L3BlueToothManager : MonoBehaviour
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
             UnityDebug.Log("DisConnected.");
-            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-SpinalLog-Wenyuan") {
+            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-10_2") {
 
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("L3 Connected!!!");

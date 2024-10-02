@@ -4,24 +4,26 @@ using UnityEngine;
 using UnityEngine.AI;
 using XCharts;
 using System.IO;
-using XCharts.Runtime; // Ensure this namespace matches your XCharts library
+using XCharts.Runtime;
+using System.Diagnostics.Tracing; // Ensure this namespace matches your XCharts library
 
 public class LineChartController : MonoBehaviour
 {
     
     [SerializeField]
-    private SpinalLogBluetoothManager BTManager;
+    //private SpinalLogBluetoothManager BTManager;
+    private L3BlueToothManager BTManager;
     public LineChart lineChart; // Reference to your LineChart component
 
     private float yaxis_force;
     private float timer = 0f;
-    private float interval = 30f;
+    private float interval = 3000f;
 
     // Example data arrays
     private float[] timeData = new float[8] { 0, 1, 2, 3, 4, 5, 6, 7 };
     private float[] forceData = new float[8] { 10, 20, 15, 25, 30, 10, 5, 20 };
 
-    private int counter = 0;
+    private float counter = 0;
     private bool isPressing = false;
     public GameObject Graph;
 
@@ -41,33 +43,34 @@ public class LineChartController : MonoBehaviour
         studentTrial = lineChart.AddSerie<Line>("studentTrial");
         expertTrial = lineChart.AddSerie<Line>("expertTrial"); 
         LoadDataFromCSV(csvFilePath);
+        //studentTrial.symbolType = SymbolType.None;
+        
     }
 
     void Update() {
-        
-        yaxis_force = 235-BTManager.forceSum;
+        // for vartebra
+        yaxis_force = BTManager.numbers[0];
+        //spinal log test
+        //yaxis_force = 235-BTManager.forceSum;
         Debug.Log(yaxis_force);
-        timer += Time.deltaTime;   
+        //timer += Time.deltaTime;   
         
        //Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
-        if (yaxis_force > 3 && BTManager.BTHelper.Available) {
+        if (yaxis_force > 0) {
             //isPressing = true;
             // draw graph
-            if (counter < interval) {
-                
+            
+            if (counter < interval){
                 studentTrial.AddData(counter++, yaxis_force);
-                Debug.Log("count" + counter);
+            }
+            
+            
+          
                 //lineChart.RefreshChart();
 
-            }
-            else{
-                counter = 0;
-                //lineChart.RemoveData();
-                studentTrial.ClearData();
-                //lineChart.AddSerie<Line>("line");
-            }
+          
         }
         /*
         else if (timer > interval){
@@ -155,30 +158,38 @@ public class LineChartController : MonoBehaviour
 }
 
 /*
-// start press
-        if (yaxis_force > 5) {
-            isPressing = true;
+void Update() {
+        // for vartebra
+        yaxis_force = BTManager.numbers[0];
+        //spinal log test
+        //yaxis_force = 235-BTManager.forceSum;
+        Debug.Log(yaxis_force);
+        //timer += Time.deltaTime;   
+        
+       //Debug.Log("yaxis_force" + yaxis_force);
+        
+        // start press
+        if (yaxis_force > 0 && BTManager.BTHelper.Available) {
+            //isPressing = true;
             // draw graph
-            if (timer < interval) {
+            if (counter < interval) {
                 
-                lineChart.AddData(0, yaxis_force);
-                lineChart.RefreshChart();
+                studentTrial.AddData(counter++, yaxis_force);
+                Debug.Log("count" + counter);
+                Debug.Log("timer" + timer);
+                //lineChart.RefreshChart();
 
             }
             else{
-                timer = 0f;
-                lineChart.RemoveData();
-                lineChart.AddSerie<Line>("line");
+                //timer = 0;
+                counter = 0;
+                //lineChart.RemoveData();
+                studentTrial.ClearData();
+                //lineChart.AddSerie<Line>("line");
             }
         }
-        else{
-            isPressing = false;
-            timer = 0f;
-            lineChart.RemoveData();
-            lineChart.AddSerie<Line>("line");
-        }
-
-        if (isPressing && timer < interval){
-            lineChart.AddData(0, yaxis_force);
-            lineChart.RefreshChart();
-        }*/
+    
+        
+    
+        
+    }*/
