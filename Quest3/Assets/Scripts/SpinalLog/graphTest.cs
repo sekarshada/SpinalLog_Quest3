@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using XCharts;
 using XCharts.Runtime; // Ensure this namespace matches your XCharts library
 
@@ -8,7 +9,7 @@ public class LineChartController : MonoBehaviour
 {
     
     [SerializeField]
-    private L3BlueToothManager BTManager;
+    private SpinalLogBluetoothManager BTManager;
     public LineChart lineChart; // Reference to your LineChart component
 
     private float yaxis_force;
@@ -20,7 +21,7 @@ public class LineChartController : MonoBehaviour
     private float[] forceData = new float[8] { 10, 20, 15, 25, 30, 10, 5, 20 };
 
     private int counter = 0;
-    private bool isFirstPress = true;
+    private bool isPressing = false;
     public GameObject Graph;
 
 
@@ -37,58 +38,39 @@ public class LineChartController : MonoBehaviour
     }
 
     void Update() {
+        
         yaxis_force = 235-BTManager.forceSum;
+        Debug.Log(yaxis_force);
         timer += Time.deltaTime;   
         
        //Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
         if (yaxis_force > 5 && BTManager.BTHelper.Available) {
-            //timer += Time.deltaTime;
-            //Debug.Log(timer);
-        
-        /*
-            // clean up graph for each try
-            if (isFirstPress) {
-                lineChart.RemoveData();
-                lineChart.AddSerie<Line>("line");
-                isFirstPress = false;
-            }*/
-            
-            //Debug.Log("yaxis_force" + yaxis_force + "counter" + counter +"timer" + timer);
+            //isPressing = true;
             // draw graph
-            if (timer <= interval) {
+            if (timer < interval) {
                 
                 lineChart.AddData(0, yaxis_force);
                 lineChart.RefreshChart();
 
-                //counter++;
-                //timer = 0f;
-
             }
-            
-        } 
-        else if (yaxis_force < 5 || timer > interval){
-            Debug.Log("hhhhh");
-            Debug.Log(yaxis_force);
+            else{
+                timer = 0f;
+                lineChart.RemoveData();
+                lineChart.AddSerie<Line>("line");
+            }
+        }
+        /*
+        else{
+            //isPressing = false;
             timer = 0f;
-            counter = 0;
-            //isFirstPress = true;
-        }
-
-
-
-        /*if (BTManager.BTHelper.Available && timer<interval) {
-            yaxis_force = 235-BTManager.forceSum;
-            Debug.Log("yaxis_force" + yaxis_force);
-            lineChart.AddData(0, yaxis_force);
-            lineChart.RefreshChart();
-        }
-        else if(timer >= interval){
             lineChart.RemoveData();
             lineChart.AddSerie<Line>("line");
-            timer = 0f;
         }*/
+
+        
+    
         
     }
 
@@ -120,34 +102,7 @@ public class LineChartController : MonoBehaviour
         xAxis.boundaryGap = false;
      
     }
-/*
-    void UpdateChart()
-    {
-        lineChart.RemoveData();
-        lineChart.AddSerie<Line>("line");
-        if (BTManager.BTHelper.Available)
-        {
-            Debug.Log("connected!");
-            // Add X-axis labels (time data)
-            for (int i = 0; i < timeData.Length; i++)
-            {
-                lineChart.AddXAxisData(timeData[i].ToString()); // Add time data as X-axis labels
-            }
 
-            // Add Force data
-            for (int i = 0; i < forceData.Length; i++)
-            {
-                Debug.Log(i + ", FORCE: " + BTManager.forceSum);
-                lineChart.AddData(0, forceData[i]); // Add force data to the first series
-            }
-
-            // Refresh the chart to update the display
-            lineChart.RefreshChart();
-
-        } 
-        
-        
-    }*/
 
     public void showGraph(){
         Graph.SetActive(true);
@@ -158,3 +113,32 @@ public class LineChartController : MonoBehaviour
     }
 
 }
+
+/*
+// start press
+        if (yaxis_force > 5) {
+            isPressing = true;
+            // draw graph
+            if (timer < interval) {
+                
+                lineChart.AddData(0, yaxis_force);
+                lineChart.RefreshChart();
+
+            }
+            else{
+                timer = 0f;
+                lineChart.RemoveData();
+                lineChart.AddSerie<Line>("line");
+            }
+        }
+        else{
+            isPressing = false;
+            timer = 0f;
+            lineChart.RemoveData();
+            lineChart.AddSerie<Line>("line");
+        }
+
+        if (isPressing && timer < interval){
+            lineChart.AddData(0, yaxis_force);
+            lineChart.RefreshChart();
+        }*/
