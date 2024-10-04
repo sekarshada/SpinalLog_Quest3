@@ -52,7 +52,7 @@ public class LineChartController : MonoBehaviour
         yaxis_force = BTManager.numbers[0];
         //spinal log test
         //yaxis_force = 235-BTManager.forceSum;
-        Debug.Log(yaxis_force);
+        Debug.Log("force" + yaxis_force);
         //timer += Time.deltaTime;   
         
        //Debug.Log("yaxis_force" + yaxis_force);

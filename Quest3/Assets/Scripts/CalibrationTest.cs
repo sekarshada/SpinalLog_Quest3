@@ -14,6 +14,8 @@ public class Calibration : MonoBehaviour
     public GameObject CubeText; 
     public GameObject menuExplain;
 
+    private Transform grabFunction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,7 +74,7 @@ public class Calibration : MonoBehaviour
 
     public void FixPosition() {
         Debug.Log("clicked1");
-        Transform grabFunction = null;
+        //Transform grabFunction = null;
         if (cube.activeInHierarchy) {
             grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
         } else if (L3cube.activeInHierarchy) {
@@ -83,8 +85,10 @@ public class Calibration : MonoBehaviour
         
         if (grabFunction != null) {
             grabFunction.gameObject.SetActive(false);
+            cube.GetComponent<Renderer>().enabled = false;
+            L3cube.GetComponent<Renderer>().enabled = false;
 
-            grabFunction.gameObject.GetComponent<Renderer>().enabled = false;
+            //grabFunction.gameObject.GetComponent<Renderer>().enabled = false;
             CubeText.SetActive(false);
             menuExplain.SetActive(false);
             
@@ -105,7 +109,8 @@ public class Calibration : MonoBehaviour
         if (grabFunction != null) {
             grabFunction.gameObject.SetActive(true);
 
-            grabFunction.gameObject.GetComponent<Renderer>().enabled = true;
+            cube.GetComponent<Renderer>().enabled = true;
+            L3cube.GetComponent<Renderer>().enabled = true;
             CubeText.SetActive(true);
         }
     }
