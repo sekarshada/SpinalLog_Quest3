@@ -1,27 +1,37 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using XCharts;
-using XCharts.Runtime; // Ensure this namespace matches your XCharts library
+using System.IO;
+using XCharts.Runtime;
+using System.Diagnostics.Tracing; // Ensure this namespace matches your XCharts library
 
 public class L3Graph : MonoBehaviour
 {
     
     [SerializeField]
-    private L3BlueToothManager BTManager;
+    //private SpinalLogBluetoothManager BTManager;
+    private L3BlueToothManager l3Manager;
     public LineChart lineChart; // Reference to your LineChart component
 
     private float yaxis_force;
+    private float last_force = 0;
     private float timer = 0f;
-    private float interval = 30f;
+    private float interval = 3000f;
 
     // Example data arrays
     private float[] timeData = new float[8] { 0, 1, 2, 3, 4, 5, 6, 7 };
     private float[] forceData = new float[8] { 10, 20, 15, 25, 30, 10, 5, 20 };
 
-    private int counter = 0;
-    private bool isFirstPress = true;
+    private float counter = 0f;
+    private bool isPressing = false;
     public GameObject Graph;
+
+    private Line studentTrial;
+    private Line expertTrial;
+
+    private string csvFilePath = "Assets/Resources/expertTrial.csv"; // Path to your CSV file
 
 
     void Start()
@@ -31,69 +41,59 @@ public class L3Graph : MonoBehaviour
         SetupChart();
         // Update the chart with data
         lineChart.RemoveData();
-        lineChart.AddSerie<Line>("line");
-
-        //UpdateChart();
+        studentTrial = lineChart.AddSerie<Line>("studentTrial");
+        expertTrial = lineChart.AddSerie<Line>("expertTrial"); 
+        LoadDataFromCSV(csvFilePath);
+        //studentTrial.symbolType = SymbolType.None;
+        
     }
 
     void Update() {
-        yaxis_force = BTManager.numbers[0];
+        
+        if (L3BlueToothManager.l3Manager != null)
+        {
+            // Access the static instance of the manager
+            yaxis_force = L3BlueToothManager.l3Manager.numbers[0];
+            Debug.Log("Y-axis Force: " + yaxis_force);
+        }
+        else
+        {
+            Debug.LogError("L3BlueToothManager is not initialized.");
+        }
+        // for vartebra
+        //yaxis_force = l3Manager.numbers[0];
+        //spinal log test
+        //yaxis_force = 235-BTManager.forceSum;
+        //Debug.Log("force" + yaxis_force);
         //timer += Time.deltaTime;   
         
        //Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
-        if (yaxis_force > 0 && BTManager.BTHelper.Available) {
-            //timer += Time.deltaTime;
-            //Debug.Log(timer);
-        
-        
-            // clean up graph for each try
-            if (isFirstPress) {
-                lineChart.RemoveData();
-                lineChart.AddSerie<Line>("line");
-                isFirstPress = false;
-                lineChart.AddData(0, 0);
-                lineChart.RefreshChart();
-            }
-            
-            //Debug.Log("yaxis_force" + yaxis_force + "counter" + counter +"timer" + timer);
+        if (yaxis_force > 0) {
+            //isPressing = true;
             // draw graph
-            if (timer <= interval) {
-                
-                lineChart.AddData(0, yaxis_force);
-                lineChart.RefreshChart();
-
-                //counter++;
-                //timer = 0f;
-
+            
+            if (counter < interval && yaxis_force != last_force){
+                studentTrial.AddData(counter++, yaxis_force);
+                last_force = yaxis_force;
             }
             
-        } 
-        else if (yaxis_force < 0 && !isFirstPress){
-            //Debug.Log("hhhhh");
-            //Debug.Log(yaxis_force);
-            lineChart.AddData(0, 0);
-            lineChart.RefreshChart();
+            
+          
+                //lineChart.RefreshChart();
 
-            timer = 0f;
-            counter = 0;
-            isFirstPress = true;
+          
         }
-
-
-
-        /*if (BTManager.BTHelper.Available && timer<interval) {
-            yaxis_force = 235-BTManager.forceSum;
-            Debug.Log("yaxis_force" + yaxis_force);
-            lineChart.AddData(0, yaxis_force);
-            lineChart.RefreshChart();
-        }
-        else if(timer >= interval){
-            lineChart.RemoveData();
-            lineChart.AddSerie<Line>("line");
+        /*
+        else if (timer > interval){
+            //isPressing = false;
             timer = 0f;
+            studentTrial.ClearData();
         }*/
+
+        
+    
         
     }
 
@@ -116,7 +116,7 @@ public class L3Graph : MonoBehaviour
         //xAxis.type = Axis.AxisType.Time;
         xAxis.minMaxType = Axis.AxisMinMaxType.Custom;
         xAxis.min = 0;
-        xAxis.max = 30;
+        xAxis.max = 1500;
         //xAxis.interval = 50;
         //xAxis.type = Axis.AxisType.Category;
         yAxis.type = Axis.AxisType.Value;
@@ -125,34 +125,40 @@ public class L3Graph : MonoBehaviour
         xAxis.boundaryGap = false;
      
     }
-/*
-    void UpdateChart()
+
+     void LoadDataFromCSV(string path)
     {
-        lineChart.RemoveData();
-        lineChart.AddSerie<Line>("line");
-        if (BTManager.BTHelper.Available)
+        Debug.Log("1");
+        if (!File.Exists(path))
         {
-            Debug.Log("connected!");
-            // Add X-axis labels (time data)
-            for (int i = 0; i < timeData.Length; i++)
+            Debug.LogError("CSV file not found at: " + path);
+            return;
+        }
+
+        string[] lines = File.ReadAllLines(path);
+        if (lines.Length < 2)
+        {
+            Debug.LogError("CSV file must contain at least one header line and one data line.");
+            return;
+        }
+
+        // Use the index as X values
+        for (int i = 1; i < lines.Length; i++) // Start from 1 to skip header
+        {
+            if (float.TryParse(lines[i], out float y))
             {
-                lineChart.AddXAxisData(timeData[i].ToString()); // Add time data as X-axis labels
+                // Add data to the chart
+                expertTrial.AddData(i-1, y); // Using index as X value
+                //Debug.Log("line: "+lines[i]);
             }
-
-            // Add Force data
-            for (int i = 0; i < forceData.Length; i++)
+            else
             {
-                Debug.Log(i + ", FORCE: " + BTManager.forceSum);
-                lineChart.AddData(0, forceData[i]); // Add force data to the first series
+                Debug.LogWarning($"Could not parse value on line {i + 1}: {lines[i]}");
             }
+        }
+    }
 
-            // Refresh the chart to update the display
-            lineChart.RefreshChart();
 
-        } 
-        
-        
-    }*/
 
     public void showGraph(){
         Graph.SetActive(true);
@@ -163,3 +169,40 @@ public class L3Graph : MonoBehaviour
     }
 
 }
+
+/*
+void Update() {
+        // for vartebra
+        yaxis_force = BTManager.numbers[0];
+        //spinal log test
+        //yaxis_force = 235-BTManager.forceSum;
+        Debug.Log(yaxis_force);
+        //timer += Time.deltaTime;   
+        
+       //Debug.Log("yaxis_force" + yaxis_force);
+        
+        // start press
+        if (yaxis_force > 0 && BTManager.BTHelper.Available) {
+            //isPressing = true;
+            // draw graph
+            if (counter < interval) {
+                
+                studentTrial.AddData(counter++, yaxis_force);
+                Debug.Log("count" + counter);
+                Debug.Log("timer" + timer);
+                //lineChart.RefreshChart();
+
+            }
+            else{
+                //timer = 0;
+                counter = 0;
+                //lineChart.RemoveData();
+                studentTrial.ClearData();
+                //lineChart.AddSerie<Line>("line");
+            }
+        }
+    
+        
+    
+        
+    }*/

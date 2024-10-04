@@ -11,8 +11,7 @@ public class LineChartController : MonoBehaviour
 {
     
     [SerializeField]
-    //private SpinalLogBluetoothManager BTManager;
-    private L3BlueToothManager BTManager;
+    private SpinalLogBluetoothManager BTManager;
     public LineChart lineChart; // Reference to your LineChart component
 
     private float yaxis_force;
@@ -48,11 +47,15 @@ public class LineChartController : MonoBehaviour
     }
 
     void Update() {
+      
+            float yaxis_force = BTManager.forceSum;
+            //Debug.Log("Y-axis Force: " + yaxis_force);
+      
         // for vartebra
-        yaxis_force = BTManager.numbers[0];
+        //yaxis_force = l3Manager.numbers[0];
         //spinal log test
         //yaxis_force = 235-BTManager.forceSum;
-        Debug.Log("force" + yaxis_force);
+        //Debug.Log("force" + yaxis_force);
         //timer += Time.deltaTime;   
         
        //Debug.Log("yaxis_force" + yaxis_force);
@@ -103,7 +106,7 @@ public class LineChartController : MonoBehaviour
         //xAxis.type = Axis.AxisType.Time;
         xAxis.minMaxType = Axis.AxisMinMaxType.Custom;
         xAxis.min = 0;
-        xAxis.max = 30;
+        xAxis.max = 1500;
         //xAxis.interval = 50;
         //xAxis.type = Axis.AxisType.Category;
         yAxis.type = Axis.AxisType.Value;
@@ -136,7 +139,7 @@ public class LineChartController : MonoBehaviour
             {
                 // Add data to the chart
                 expertTrial.AddData(i-1, y); // Using index as X value
-                Debug.Log("line: "+lines[i]);
+                //Debug.Log("line: "+lines[i]);
             }
             else
             {

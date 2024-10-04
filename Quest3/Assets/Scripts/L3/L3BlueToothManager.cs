@@ -11,8 +11,10 @@ using UnityEngine.UI;
 
 public class L3BlueToothManager : MonoBehaviour
 {
+    public static L3BlueToothManager l3Manager;
     private string message;
     public float[] numbers = new float[3];
+
     public float forceSum;
     public BluetoothHelper BTHelper;
 
@@ -20,28 +22,38 @@ public class L3BlueToothManager : MonoBehaviour
 
     public GameObject spinalLogCube;
 
-
+    private void Awake()
+    {
+        if (l3Manager == null)
+        {
+            l3Manager = this; // Assign the singleton instance
+            DontDestroyOnLoad(gameObject); // Optional: Keep it alive across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instance
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+     
         L3Cube.SetActive(false);
-        try
+       /* try
         {
-            //Debug.Log("2");
-            //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
-           // BTHelper.setDeviceName("ESP32-SpinalLog-Wenyuan");
-            //BTHelper.OnConnected += OnConnected;
-            //BTHelper.setTerminatorBasedStream("\n");
+            BTHelper = BluetoothHelper.GetInstance("ESP32-10_2"); //device 
+            //BTHelper.setDeviceName("ESP32-SpinalLog-Kiichiro");
+            BTHelper.OnConnected += OnConnected;
+            BTHelper.setTerminatorBasedStream("\n");
 
-            /*
+            
             if (BTHelper.isDevicePaired())
             {
                 BTHelper.Connect();
-                Debug.Log("Connected!!!");
-            }*/
-         
-          
+                UnityDebug.Log("connect");
+            }
+        
         }
         catch (BluetoothHelper.BlueToothNotEnabledException ex) { 
             Console.WriteLine("BlueTooth not enabled"); 
@@ -51,7 +63,7 @@ public class L3BlueToothManager : MonoBehaviour
         }
         catch (BluetoothHelper.BlueToothNotReadyException ex) { 
             Console.WriteLine("BlueTooth not ready"); 
-        }
+        }*/
     }
 
     void OnConnected()
@@ -67,11 +79,12 @@ public class L3BlueToothManager : MonoBehaviour
     {
         if (BTHelper != null)
         {
+            //.Log("connect to " + BTHelper.getDeviceName());
             if (BTHelper.Available)
             {
                 message = BTHelper.Read(); //receive message from esp32
                 numbers = ToFloatArray(message);
-                UnityDebug.Log(numbers[0] + numbers[1] + numbers[2]);
+                //UnityDebug.Log("-------------------"+numbers[0]);
                 //UnityDebug.Log(forceSum);
             }
         }
@@ -97,7 +110,7 @@ public class L3BlueToothManager : MonoBehaviour
 
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
-            UnityDebug.Log("DisConnected.");
+            UnityDebug.Log("spinallog DisConnected.");
             if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-10_2") {
 
                 BTHelper.Connect(); // tries to connect
