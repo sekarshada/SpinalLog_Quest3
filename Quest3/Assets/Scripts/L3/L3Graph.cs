@@ -31,7 +31,7 @@ public class L3Graph : MonoBehaviour
     private Line studentTrial;
     private Line expertTrial;
 
-    private string csvFilePath = "Assets/Resources/expertTrial.csv"; // Path to your CSV file
+    private string csvFilePath = "Assets/Resources/expertTrial2.csv"; // Path to your CSV file
 
 
     void Start()
