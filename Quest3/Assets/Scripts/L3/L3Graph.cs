@@ -49,12 +49,13 @@ public class L3Graph : MonoBehaviour
     }
 
     void Update() {
-        
+
         if (L3BlueToothManager.l3Manager != null)
         {
             // Access the static instance of the manager
             yaxis_force = L3BlueToothManager.l3Manager.numbers[0];
             Debug.Log("Y-axis Force: " + yaxis_force);
+            
         }
         else
         {
@@ -75,6 +76,7 @@ public class L3Graph : MonoBehaviour
             // draw graph
             
             if (counter < interval && yaxis_force != last_force){
+                Debug.Log("...............................time: "+Time.deltaTime);
                 studentTrial.AddData(counter++, yaxis_force);
                 last_force = yaxis_force;
             }

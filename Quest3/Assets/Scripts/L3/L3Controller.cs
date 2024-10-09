@@ -30,7 +30,11 @@ public class L3Controller : MonoBehaviour
     void Start()
     {
         objectMaterial.color = whiteMaterial.color;
-        L3.transform.localPosition = new Vector3(0f, 0.147f, 0f);
+        L3.transform.localPosition = new Vector3(0f, 0f, 0f);
+    }
+
+    void Awake() {
+        L3.transform.localPosition = new Vector3(0f, 0f, 0f);
     }
 
     // Update is called once per frame
@@ -67,7 +71,7 @@ public class L3Controller : MonoBehaviour
             //Rotation();
 
             //UnityDebug.Log("average: "+ averageChangeDepth);
-            if (changeDepth > 0) {
+            if (changeDepth > 0.5) {
                 UpDownMove();
                 Rotation();
             }
@@ -87,7 +91,7 @@ public class L3Controller : MonoBehaviour
         float moveDist = 0;
         //int maxDistance = 35;
 
-        if (changeDepth > 0)
+        if (changeDepth > 0.5)
         {
             
             moveDist = changeDepth;
@@ -100,7 +104,6 @@ public class L3Controller : MonoBehaviour
     }
 
     void Rotation() { //transverse rotation
-
 
         L3.transform.localRotation = Quaternion.Euler(saggitalAngle, transverseAngle, 0f);
  
