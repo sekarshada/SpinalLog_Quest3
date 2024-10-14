@@ -19,7 +19,7 @@ public class L3Graph : MonoBehaviour
     private float last_draw_time = 0f;
     private float last_record = 0f;
     private float timer = 0f;
-    private float interval = 3000f;
+    private float interval = 30f;
 
 
     private float counter = 0f;
@@ -41,8 +41,9 @@ public class L3Graph : MonoBehaviour
         SetupChart();
         // Update the chart with data
         lineChart.RemoveData();
-        studentTrial = lineChart.AddSerie<Line>("studentTrial");
         expertTrial = lineChart.AddSerie<Line>("expertTrial"); 
+        studentTrial = lineChart.AddSerie<Line>("studentTrial");
+      
         LoadDataFromCSV(csvFilePath);
         //studentTrial.symbolType = SymbolType.None;
         
@@ -133,7 +134,7 @@ public class L3Graph : MonoBehaviour
         //xAxis.type = Axis.AxisType.Category;
         yAxis.type = Axis.AxisType.Value;
 
-        xAxis.splitNumber = 30;
+        xAxis.splitNumber = 0;
         xAxis.boundaryGap = false;
      
     }
