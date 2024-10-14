@@ -17,6 +17,7 @@ public class L3Graph : MonoBehaviour
 
     private float yaxis_force;
     private float last_draw_time = 0f;
+    private float last_record = 0f;
     private float timer = 0f;
     private float interval = 3000f;
 
@@ -65,19 +66,25 @@ public class L3Graph : MonoBehaviour
             // reateart check
             if (isRestart) {
                 studentTrial.ClearData();
-                Debug.Log("---------------graph cleared");
                 isRestart = false;
             }
             // draw graph
             isPressing = true;
+            
             if (timer < interval) {
+                
+                
                 // update every 0.01 seconds
                 if (last_draw_time >= 0.01) {
-                    studentTrial.AddData(counter++, yaxis_force);
+                    studentTrial.AddData(counter++, yaxis_force*2f);
+                    Debug.Log("force = " + yaxis_force*2f);
                     last_draw_time = 0f;
+                    last_record = yaxis_force;
                 } else {
                     last_draw_time += Time.deltaTime;
                 }
+                
+                
                 
                 timer += Time.deltaTime;
             } else {
@@ -86,7 +93,6 @@ public class L3Graph : MonoBehaviour
                 isRestart = true;
                 timer = 0f;
                 counter = 0f;
-                Debug.Log("---------------time out");
             }
             
         } else {
@@ -95,7 +101,6 @@ public class L3Graph : MonoBehaviour
             isRestart = true;
             timer = 0;
             counter = 0f;
-            Debug.Log("---------------press stop");
         }
         
 
