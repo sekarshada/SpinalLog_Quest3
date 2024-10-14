@@ -22,6 +22,7 @@ public class L3BlueToothManager : MonoBehaviour
 
     public GameObject spinalLogCube;
 
+
     private void Awake()
     {
         if (l3Manager == null)
@@ -121,6 +122,7 @@ public class L3BlueToothManager : MonoBehaviour
               
             }
         }  
+      
         //if (!BTHelper.isConnected()) {
          
     }

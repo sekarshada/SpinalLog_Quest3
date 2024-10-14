@@ -7589,9 +7589,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graph: {fileID: 676035708}
   Camera2Follow: {fileID: 110867139}
-  CameraDistance: 200
+  CameraDistance: 110
   smoothTime: 0.3
-  downwardOffset: -20
+  downwardOffset: 20
 --- !u!1 &196152873
 GameObject:
   m_ObjectHideFlags: 0
@@ -24576,6 +24576,7 @@ MonoBehaviour:
   BoneGroup: {fileID: 1638955054}
   L3Cube: {fileID: 660468061}
   spinalLogCube: {fileID: 8509260913562224539}
+  currentstatusLocked: {fileID: 1930227640}
 --- !u!4 &723887341
 Transform:
   m_ObjectHideFlags: 0

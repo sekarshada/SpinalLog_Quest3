@@ -22,6 +22,8 @@ public class SpinalLogBluetoothManager : MonoBehaviour
 
     public GameObject spinalLogCube;
 
+    public GameObject currentstatusLocked;
+    Calibration calibration;
 
     // Start is called before the first frame update
     void Start()
@@ -106,6 +108,11 @@ public class SpinalLogBluetoothManager : MonoBehaviour
                 BoneGroup.SetActive(true);
                 spinalLogCube.transform.position = L3Cube.transform.position;
                 L3Cube.SetActive(false);
+
+                if (currentstatusLocked.activeInHierarchy){
+                    calibration.FixPosition();
+                }
+
   
             }
         }  

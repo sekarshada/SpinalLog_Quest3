@@ -20,7 +20,7 @@ public class L3Controller : MonoBehaviour
     public Material objectMaterial;
     public Material whiteMaterial;
     public Material redMaterial;
-    private float DEPTH_THRESHOLD = 1.0f; // Depth at which color change starts
+    private float DEPTH_THRESHOLD = 7.0f; // Depth at which color change starts
     private float MAX_DEPTH = 10.0f; // The maximum depth for full color change
 
     [SerializeField]

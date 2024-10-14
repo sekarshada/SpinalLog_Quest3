@@ -43,7 +43,7 @@ public class L3Graph : MonoBehaviour
         lineChart.RemoveData();
         expertTrial = lineChart.AddSerie<Line>("expertTrial"); 
         studentTrial = lineChart.AddSerie<Line>("studentTrial");
-      
+
         LoadDataFromCSV(csvFilePath);
         //studentTrial.symbolType = SymbolType.None;
         
@@ -129,7 +129,7 @@ public class L3Graph : MonoBehaviour
         //xAxis.type = Axis.AxisType.Time;
         xAxis.minMaxType = Axis.AxisMinMaxType.Custom;
         xAxis.min = 0;
-        xAxis.max = 1500;
+        xAxis.max = 1000;
         //xAxis.interval = 50;
         //xAxis.type = Axis.AxisType.Category;
         yAxis.type = Axis.AxisType.Value;
@@ -156,7 +156,7 @@ public class L3Graph : MonoBehaviour
         }
 
         // Use the index as X values
-        for (int i = 1; i < lines.Length; i++) // Start from 1 to skip header
+        for (int i = 1; i < 1000; i++) // Start from 1 to skip header
         {
             if (float.TryParse(lines[i], out float y))
             {
