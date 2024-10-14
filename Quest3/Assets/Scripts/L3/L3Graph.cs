@@ -16,16 +16,15 @@ public class L3Graph : MonoBehaviour
     public LineChart lineChart; // Reference to your LineChart component
 
     private float yaxis_force;
-    private float last_force = 0;
+    private float last_draw_time = 0f;
     private float timer = 0f;
     private float interval = 3000f;
 
-    // Example data arrays
-    private float[] timeData = new float[8] { 0, 1, 2, 3, 4, 5, 6, 7 };
-    private float[] forceData = new float[8] { 10, 20, 15, 25, 30, 10, 5, 20 };
 
     private float counter = 0f;
     private bool isPressing = false;
+
+    private bool isRestart = true;
     public GameObject Graph;
 
     private Line studentTrial;
@@ -54,45 +53,51 @@ public class L3Graph : MonoBehaviour
         {
             // Access the static instance of the manager
             yaxis_force = L3BlueToothManager.l3Manager.numbers[0];
-            Debug.Log("Y-axis Force: " + yaxis_force);
-            
+            //Debug.Log("Y-axis Force: " + yaxis_force); 
         }
         else
         {
             Debug.LogError("L3BlueToothManager is not initialized.");
         }
-        // for vartebra
-        //yaxis_force = l3Manager.numbers[0];
-        //spinal log test
-        //yaxis_force = 235-BTManager.forceSum;
-        //Debug.Log("force" + yaxis_force);
-        //timer += Time.deltaTime;   
-        
-       //Debug.Log("yaxis_force" + yaxis_force);
         
         // start press
-        if (yaxis_force > 0) {
-            //isPressing = true;
+        if (yaxis_force > 1) {
+            // reateart check
+            if (isRestart) {
+                studentTrial.ClearData();
+                Debug.Log("---------------graph cleared");
+                isRestart = false;
+            }
             // draw graph
-            
-            if (counter < interval && yaxis_force != last_force){
-                Debug.Log("...............................time: "+Time.deltaTime);
-                studentTrial.AddData(counter++, yaxis_force);
-                last_force = yaxis_force;
+            isPressing = true;
+            if (timer < interval) {
+                // update every 0.01 seconds
+                if (last_draw_time >= 0.01) {
+                    studentTrial.AddData(counter++, yaxis_force);
+                    last_draw_time = 0f;
+                } else {
+                    last_draw_time += Time.deltaTime;
+                }
+                
+                timer += Time.deltaTime;
+            } else {
+                // out of 30 seconds session, pause
+                isPressing = false;
+                isRestart = true;
+                timer = 0f;
+                counter = 0f;
+                Debug.Log("---------------time out");
             }
             
-            
-          
-                //lineChart.RefreshChart();
-
-          
+        } else {
+            // stop pressing, refresh
+            isPressing = false;
+            isRestart = true;
+            timer = 0;
+            counter = 0f;
+            Debug.Log("---------------press stop");
         }
-        /*
-        else if (timer > interval){
-            //isPressing = false;
-            timer = 0f;
-            studentTrial.ClearData();
-        }*/
+        
 
         
     
