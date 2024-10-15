@@ -8,6 +8,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using UnityDebug = UnityEngine.Debug;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class L3BlueToothManager : MonoBehaviour
 {
@@ -100,11 +101,10 @@ public class L3BlueToothManager : MonoBehaviour
 
 
     public void ConnectBT() {
-    
-        //BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Wenyuan"); //device name
-        //BTHelper.setDeviceName("ESP32-SpinalLog-Wenyuan");
-        BTHelper = BluetoothHelper.GetInstance("ESP32-10_2"); //device name
-        BTHelper.setDeviceName("ESP32-10_2");
+        //BTHelper = BluetoothHelper.GetInstance("ESP32-Balloon"); //device name
+        //BTHelper.setDeviceName("ESP32-Balloon");
+        BTHelper = BluetoothHelper.GetInstance("ESP32-Air Case"); //device name
+        BTHelper.setDeviceName("ESP32-Air Case");
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
         UnityDebug.Log("                                                " + BTHelper.getDeviceName());
@@ -112,7 +112,8 @@ public class L3BlueToothManager : MonoBehaviour
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
             UnityDebug.Log("spinallog DisConnected.");
-            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-10_2") {
+            //if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-Balloon") {
+            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-Air Case") {
 
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("L3 Connected!!!");
@@ -152,12 +153,17 @@ public class L3BlueToothManager : MonoBehaviour
     public void sendData1(){
         BTHelper.SendData("1");
     }
-    public void sendData2(){
+    public async void sendData2(){
+        BTHelper.SendData("1");
+        await Task.Delay(2000);
         BTHelper.SendData("2");
     }
-    public void sendData3(){
+    public async void sendData3(){
+        BTHelper.SendData("1");
+        await Task.Delay(2000);
         BTHelper.SendData("3");
     }
 
+    
  
 }
