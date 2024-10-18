@@ -31,11 +31,20 @@ public class L3Graph : MonoBehaviour
     private Line studentTrial;
     private Line expertTrial;
 
-    private string csvFilePath = "Assets/Resources/expertTrial2.csv"; // Path to your CSV file
+    private string csvFilePath; // Path to your CSV file
 
 
-    void Start()
+    void Awake()
     {
+        //csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+         // Define the path to the CSV file in the device's internal storage
+        #if UNITY_ANDROID && !UNITY_EDITOR
+        csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        #else
+        csvFilePath = "file://" + Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        #endif
+    
+
         lineChart = gameObject.GetComponent<LineChart>();
         // Initialize the chart
         SetupChart();

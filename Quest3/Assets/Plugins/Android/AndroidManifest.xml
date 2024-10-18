@@ -23,4 +23,9 @@
   <uses-permission android:name="com.oculus.permission.USE_ANCHOR_API" />
   <uses-feature android:name="com.oculus.feature.PASSTHROUGH" android:required="false" />
   <uses-permission android:name="com.oculus.permission.USE_SCENE" />
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+      <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+        <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  
 </manifest>
