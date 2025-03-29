@@ -3,8 +3,7 @@
 
 📜 **CHI 2025 Late Break Work (LBW)**
 
-🏆 [**Endeavour Exhibition 2024**](https://endeavour.unimelb.edu.au/experience-endeavour/past/2024-endeavour-exhibition-semester-2), The University of Melbourne
-
+🏆 **H1 Grade | [Endeavour Exhibition 2024](https://endeavour.unimelb.edu.au/experience-endeavour/past/2024-endeavour-exhibition-semester-2)**, The University of Melbourne
 
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
 ![Unity](https://img.shields.io/badge/Unity-100000?style=for-the-badge&logo=unity&logoColor=white)
