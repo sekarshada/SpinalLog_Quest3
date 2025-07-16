@@ -19,20 +19,20 @@ public class HeatmapVisualizer : MonoBehaviour
         if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
             return;
         ClearHits();
-        // float celWidth = 0.15f / (cols - 1);
-        // float celHeight = 0.12f / (rows - 1);
+        float celWidth = 0.15f / 11f;
+        float celHeight = 0.12f / (rows - 1);
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
             {
-                int index = row * rows + col;
+                int index = row * cols - col;
                 if (index >= serialReader.normalizedValues.Length)
                     continue; // Safety check
                 float norm = serialReader.normalizedValues[index];
                 if (norm > noiseThreshold)
                 {
-                    float x = Mathf.Lerp(-1f, 1f, col / (float)(cols - 1));
-                    float y = Mathf.Lerp(-1f, 1f, row / (float)(rows  -1));
+                    float x = col * celWidth - 0.15f / 2f + celWidth / 2f;
+                    float y = row * celHeight - 0.12f / 2f + celHeight / 2f;
                     AddHit(x, y, norm * intensityScale);
                 }
             }
