@@ -5,7 +5,8 @@ public class HeatmapVisualizer : MonoBehaviour
     public Material heatmapMaterial;
     public SerialReader serialReader;
     [Header("Sensor Grid Settings")]
-    public int gridSize = 4; // 4x4 matrix
+    public int cols = 11;
+    public int rows = 9;// 9 rows for 99 sensors
     [Header("Heatmap Tuning")]
     public float noiseThreshold = 0.05f;   // Ignore very small pressure
     public float intensityScale = 3.0f;    // Boost how "hot" the colors appear
@@ -13,20 +14,25 @@ public class HeatmapVisualizer : MonoBehaviour
     private int hitCount = 0;
     void Update()
     {
-        // :white_tick: Safety checks
-        if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 16)
+    
+
+        if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
             return;
         ClearHits();
-        for (int row = 0; row < gridSize; row++)
+        // float celWidth = 0.15f / (cols - 1);
+        // float celHeight = 0.12f / (rows - 1);
+        for (int row = 0; row < rows; row++)
         {
-            for (int col = 0; col < gridSize; col++)
+            for (int col = 0; col < cols; col++)
             {
-                int index = row * gridSize + col;
+                int index = row * rows + col;
+                if (index >= serialReader.normalizedValues.Length)
+                    continue; // Safety check
                 float norm = serialReader.normalizedValues[index];
                 if (norm > noiseThreshold)
                 {
-                    float x = Mathf.Lerp(-1f, 1f, col / (float)(gridSize - 1));
-                    float y = Mathf.Lerp(-1f, 1f, row / (float)(gridSize - 1));
+                    float x = Mathf.Lerp(-1f, 1f, col / (float)(cols - 1));
+                    float y = Mathf.Lerp(-1f, 1f, row / (float)(rows  -1));
                     AddHit(x, y, norm * intensityScale);
                 }
             }
