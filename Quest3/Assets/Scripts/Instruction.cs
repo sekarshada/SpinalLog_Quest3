@@ -7,14 +7,9 @@ public class Instruction: MonoBehaviour
 {
     public GameObject cube;
     public PlayableDirector timeline;
-    // public GameObject L3cube;
+    public GameObject instructionGuide;
     private bool isSpawned = false;
-    // // UI
-    // public GameObject generateCubeInstruction;
-    // public GameObject menuInstruction;
-
-    // public GameObject CubeText; 
-    // public GameObject menuExplain;
+   
 
     private Transform grabFunction;
 
@@ -22,9 +17,6 @@ public class Instruction: MonoBehaviour
     void Start()
     {
         cube.SetActive(false);
-        // menuInstruction.SetActive(false);
-        // menuExplain.SetActive(false);
-
         Debug.Log("----------------" +gameObject.name + "----------------");
     }
 
@@ -59,10 +51,8 @@ public class Instruction: MonoBehaviour
             //handPosition.z -= 0.104012f;
             cube.transform.position = handPosition;
 
-            //cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
+           
             cube.SetActive(true);
-            // generateCubeInstruction.SetActive(false);
-            // menuInstruction.SetActive(true);
 
             if (timeline != null)
             {
@@ -123,7 +113,30 @@ public class Instruction: MonoBehaviour
         }
     }
 
-  
+  public void OnStartButtonClicked()
+    {
+
+         Debug.Log("START TRAININGGG");
+        if (instructionGuide != null)
+        {
+            instructionGuide.SetActive(false);
+            Debug.Log("Start Hand activated.");
+        }
+        else
+        {
+            Debug.LogWarning("Start Hand GameObject is not assigned.");
+        }
+
+        if (timeline != null)
+        {
+            timeline.Play();
+            Debug.Log("PlayableDirector started.");
+        }
+        else
+        {
+            Debug.LogWarning("PlayableDirector is not assigned.");
+        }
+    }
 
     
 }
