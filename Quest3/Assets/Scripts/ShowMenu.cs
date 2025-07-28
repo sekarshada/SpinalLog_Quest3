@@ -18,6 +18,7 @@ public class ShowMenu : MonoBehaviour
     {
         menu.SetActive(false);
         menuButton.SetActive(false);
+        Debug.Log(gameObject.name + " is started =========================================================================================");
     }
 
     // Update is called once per frame

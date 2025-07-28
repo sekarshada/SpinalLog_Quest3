@@ -31,7 +31,8 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         try
         {
             //Debug.Log("2");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Jiayi"); //device 
+            BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-02"); //device 
+ 
             //BTHelper.setDeviceName("ESP32-SpinalLog-Kiichiro");
             BTHelper.OnConnected += OnConnected;
             BTHelper.setTerminatorBasedStream("\n");
