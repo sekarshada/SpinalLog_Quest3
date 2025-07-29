@@ -8,12 +8,15 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using UnityDebug = UnityEngine.Debug;
 using XCharts.Runtime;
-
+using System.Text.RegularExpressions;
 public class SpinalLogBluetoothManager : MonoBehaviour
 {
     private string message;
     public float[] numbers = new float[8];
     public float forceSum;
+
+    public int[] forceMatrix;
+    public float[] distances;
     public BluetoothHelper BTHelper;
 
     public GameObject BoneGroup;
@@ -30,18 +33,20 @@ public class SpinalLogBluetoothManager : MonoBehaviour
     {
         try
         {
-            //Debug.Log("2");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-02"); //device 
- 
-            //BTHelper.setDeviceName("ESP32-SpinalLog-Kiichiro");
+            UnityDebug.Log("SpinalLogBluetoothManager Start");
+            BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Gabriella"); 
+            // BTHelper.setDeviceName("ESP32-vARtebrae-Gabriella");
             BTHelper.OnConnected += OnConnected;
             BTHelper.setTerminatorBasedStream("\n");
 
             
-            if (BTHelper.isDevicePaired())
-            {
+           UnityDebug.Log("Bluetooth Start — looking for device: " + BTHelper.getDeviceName());
+            if (BTHelper.isDevicePaired()) {
+                UnityDebug.Log("Device is paired. Attempting to connect...");
                 BTHelper.Connect();
                 UnityDebug.Log("===========================spinallog connect");
+            } else {
+                UnityDebug.LogError("Device is NOT paired: " + BTHelper.getDeviceName());
             }
          
           
@@ -70,14 +75,15 @@ public class SpinalLogBluetoothManager : MonoBehaviour
     {
         if (BTHelper != null)
         {
-            //UnityDebug.Log(BTHelper.Available);
+            // UnityDebug.Log(BTHelper.Available);
             if (BTHelper.Available)
             {
                 
                 message = BTHelper.Read(); //receive message from esp32
-                numbers = ToFloatArray(message);
-                forceSum = ForceSum(numbers);
-                UnityDebug.Log(message);
+                 ParseMessage(message);
+                // forceSum = ForceSum(numbers);
+
+                // UnityDebug.Log("BluetoothManager attached to: " + gameObject.name + " | Received: " + message);
                 //UnityDebug.Log(forceSum);
             }
         }
@@ -94,15 +100,15 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         
         // Disable the script
         //BTHelper = BluetoothHelper.GetNewInstance("ESP32-SpinalLog-Kiichiro");
-        BTHelper = BluetoothHelper.GetInstance("ESP32-SpinalLog-Jiayi"); //device 
-        BTHelper.setDeviceName("ESP32-SpinalLog-Jiayi");
+        BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Gabriella"); //device name
+        BTHelper.setDeviceName("ESP32-vARtebrae-Gabriella");
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
         UnityDebug.Log("connect to" + BTHelper.getDeviceName());
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
             UnityDebug.Log("L3 DisConnected.");
-            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-SpinalLog-Jiayi") {
+            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-vARtebrae-Gabriella") {
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("spinallog Connected!!!");
                 spinalLogCube.SetActive(true);
@@ -138,6 +144,33 @@ public class SpinalLogBluetoothManager : MonoBehaviour
             output[i] = System.Single.Parse(input[i]);
         }
         return output;
+    }
+
+    void ParseMessage(string msg)
+    {
+       msg = Regex.Replace(msg, @"(\d{4,})(\d\.\d{2})", "$1,$2");
+
+        string[] parts = msg.Split(',');
+        if (parts.Length != 107)
+        {
+            UnityDebug.LogWarning($"Invalid message length: {parts.Length} (expected 107). Message: {msg}");
+            return;
+        }
+        forceMatrix = new int[99];
+        distances = new float[8];
+        for (int i = 0; i < 99; i++)
+        {
+            forceMatrix[i] = int.Parse(parts[i]);
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            distances[i] = float.Parse(parts[99 + i]);
+        }
+        forceSum = ForceSum(distances);
+
+        UnityDebug.Log($"Force Matrix: {string.Join(", ", forceMatrix)}");
+        UnityDebug.Log($"Distances: {string.Join(", ", distances)}");
+
     }
 
     float ForceSum(float[] input) {
