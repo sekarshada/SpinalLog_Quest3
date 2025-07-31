@@ -55,7 +55,7 @@ public class L3Graph : MonoBehaviour
 
         LoadDataFromCSV(csvFilePath);
         //studentTrial.symbolType = SymbolType.None;
-        
+        Debug.Log("CSV file loaded from: " + csvFilePath);
     }
 
     void Update() {

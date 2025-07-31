@@ -5,6 +5,7 @@ public class ExperimentController : MonoBehaviour
     public GameObject heatmap;
     public GameObject robotFeedback;
     public GameObject handInstruction;
+    public GameObject UIInstruction;
     [Range(1, 4)]
     public int condition = 1;
     void Start()
@@ -12,8 +13,10 @@ public class ExperimentController : MonoBehaviour
         ApplyCondition(condition);
         forceGraph.SetActive(false);
         heatmap.SetActive(false);
-        robotFeedback.SetActive(false);     
+        robotFeedback.SetActive(false);
         handInstruction.SetActive(false);
+        UIInstruction.SetActive(false);
+        
 
     }
     public void ApplyCondition(int cond)

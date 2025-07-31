@@ -8,12 +8,12 @@ Shader "Unlit/HeatmapShader"
         _Color3("Color 3", Color) = (1,0.5,0,1)
         _Color4("Color 4", Color) = (1,0,0,1)
         _Range0("Range 0", Range(0,1)) = 0
-        _Range1("Range 1", Range(0,1)) = 0.2
-        _Range2("Range 2", Range(0,1)) = 0.3
-        _Range3("Range 3", Range(0,1)) = 0.4
-        _Range4("Range 4", Range(0,1)) = 1
-        _Diameter("Diameter", Range(0.1,1)) = 0.4
-        _Strength("Strength", Range(0.1,4)) = 1.0
+        _Range1("Range 1", Range(0,1)) = 0.1
+        _Range2("Range 2", Range(0,1)) = 0.2
+        _Range3("Range 3", Range(0,1)) = 0.35
+        _Range4("Range 4", Range(0,1)) = 0.6
+        _Diameter("Diameter", Range(0.1,1)) = 0.1
+        _Strength("Strength", Range(0.1,4)) = 0.7
         _PulseSpeed("Pulse Speed", Range(0,5)) = 0
     }
     SubShader
@@ -63,23 +63,26 @@ Shader "Unlit/HeatmapShader"
                 return _Color0.rgb;
             }
             fixed4 frag(v2f i) : SV_Target {
-               float aspect = 11.0 / 15.0; // real fabric height / width ≈ 0.733
-                float2 uv = i.uv * 2.0 - 1.0;     // now in [-1, 1]
-                uv.y *= aspect;    
-                uv.x *= 1.0;              
-                float weight = 0.0;
-                for (int j = 0; j < _HitCount; j++) {
-                    float2 pt = float2(_Hits[j * 3], _Hits[j * 3 + 1]);
-                    float intensity = _Hits[j * 3 + 2];
-                    weight += distsq(uv, pt) * intensity * _Strength;
-                }
-                float3 col = heatColor(weight);
-                return float4(col, 1.0);
+            float aspect = 11.0 / 15.0; // fabric height / width
+            float2 uv = (i.uv - 0.5) * float2(2.0, 2.0 * aspect); // [-1,1] x [-aspect,aspect]
+            float weight = 0.0;
+            for (int j = 0; j < _HitCount; j++) {
+                float2 pt = float2(_Hits[j * 3], _Hits[j * 3 + 1]);
+                float intensity = _Hits[j * 3 + 2];
+                weight += distsq(uv, pt) * intensity * _Strength;
             }
+            // Clamp weight to [0, _Range4] to avoid everything turning red
+            weight = clamp(weight, 0.0, _Range4);
+            float3 col = heatColor(weight);
+            return float4(col, 1.0);
+
+        }
             ENDCG
         }
     }
 }
+
+
 
 
 
