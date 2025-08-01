@@ -1,3 +1,4 @@
+using Mono.Reflection;
 using UnityEngine;
 public class ExperimentController : MonoBehaviour
 {
@@ -5,7 +6,8 @@ public class ExperimentController : MonoBehaviour
     public GameObject heatmap;
     public GameObject robotFeedback;
     public GameObject handInstruction;
-    public GameObject UIInstruction;
+
+    public Instruction instruction;
     [Range(1, 4)]
     public int condition = 1;
     void Start()
@@ -15,9 +17,7 @@ public class ExperimentController : MonoBehaviour
         heatmap.SetActive(false);
         robotFeedback.SetActive(false);
         handInstruction.SetActive(false);
-        UIInstruction.SetActive(false);
         
-
     }
     public void ApplyCondition(int cond)
     {
@@ -31,17 +31,21 @@ public class ExperimentController : MonoBehaviour
             case 2: // Graph + Heatmap
                 forceGraph.SetActive(true);
                 heatmap.SetActive(true);
+                handInstruction.SetActive(true);
                 robotFeedback.SetActive(false);
+                instruction.Spawncube();
                 break;
             case 3: // Graph + Robot
                 forceGraph.SetActive(true);
                 heatmap.SetActive(false);
                 robotFeedback.SetActive(true);
+                handInstruction.SetActive(true);
                 break;
             case 4: // Graph + Robot + Heatmap
                 forceGraph.SetActive(true);
                 heatmap.SetActive(true);
                 robotFeedback.SetActive(true);
+                handInstruction.SetActive(true);
                 break;
             default:
                 Debug.LogWarning("Unknown condition value: " + cond);

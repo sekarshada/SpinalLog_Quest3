@@ -41,7 +41,7 @@ public class L3Graph : MonoBehaviour
         #if UNITY_ANDROID && !UNITY_EDITOR
         csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
         #else
-        csvFilePath = "file://" + Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        csvFilePath =  Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
         #endif
     
 

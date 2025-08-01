@@ -31,12 +31,12 @@ public class BoneGroupController : MonoBehaviour
             if (BTManager.BTHelper.Available && firstConnect)
             {
                 //UnityDebug.Log("11111");
-                SetInitialBoneDepth(BTManager.numbers);
+                SetInitialBoneDepth(BTManager.distances);
                 firstConnect = false;
             }
             else
             {
-                SetCurBoneDepth(BTManager.numbers);
+                SetCurBoneDepth(BTManager.distances);
             }
             focusBone = FindFocusBoneDepth();
             //UnityDebug.Log("focusBone: " + focusBone.GetComponent<BoneController>().boneID);

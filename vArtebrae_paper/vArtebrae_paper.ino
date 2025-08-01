@@ -93,7 +93,7 @@ void loop() {
           int val = readMux(col);
           SerialBT.print(val);
           Serial.print(val);
-          if (!(row == 8 && col == 10)) SerialBT.print(",");
+          SerialBT.print(",");
         }
       }
       Serial.println(); 

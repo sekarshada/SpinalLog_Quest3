@@ -78,7 +78,7 @@ public class SpinalLogBluetoothManager : MonoBehaviour
             // UnityDebug.Log(BTHelper.Available);
             if (BTHelper.Available)
             {
-                
+
                 message = BTHelper.Read(); //receive message from esp32
                  ParseMessage(message);
                 // forceSum = ForceSum(numbers);
@@ -148,8 +148,6 @@ public class SpinalLogBluetoothManager : MonoBehaviour
 
     void ParseMessage(string msg)
     {
-       msg = Regex.Replace(msg, @"(\d{4,})(\d\.\d{2})", "$1,$2");
-
         string[] parts = msg.Split(',');
         if (parts.Length != 107)
         {
@@ -160,24 +158,37 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         distances = new float[8];
         for (int i = 0; i < 99; i++)
         {
-            forceMatrix[i] = int.Parse(parts[i]);
+            if (!int.TryParse(parts[i], out forceMatrix[i]))
+            {
+                UnityDebug.LogError($"Failed to parse int at index {i}: '{parts[i]}'");
+                return;
+            }
         }
         for (int i = 0; i < 8; i++)
         {
-            distances[i] = float.Parse(parts[99 + i]);
+            if (!float.TryParse(parts[99 + i], System.Globalization.NumberStyles.Float,
+                                System.Globalization.CultureInfo.InvariantCulture, out distances[i]))
+            {
+                UnityDebug.LogError($"Failed to parse float at index {99 + i}: '{parts[99 + i]}'");
+                return;
+            }
         }
         forceSum = ForceSum(distances);
-
+        // Optional: debug logs
         UnityDebug.Log($"Force Matrix: {string.Join(", ", forceMatrix)}");
         UnityDebug.Log($"Distances: {string.Join(", ", distances)}");
-
     }
-
-    float ForceSum(float[] input) {
+    float ForceSum(float[] input)
+    {
         float sum = 0;
-        for (int i = 0; i < input.Length; i++) {
+        for (int i = 0; i < input.Length; i++)
+        {
             sum += input[i];
         }
+        UnityDebug.Log("Force Sum: " + sum);
         return sum;
+
+       
+        
     }
 }

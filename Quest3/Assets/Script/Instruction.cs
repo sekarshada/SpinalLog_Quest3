@@ -1,23 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
-
+using UnityEngine.UI;
 public class Instruction: MonoBehaviour
 {
     public GameObject cube;
     public PlayableDirector timeline;
     public GameObject instructionGuide;
     private bool isSpawned = false;
-   
 
     private Transform grabFunction;
+
+    public ExperimentController experimentController;
 
     // Start is called before the first frame update
     void Start()
     {
         cube.SetActive(false);
-        Debug.Log("----------------" +gameObject.name + "----------------");
+        Debug.Log("----------------" + gameObject.name + "----------------");
+
     }
 
     // Update is called once per frame
@@ -31,9 +31,10 @@ public class Instruction: MonoBehaviour
             }
         } else
         {
-            if (OVRInput.GetDown(OVRInput.Button.One))
+            if (OVRInput.GetDown(OVRInput.Button.One) && experimentController.condition != 1)
             {
                 Spawncube();
+                Debug.Log("Spawned cube");
                 //DeactivateManager();
             }
         }
@@ -41,7 +42,7 @@ public class Instruction: MonoBehaviour
         
     }
 
-    private void Spawncube()
+    public void Spawncube()
     {
         if (!cube.activeInHierarchy)
         {
@@ -110,31 +111,6 @@ public class Instruction: MonoBehaviour
 
             cube.GetComponent<Renderer>().enabled = true;
             // CubeText.SetActive(true);
-        }
-    }
-
-  public void OnStartButtonClicked()
-    {
-
-         Debug.Log("START TRAININGGG");
-        if (instructionGuide != null)
-        {
-            instructionGuide.SetActive(false);
-            Debug.Log("Start Hand activated.");
-        }
-        else
-        {
-            Debug.LogWarning("Start Hand GameObject is not assigned.");
-        }
-
-        if (timeline != null)
-        {
-            timeline.Play();
-            Debug.Log("PlayableDirector started.");
-        }
-        else
-        {
-            Debug.LogWarning("PlayableDirector is not assigned.");
         }
     }
 
