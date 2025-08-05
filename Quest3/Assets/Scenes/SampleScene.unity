@@ -2300,7 +2300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &50618181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,7 +2320,7 @@ MonoBehaviour:
   objectMaterial: {fileID: -714188369151359371, guid: 4e7963ccb8ec42c4a8373101441ae6d8, type: 3}
   whiteMaterial: {fileID: 2100000, guid: f19e58fe439a40f4aaeaa5845f5c6961, type: 2}
   redMaterial: {fileID: 2100000, guid: 6067540c39a154e83a88a02fafdf4e38, type: 2}
-  BTManager: {fileID: 50618182}
+  BTManager: {fileID: 0}
 --- !u!114 &50618182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2339,6 +2339,8 @@ MonoBehaviour:
   forceSum: 0
   L3Cube: {fileID: 660468061}
   spinalLogCube: {fileID: 8509260913562224539}
+  forceMatrix: 
+  distances: []
 --- !u!4 &50618183
 Transform:
   m_ObjectHideFlags: 0
@@ -28671,8 +28673,8 @@ MonoBehaviour:
   heatmap: {fileID: 7387284249751441554}
   robotFeedback: {fileID: 9003144392453453105}
   handInstruction: {fileID: 1607924679}
-  UIInstruction: {fileID: 0}
-  condition: 2
+  instruction: {fileID: 915909437}
+  condition: 1
 --- !u!4 &808302981
 Transform:
   m_ObjectHideFlags: 0
@@ -32252,6 +32254,7 @@ MonoBehaviour:
   cube: {fileID: 1607924679}
   timeline: {fileID: 80653655}
   instructionGuide: {fileID: 366728876}
+  experimentController: {fileID: 808302980}
 --- !u!1 &917511465
 GameObject:
   m_ObjectHideFlags: 0
@@ -72429,7 +72432,7 @@ GameObject:
   - component: {fileID: 2108258152}
   - component: {fileID: 2108258155}
   - component: {fileID: 2108258154}
-  - component: {fileID: 2108258156}
+  - component: {fileID: 2108258157}
   m_Layer: 5
   m_Name: LineChart_Time
   m_TagString: Untagged
@@ -74184,7 +74187,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108258151}
   m_CullTransparentMesh: 1
---- !u!114 &2108258156
+--- !u!114 &2108258157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74193,10 +74196,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108258151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3840be459e3c6854f9be63f27c1d7a53, type: 3}
+  m_Script: {fileID: 11500000, guid: d6131b499706d6f4490ff49972a0f32b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  l3Manager: {fileID: 50618182}
+  BTManager: {fileID: 723887340}
   lineChart: {fileID: 2108258154}
   Graph: {fileID: 676035708}
 --- !u!1 &2110593295
