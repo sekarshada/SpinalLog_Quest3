@@ -11,8 +11,8 @@ public class SensorHeatmap : MonoBehaviour
     private int hitCount = 0;
     void Update()
     {
-        Debug.Log("SENSOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Debug.Log($"SensorHeatmap started. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
+        // Debug.Log("SENSOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            // Debug.Log($"SensorHeatmap started. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
 
         if (serialReader == null || serialReader.sensorValues == null || serialReader.sensorValues.Length != numSensor)
             return;
@@ -41,7 +41,7 @@ public class SensorHeatmap : MonoBehaviour
             }
         }
 
-        Debug.Log($"HitCount: {hitCount}");
+        // Debug.Log($"HitCount: {hitCount}");
 
         heatmapMaterial.SetFloatArray("_Hits", heatPoints);
         heatmapMaterial.SetInt("_HitCount", hitCount);

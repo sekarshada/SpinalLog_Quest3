@@ -23,7 +23,8 @@ public class L3BlueToothManager : MonoBehaviour
 
     public GameObject spinalLogCube;
 
-
+    public int[] forceMatrix;
+    public float[] distances;
     private void Awake()
     {
         if (l3Manager == null)
@@ -103,8 +104,8 @@ public class L3BlueToothManager : MonoBehaviour
     public void ConnectBT() {
         //BTHelper = BluetoothHelper.GetInstance("ESP32-Balloon"); //device name
         //BTHelper.setDeviceName("ESP32-Balloon");
-        BTHelper = BluetoothHelper.GetInstance("ESP32-Air Case"); //device name
-        BTHelper.setDeviceName("ESP32-Air Case");
+        BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Gabriella"); //device name
+        BTHelper.setDeviceName("ESP32-vARtebrae-Gabriella");
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
         UnityDebug.Log("                                                " + BTHelper.getDeviceName());
@@ -113,7 +114,7 @@ public class L3BlueToothManager : MonoBehaviour
             BTHelper.Disconnect();
             UnityDebug.Log("spinallog DisConnected.");
             //if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-Balloon") {
-            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-Air Case") {
+            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-vARtebrae-Gabriella") {
 
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("L3 Connected!!!");
@@ -148,9 +149,41 @@ public class L3BlueToothManager : MonoBehaviour
         return output;
     }
 
+    void ParseMessage(string msg)
+    {
+        string[] parts = msg.Split(',');
+        if (parts.Length != 107)
+        {
+            UnityDebug.LogWarning($"Invalid message length: {parts.Length} (expected 107). Message: {msg}");
+            return;
+        }
+        forceMatrix = new int[99];
+        distances = new float[8];
+        for (int i = 0; i < 99; i++)
+        {
+            if (!int.TryParse(parts[i], out forceMatrix[i]))
+            {
+                UnityDebug.LogError($"Failed to parse int at index {i}: '{parts[i]}'");
+                return;
+            }
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            if (!float.TryParse(parts[99 + i], System.Globalization.NumberStyles.Float,
+                                System.Globalization.CultureInfo.InvariantCulture, out distances[i]))
+            {
+                UnityDebug.LogError($"Failed to parse float at index {99 + i}: '{parts[99 + i]}'");
+                return;
+            }
+        }
+        
+        UnityDebug.Log($"Force Matrix: {string.Join(", ", forceMatrix)}");
+        UnityDebug.Log($"Distances: {string.Join(", ", distances)}");
+    }
 
 
-    public void sendData1(){
+    public void sendData1()
+    {
         BTHelper.SendData("1");
     }
     public async void sendData2(){

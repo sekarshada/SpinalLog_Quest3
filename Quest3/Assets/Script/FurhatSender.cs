@@ -27,7 +27,7 @@ public class FurhatSender : MonoBehaviour
         float[] values = serialReader.normalizedValues;
         // Log values to debug
         // Debug.Log("Sensor values: " + string.Join(", ", values.Select(v => v.ToString("F2"))));
-        Debug.Log(values[1] + "Values 1");
+        // Debug.Log(values[1] + "Values 1");
         // if (values.Any(v => v > highThreshold))
 
         if (Time.time - lastSpokenTime > coolDownTime)

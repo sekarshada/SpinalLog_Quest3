@@ -5,9 +5,11 @@ public class ExperimentController : MonoBehaviour
     public GameObject forceGraph;
     public GameObject heatmap;
     public GameObject robotFeedback;
-    public GameObject handInstruction;
-
+    // public GameObject handInstruction;
+    public GameObject CanvasVideo;
     public Instruction instruction;
+
+    public VideoUIManager videoUIManager;
     [Range(1, 4)]
     public int condition = 1;
     void Start()
@@ -16,7 +18,10 @@ public class ExperimentController : MonoBehaviour
         forceGraph.SetActive(false);
         heatmap.SetActive(false);
         robotFeedback.SetActive(false);
-        handInstruction.SetActive(false);
+        // handInstruction.SetActive(false);
+
+        Debug.Log("ExperimentController started with condition: " + condition);
+        // Debug.Log(CanvasVideo.activeSelf ? "CanvasVideo is active." : "CanvasVideo is not active.");
         
     }
     public void ApplyCondition(int cond)
@@ -31,21 +36,23 @@ public class ExperimentController : MonoBehaviour
             case 2: // Graph + Heatmap
                 forceGraph.SetActive(true);
                 heatmap.SetActive(true);
-                handInstruction.SetActive(true);
+                // handInstruction.SetActive(true);
                 robotFeedback.SetActive(false);
                 instruction.Spawncube();
+                // CanvasVideo.SetActive(true);
+                // videoUIManager.ShowVideo();
                 break;
             case 3: // Graph + Robot
                 forceGraph.SetActive(true);
                 heatmap.SetActive(false);
                 robotFeedback.SetActive(true);
-                handInstruction.SetActive(true);
+                // handInstruction.SetActive(true);
                 break;
             case 4: // Graph + Robot + Heatmap
                 forceGraph.SetActive(true);
                 heatmap.SetActive(true);
                 robotFeedback.SetActive(true);
-                handInstruction.SetActive(true);
+                // handInstruction.SetActive(true);
                 break;
             default:
                 Debug.LogWarning("Unknown condition value: " + cond);

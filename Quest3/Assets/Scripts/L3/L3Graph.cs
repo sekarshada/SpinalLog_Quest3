@@ -142,7 +142,6 @@ public class L3Graph : MonoBehaviour
         //xAxis.interval = 50;
         //xAxis.type = Axis.AxisType.Category;
         yAxis.type = Axis.AxisType.Value;
-
         xAxis.splitNumber = 0;
         xAxis.boundaryGap = false;
      
@@ -192,39 +191,3 @@ public class L3Graph : MonoBehaviour
 
 }
 
-/*
-void Update() {
-        // for vartebra
-        yaxis_force = BTManager.numbers[0];
-        //spinal log test
-        //yaxis_force = 235-BTManager.forceSum;
-        Debug.Log(yaxis_force);
-        //timer += Time.deltaTime;   
-        
-       //Debug.Log("yaxis_force" + yaxis_force);
-        
-        // start press
-        if (yaxis_force > 0 && BTManager.BTHelper.Available) {
-            //isPressing = true;
-            // draw graph
-            if (counter < interval) {
-                
-                studentTrial.AddData(counter++, yaxis_force);
-                Debug.Log("count" + counter);
-                Debug.Log("timer" + timer);
-                //lineChart.RefreshChart();
-
-            }
-            else{
-                //timer = 0;
-                counter = 0;
-                //lineChart.RemoveData();
-                studentTrial.ClearData();
-                //lineChart.AddSerie<Line>("line");
-            }
-        }
-    
-        
-    
-        
-    }*/

@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using UnityEngine.Video;
 public class Instruction: MonoBehaviour
 {
     public GameObject cube;
-    public PlayableDirector timeline;
     public GameObject instructionGuide;
     private bool isSpawned = false;
-
+     public VideoPlayer videoPlayer;
     private Transform grabFunction;
 
     public ExperimentController experimentController;
@@ -51,18 +51,11 @@ public class Instruction: MonoBehaviour
             //handPosition.y -= 0.1474954f;
             //handPosition.z -= 0.104012f;
             cube.transform.position = handPosition;
+            videoPlayer.Play();
 
-           
             cube.SetActive(true);
 
-            if (timeline != null)
-            {
-                timeline.Play();
-            }
-            else
-            {
-                Debug.LogError("Timeline not assigned in Instruction script.");
-            }
+            
             isSpawned = true;
         }
         else

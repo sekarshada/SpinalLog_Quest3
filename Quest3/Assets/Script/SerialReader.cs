@@ -1,5 +1,4 @@
 using System;
-using System.IO.Ports;
 using System.Linq;
 using UnityEngine;
 public class SerialReader : MonoBehaviour
@@ -45,7 +44,7 @@ public class SerialReader : MonoBehaviour
             sensorValues[i] = Mathf.Max(0, delta);
             normalizedValues[i] = Mathf.Clamp01(sensorValues[i] / maxDelta);
         }
-        Debug.Log("Normalized[0..4]: " + string.Join(", ", normalizedValues.Take(99).Select(v => v.ToString("F2"))));
+        // Debug.Log("Normalized[0..4]: " + string.Join(", ", normalizedValues.Take(99).Select(v => v.ToString("F2"))));
     }
 
 }

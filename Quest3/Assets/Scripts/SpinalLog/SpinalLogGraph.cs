@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using XCharts.Runtime;
 using System.IO;
+using System;
+using System.Globalization;
 public class SpinalLogGraph : MonoBehaviour
 {
     [SerializeField] private SpinalLogBluetoothManager BTManager;
@@ -22,6 +24,9 @@ public class SpinalLogGraph : MonoBehaviour
     private float interval = 30f;
     private float last_draw_time = 0f;
     private bool isRestart = true;
+    // Offset untuk geser baseline studentTrial
+    private float studentOffset = 0f;
+    private bool offsetSet = false;
     private string csvFilePath;
     void Awake()
     {
@@ -50,7 +55,7 @@ public class SpinalLogGraph : MonoBehaviour
             return;
         }
         yaxis_force = BTManager.forceSum;
-        if (yaxis_force > 1)
+        if (yaxis_force > 1f)
         {
             if (isRestart)
             {
@@ -63,9 +68,14 @@ public class SpinalLogGraph : MonoBehaviour
                 studentMin = float.MaxValue;
                 studentMax = float.MinValue;
                 timer = 0f;
+                last_draw_time = 0f;
+                // reset offset juga setiap restart
+                studentOffset = 0f;
+                offsetSet = false;
             }
             if (timer < interval)
             {
+                last_draw_time += Time.deltaTime;
                 if (last_draw_time >= 0.01f)
                 {
                     smoothedForce = Mathf.Lerp(smoothedForce, yaxis_force, 0.2f);
@@ -75,30 +85,46 @@ public class SpinalLogGraph : MonoBehaviour
                         baselineSet = true;
                         Debug.Log($"Baseline set to: {baselineForce}");
                     }
-                    float deltaForce = Mathf.Max(0f, yaxis_force - baselineForce);
-                    // Learn student min/max in first second
-                   if (timer < 1f)
+                    float deltaForce = Mathf.Max(0f, smoothedForce - baselineForce);
+                    // Expand student range adaptif
+                    if (deltaForce < studentMin) studentMin = deltaForce;
+                    if (deltaForce > studentMax) studentMax = deltaForce;
+                    if (timer >= 1f) // mulai plot setelah 1 detik
                     {
-                        float learnDelta = Mathf.Max(0f, yaxis_force - baselineForce);
-                        smoothedForce = Mathf.Lerp(smoothedForce, learnDelta, 0.2f);
-                        if (smoothedForce < studentMin) studentMin = smoothedForce;
-                        if (smoothedForce > studentMax) studentMax = smoothedForce;
-                        Debug.Log($"[Learning Range] Min: {studentMin}, Max: {studentMax}");
+                        float usableRange = Mathf.Max(1e-4f, (studentMax - studentMin) * 1.2f);
+                        float normalized = Mathf.Clamp01((deltaForce - studentMin) / usableRange);
+                        if (!float.IsFinite(expertMin) || !float.IsFinite(expertMax))
+                        {
+                            Debug.LogWarning("Expert range invalid. Check CSV parsing.");
+                        }
+                        else
+                        {
+                            float adjusted = Mathf.Lerp(expertMin, expertMax, normalized);
+                            // Set offset di titik pertama plotting
+                            if (!offsetSet)
+                            {
+                                studentOffset = adjusted;
+                                offsetSet = true;
+                                Debug.Log($"Student offset set to: {studentOffset}");
+                            }
+                            // Geser baseline
+                            float adjustedZeroed = adjusted - studentOffset;
+                            // Optional: hanya selisih positif
+                            // adjustedZeroed = Mathf.Max(0f, adjustedZeroed);
+                            if (float.IsFinite(adjustedZeroed))
+                            {
+                                studentTrial.AddXYData(counter, adjustedZeroed);
+                                counter += 1f;
+                                if (((int)counter) % 200 == 0)
+                                    lineChart.RefreshChart();
+                            }
+                        }
                     }
                     else
                     {
-                        float usableRange = studentMax - studentMin;
-                        if (usableRange < 0.5f) usableRange = 0.5f; // Prevent flat-line
-                        float normalized = (deltaForce - studentMin) / usableRange;
-                        float scaled = expertMin + normalized * (expertMax - expertMin);
-                        studentTrial.AddData(counter++, scaled);
-                        Debug.Log($"Delta: {deltaForce}, Normalized: {normalized}, Scaled: {scaled}");
+                        Debug.Log($"[Learning Range] Min: {studentMin}, Max: {studentMax}");
                     }
                     last_draw_time = 0f;
-                }
-                else
-                {
-                    last_draw_time += Time.deltaTime;
                 }
                 timer += Time.deltaTime;
             }
@@ -145,9 +171,10 @@ public class SpinalLogGraph : MonoBehaviour
         string[] lines = File.ReadAllLines(path);
         for (int i = 1; i < lines.Length && i < 1000; i++)
         {
-            if (float.TryParse(lines[i], out float y))
+            var parts = lines[i].Split(new[] { ',', ';', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0 && float.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float y))
             {
-                expertTrial.AddData(i - 1, y);
+                expertTrial.AddXYData(i - 1, y);
                 if (y < expertMin) expertMin = y;
                 if (y > expertMax) expertMax = y;
             }
@@ -160,9 +187,4 @@ public class SpinalLogGraph : MonoBehaviour
     }
     public void showGraph() => Graph.SetActive(true);
     public void hideGraph() => Graph.SetActive(false);
-}
-
-
-
-
-
+}   
