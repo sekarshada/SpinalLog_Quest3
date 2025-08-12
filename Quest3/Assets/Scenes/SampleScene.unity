@@ -32676,7 +32676,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 1607924679}
-  timeline: {fileID: 0}
   instructionGuide: {fileID: 366728876}
   videoPlayer: {fileID: 1153194461}
   experimentController: {fileID: 808302980}
@@ -38431,7 +38430,7 @@ VideoPlayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153194459}
-  m_Enabled: 0
+  m_Enabled: 1
   m_VideoClip: {fileID: 32900000, guid: 03e994417f46a534a8965ddc15095d88, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0

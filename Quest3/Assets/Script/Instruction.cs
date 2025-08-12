@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 using UnityEngine.Video;
+// Attached in the HandInstructionController game object
 public class Instruction: MonoBehaviour
 {
     public GameObject cube;
