@@ -16,7 +16,7 @@ public class ExperimentController : MonoBehaviour
     {
         ApplyCondition(condition);
         forceGraph.SetActive(false);
-        heatmap.SetActive(false);
+        // heatmap.SetActive(false);
         robotFeedback.SetActive(false);
         // handInstruction.SetActive(false);
 
@@ -30,27 +30,29 @@ public class ExperimentController : MonoBehaviour
         {
             case 1: // Graph only
                 forceGraph.SetActive(true);
-                heatmap.SetActive(false);
+                // heatmap.SetActive(false);
                 robotFeedback.SetActive(false);
                 break;
             case 2: // Graph + Heatmap
                 forceGraph.SetActive(true);
-                heatmap.SetActive(true);
+                // heatmap.SetActive(true);
                 // handInstruction.SetActive(true);
                 robotFeedback.SetActive(false);
                 instruction.Spawncube();
+                heatmap.GetComponent<HeatmapVisualizer>().Spawncube();
+                
                 // CanvasVideo.SetActive(true);
                 // videoUIManager.ShowVideo();
                 break;
             case 3: // Graph + Robot
                 forceGraph.SetActive(true);
-                heatmap.SetActive(false);
+                // heatmap.SetActive(false);
                 robotFeedback.SetActive(true);
                 // handInstruction.SetActive(true);
                 break;
             case 4: // Graph + Robot + Heatmap
                 forceGraph.SetActive(true);
-                heatmap.SetActive(true);
+                // heatmap.SetActive(true);
                 robotFeedback.SetActive(true);
                 // handInstruction.SetActive(true);
                 break;

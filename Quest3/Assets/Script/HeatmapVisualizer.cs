@@ -17,13 +17,36 @@ public class HeatmapVisualizer : MonoBehaviour
 
     private float decayRate = 0.95f; // Decay rate for heatmap intensity
 
+    public ExperimentController experimentController;
+    private bool isSpawned = false;
+
+
+    public GameObject heatmap;
     void Start()
     {
         transform.localScale = new Vector3(0.15f, 0.12f, 1f); // Adjust to fit the fabric
+
+        Debug.Log(gameObject.name + " initialized with " + cols + " columns and " + rows + " rows.");
+        heatmap.SetActive(false);
     }
     void Update()
     {
-    
+        if (isSpawned)
+        {
+            if (OVRInput.GetDown(OVRInput.Button.One))
+            {
+                DeactivateManager();
+            }
+        }
+        else
+        {
+            if (OVRInput.GetDown(OVRInput.Button.One) && experimentController.condition != 1)
+            {
+                Spawncube();
+                Debug.Log("Spawned heatmap cube");
+            }
+        }
+
 
         if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
             return;
@@ -37,8 +60,8 @@ public class HeatmapVisualizer : MonoBehaviour
                 int index = row * cols + col;
                 if (index >= serialReader.normalizedValues.Length)
                     continue; // Safety check
-               
-               if (index >= serialReader.normalizedValues.Length)
+
+                if (index >= serialReader.normalizedValues.Length)
                     continue;
                 float current = serialReader.normalizedValues[index];
                 // Apply decay: blend current with previous
@@ -74,5 +97,27 @@ public class HeatmapVisualizer : MonoBehaviour
             heatmapMaterial.SetFloatArray("_Hits", hits);
             heatmapMaterial.SetInt("_HitCount", hitCount);
         }
+    }
+    public void Spawncube()
+    {
+        if (!heatmap.activeInHierarchy)
+        {
+            Vector3 handPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+            handPosition.x -= 0.1f;
+            heatmap.transform.position = handPosition;
+            Debug.Log("Heatmap cube spawned at position: " + handPosition);
+            //cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
+            heatmap.SetActive(true);
+            // generateCubeInstruction.SetActive(false);
+            isSpawned = true;
+        }
+        else
+        {
+            Debug.LogError("Prefab or RightHandAnchor is not set.");
+        }
+    }
+    public void DeactivateManager()
+    {
+        gameObject.SetActive(false);
     }
 }

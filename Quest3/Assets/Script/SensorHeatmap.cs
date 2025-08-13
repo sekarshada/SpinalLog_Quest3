@@ -9,11 +9,12 @@ public class SensorHeatmap : MonoBehaviour
     private const int numSensor = rows * cols;
     private float[] heatPoints = new float[numSensor * 3]; // Each point has x, y, intensity
     private int hitCount = 0;
+
     void Update()
     {
-        // Debug.Log("SENSOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            // Debug.Log($"SensorHeatmap started. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
-
+        Debug.Log("SENSOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Debug.Log($"SensorHeatmap Update called. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
+        Debug.Log($"SerialReader active: {serialReader != null}, sensorValues length: {serialReader.sensorValues?.Length ?? 0}");
         if (serialReader == null || serialReader.sensorValues == null || serialReader.sensorValues.Length != numSensor)
             return;
         hitCount = 0;
@@ -41,11 +42,13 @@ public class SensorHeatmap : MonoBehaviour
             }
         }
 
-        // Debug.Log($"HitCount: {hitCount}");
+        Debug.Log($"HitCount: {hitCount}");
 
         heatmapMaterial.SetFloatArray("_Hits", heatPoints);
         heatmapMaterial.SetInt("_HitCount", hitCount);
     }
+
+   
 
     
 }
