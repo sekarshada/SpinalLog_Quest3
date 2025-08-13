@@ -14,9 +14,12 @@ public class SensorHeatmap : MonoBehaviour
     {
         Debug.Log("SENSOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Debug.Log($"SensorHeatmap Update called. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
-        Debug.Log($"SerialReader active: {serialReader != null}, sensorValues length: {serialReader.sensorValues?.Length ?? 0}");
         if (serialReader == null || serialReader.sensorValues == null || serialReader.sensorValues.Length != numSensor)
             return;
+
+        // Print all serialReader.sensorValues
+        Debug.Log("All serialReader.sensorValues: " + string.Join(", ", serialReader.sensorValues));
+
         hitCount = 0;
 
         float aspectRatio = 11f / 15f;
@@ -24,8 +27,8 @@ public class SensorHeatmap : MonoBehaviour
         {
             for (int col = 0; col < cols; col++)
             {
-                int index = row * cols + col;
-                float norm = serialReader.normalizedValues[index]; // Normalize value between 0–1
+            int index = row * cols + col;
+            float norm = serialReader.normalizedValues[index]; // Normalize value between 0–1
                 if (norm > 0.05f) // Noise threshold
                 {
                     // Map col, row to [-1, 1] range in UV space
@@ -44,7 +47,16 @@ public class SensorHeatmap : MonoBehaviour
 
         Debug.Log($"HitCount: {hitCount}");
 
-        heatmapMaterial.SetFloatArray("_Hits", heatPoints);
+        // Only send the active portion of the array to the shader
+       
+        if (hitCount > 0)
+        {
+            heatmapMaterial.SetFloatArray("_Hits", heatPoints[..(hitCount * 3)]);
+        }
+        else
+        {
+            heatmapMaterial.SetFloatArray("_Hits", new float[3] { 0, 0, 0 }); // Clear hits if none
+        }
         heatmapMaterial.SetInt("_HitCount", hitCount);
     }
 

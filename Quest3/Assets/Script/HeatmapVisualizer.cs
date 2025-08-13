@@ -9,8 +9,8 @@ public class HeatmapVisualizer : MonoBehaviour
     public int rows = 9;// 9 rows for 99 sensors
     [Header("Heatmap Tuning")]
     public float noiseThreshold = 0.15f;    // Ignore very small pressure
-    public float intensityScale = 0.8f;     // Boost how "hot" the colors appear
-    private float[] hits = new float[32 * 3]; // 32 points max (x, y, intensity)
+    public float intensityScale = 2.0f;     // Boost how "hot" the colors appear
+    private float[] hits = new float[64 * 3]; // 32 points max (x, y, intensity)
     private int hitCount = 0;
 
     private float[] previousFrameValues = new float[99];
@@ -25,8 +25,6 @@ public class HeatmapVisualizer : MonoBehaviour
     void Start()
     {
         transform.localScale = new Vector3(0.15f, 0.12f, 1f); // Adjust to fit the fabric
-
-        Debug.Log(gameObject.name + " initialized with " + cols + " columns and " + rows + " rows.");
         heatmap.SetActive(false);
     }
     void Update()
@@ -84,6 +82,8 @@ public class HeatmapVisualizer : MonoBehaviour
         hits[hitCount * 3 + 1] = y;
         hits[hitCount * 3 + 2] = intensity;
         hitCount++;
+
+        Debug.Log($"Hit added at ({x}, {y}) with intensity {intensity}. Total hits: {hitCount}");
     }
     void ClearHits()
     {
@@ -92,6 +92,7 @@ public class HeatmapVisualizer : MonoBehaviour
     }
     void ApplyHits()
     {
+        Debug.Log($"Applying {hitCount} hits to heatmap material.");
         if (heatmapMaterial != null)
         {
             heatmapMaterial.SetFloatArray("_Hits", hits);

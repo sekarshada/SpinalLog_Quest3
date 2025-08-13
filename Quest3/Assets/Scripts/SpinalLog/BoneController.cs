@@ -35,7 +35,7 @@ public class BoneController : MonoBehaviour
             }
             //UnityDebug.Log(boneID + "leftDepth" + leftDepth + "depthThreshold" + DEPTH_THRESHOLD);
             if (averageDepth < DEPTH_THRESHOLD) {
-                Debug.Log("Bone ID: " + boneID + ", Average Depth: " + averageDepth);
+                // Debug.Log("Bone ID: " + boneID + ", Average Depth: " + averageDepth);
                 // Calculate the interpolation factor based on how close averageDepth is to 0
                 float t = Mathf.InverseLerp(DEPTH_THRESHOLD, MAX_DEPTH, averageDepth);
 
@@ -47,7 +47,7 @@ public class BoneController : MonoBehaviour
                 objectMaterial.color = newColor;
             } else
             {
-                Debug.Log("Bone ID: " + boneID + ", Average Depth: " + averageDepth + " - Resetting color to white");
+                // Debug.Log("Bone ID: " + boneID + ", Average Depth: " + averageDepth + " - Resetting color to white");
                 objectMaterial.color = whiteMaterial.color;
             }
         }     

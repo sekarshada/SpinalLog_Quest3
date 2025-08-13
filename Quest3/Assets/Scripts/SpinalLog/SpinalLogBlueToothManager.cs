@@ -175,8 +175,8 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         }
         forceSum = ForceSum(distances);
         // Optional: debug logs
-        UnityDebug.Log($"Force Matrix: {string.Join(", ", forceMatrix)}");
-        UnityDebug.Log($"Distances: {string.Join(", ", distances)}");
+        // UnityDebug.Log($"Force Matrix: {string.Join(", ", forceMatrix)}");
+        // UnityDebug.Log($"Distances: {string.Join(", ", distances)}");
     }
     float ForceSum(float[] input)
     {
@@ -185,7 +185,7 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         {
             sum += input[i];
         }
-        UnityDebug.Log("Force Sum: " + sum);
+        // UnityDebug.Log("Force Sum: " + sum);
         return sum;
 
        

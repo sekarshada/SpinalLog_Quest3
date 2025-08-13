@@ -8,7 +8,7 @@ Shader "Unlit/HeatmapShader"
         _Color3("Color 3", Color) = (1,0.5,0,1)
         _Color4("Color 4", Color) = (1,0,0,1)
         _Range0("Range 0", Range(0,1)) = 0
-        _Range1("Range 1", Range(0,1)) = 0.1
+        _Range1("Range 1", Range(0,1)) = 0.01
         _Range2("Range 2", Range(0,1)) = 0.2
         _Range3("Range 3", Range(0,1)) = 0.35
         _Range4("Range 4", Range(0,1)) = 0.6
