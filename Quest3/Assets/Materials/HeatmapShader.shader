@@ -12,7 +12,7 @@ Shader "Unlit/HeatmapShader"
         _Range2("Range 2", Range(0,1)) = 0.2
         _Range3("Range 3", Range(0,1)) = 0.35
         _Range4("Range 4", Range(0,1)) = 0.6
-        _Diameter("Diameter", Range(0.1,1)) = 0.1
+        _Diameter("Diameter", Range(0.1,1)) = 0.02
         _Strength("Strength", Range(0.1,4)) = 0.7
         _PulseSpeed("Pulse Speed", Range(0,5)) = 0
     }
@@ -37,7 +37,7 @@ Shader "Unlit/HeatmapShader"
             float4 _Color0, _Color1, _Color2, _Color3, _Color4;
             float _Range0, _Range1, _Range2, _Range3, _Range4;
             float _Diameter, _Strength, _PulseSpeed;
-            float _Hits[96];   // 32 * 3
+            float _Hits[192];   // 32 * 3
             int _HitCount;
             v2f vert(appdata v) {
                 v2f o;

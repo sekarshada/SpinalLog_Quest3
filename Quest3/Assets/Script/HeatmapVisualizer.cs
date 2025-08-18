@@ -4,12 +4,14 @@ public class HeatmapVisualizer : MonoBehaviour
     [Header("Dependencies")]
     public Material heatmapMaterial;
     public SerialReader serialReader;
+
     [Header("Sensor Grid Settings")]
     public int cols = 11;
     public int rows = 9;// 9 rows for 99 sensors
+
     [Header("Heatmap Tuning")]
     public float noiseThreshold = 0.15f;    // Ignore very small pressure
-    public float intensityScale = 2.0f;     // Boost how "hot" the colors appear
+    public float intensityScale = 0.1f;     // Boost how "hot" the colors appear
     private float[] hits = new float[64 * 3]; // 32 points max (x, y, intensity)
     private int hitCount = 0;
 
@@ -20,61 +22,77 @@ public class HeatmapVisualizer : MonoBehaviour
     public ExperimentController experimentController;
     private bool isSpawned = false;
 
-
     public GameObject heatmap;
+
     void Start()
     {
         transform.localScale = new Vector3(0.15f, 0.12f, 1f); // Adjust to fit the fabric
-        heatmap.SetActive(false);
+        if (heatmap != null && heatmapMaterial != null)
+        {
+            var r = heatmap.GetComponent<Renderer>();
+            if (r != null) r.material = heatmapMaterial; // ensure correct material is used
+        }
+        if (heatmap != null) heatmap.SetActive(false);
     }
+
     void Update()
     {
-        if (isSpawned)
+        // single-button toggle behavior
+        if (OVRInput.GetDown(OVRInput.Button.One))
         {
-            if (OVRInput.GetDown(OVRInput.Button.One))
-            {
-                DeactivateManager();
-            }
-        }
-        else
-        {
-            if (OVRInput.GetDown(OVRInput.Button.One) && experimentController.condition != 1)
+            if (!isSpawned && experimentController.condition != 1)
             {
                 Spawncube();
                 Debug.Log("Spawned heatmap cube");
             }
-        }
-
-
-        if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
-            return;
-        ClearHits();
-        float celWidth = 0.15f / 11f;
-        float celHeight = 0.12f / 8f; // 8 rows for 9 sensors
-        for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
+            else if (isSpawned)
             {
-                int index = row * cols + col;
-                if (index >= serialReader.normalizedValues.Length)
-                    continue; // Safety check
-
-                if (index >= serialReader.normalizedValues.Length)
-                    continue;
-                float current = serialReader.normalizedValues[index];
-                // Apply decay: blend current with previous
-                float smoothed = Mathf.Lerp(previousFrameValues[index], current, 1f - decayRate);
-                previousFrameValues[index] = smoothed;
-                if (smoothed > noiseThreshold)
-                {
-                    float x = col * celWidth - 0.15f / 2f + celWidth / 2f;
-                    float y = row * celHeight - 0.12f / 2f + celHeight / 2f;
-                    AddHit(x, y, smoothed * intensityScale);
-                }
+                // hide but keep this component alive so Update keeps running
+                if (heatmap != null) heatmap.SetActive(false);
+                isSpawned = false;
+                // optional: clear visual immediately
+                ClearHits();
+                ApplyHits();
             }
         }
-        ApplyHits();
+
+        // when spawned, drive the heatmap EVERY frame
+        if (isSpawned)
+        {
+            if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
+                return;
+
+            ClearHits();
+
+            float planeW = 0.15f;
+            float planeH = 0.12f;
+            float celWidth = planeW / (float)cols;
+            float celHeight = planeH / (float)rows; // use rows (not 8f)
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    int index = row * cols + col;
+                    float current = serialReader.normalizedValues[index];
+
+                    // exponential smoothing
+                    float smoothed = Mathf.Lerp(previousFrameValues[index], current, 1f - decayRate);
+                    previousFrameValues[index] = smoothed;
+
+                    if (smoothed > noiseThreshold && hitCount < 32)
+                    {
+                        float x = col * celWidth - planeW / 2f + celWidth / 2f;
+                        float y = row * celHeight - planeH / 2f + celHeight / 2f;
+                        AddHit(x, y, smoothed * intensityScale);
+                    }
+                }
+            }
+
+            ApplyHits();
+        }
     }
+
     void AddHit(float x, float y, float intensity)
     {
         if (hitCount >= 32) return;
@@ -85,11 +103,13 @@ public class HeatmapVisualizer : MonoBehaviour
 
         Debug.Log($"Hit added at ({x}, {y}) with intensity {intensity}. Total hits: {hitCount}");
     }
+
     void ClearHits()
     {
         System.Array.Clear(hits, 0, hits.Length);
         hitCount = 0;
     }
+
     void ApplyHits()
     {
         Debug.Log($"Applying {hitCount} hits to heatmap material.");
@@ -99,6 +119,7 @@ public class HeatmapVisualizer : MonoBehaviour
             heatmapMaterial.SetInt("_HitCount", hitCount);
         }
     }
+
     public void Spawncube()
     {
         if (!heatmap.activeInHierarchy)
@@ -107,9 +128,7 @@ public class HeatmapVisualizer : MonoBehaviour
             handPosition.x -= 0.1f;
             heatmap.transform.position = handPosition;
             Debug.Log("Heatmap cube spawned at position: " + handPosition);
-            //cube = Instantiate(cubePrefab, handPosition, Quaternion.Euler(0, 180, 0));
             heatmap.SetActive(true);
-            // generateCubeInstruction.SetActive(false);
             isSpawned = true;
         }
         else
@@ -117,6 +136,7 @@ public class HeatmapVisualizer : MonoBehaviour
             Debug.LogError("Prefab or RightHandAnchor is not set.");
         }
     }
+
     public void DeactivateManager()
     {
         gameObject.SetActive(false);
