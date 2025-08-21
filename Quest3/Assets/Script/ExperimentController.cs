@@ -18,7 +18,6 @@ public class ExperimentController : MonoBehaviour
         forceGraph.SetActive(false);
         // heatmap.SetActive(false);
         robotFeedback.SetActive(false);
-        // handInstruction.SetActive(false);
 
         Debug.Log("ExperimentController started with condition: " + condition);
         // Debug.Log(CanvasVideo.activeSelf ? "CanvasVideo is active." : "CanvasVideo is not active.");
@@ -39,7 +38,7 @@ public class ExperimentController : MonoBehaviour
                 // handInstruction.SetActive(true);
                 robotFeedback.SetActive(false);
                 instruction.Spawncube();
-                heatmap.GetComponent<HeatmapVisualizer>().Spawncube();
+                // heatmap.GetComponent<HeatmapVisualizer>().Spawncube();
                 
                 // CanvasVideo.SetActive(true);
                 // videoUIManager.ShowVideo();

@@ -89,7 +89,7 @@ public class SpinalLogGraph : MonoBehaviour
                     // Expand student range adaptif
                     if (deltaForce < studentMin) studentMin = deltaForce;
                     if (deltaForce > studentMax) studentMax = deltaForce;
-                    if (timer >= 1f) // mulai plot setelah 1 detik
+                    if (timer >= 1f) 
                     {
                         float usableRange = Mathf.Max(1e-4f, (studentMax - studentMin) * 1.2f);
                         float normalized = Mathf.Clamp01((deltaForce - studentMin) / usableRange);
@@ -107,13 +107,17 @@ public class SpinalLogGraph : MonoBehaviour
                                 offsetSet = true;
                                 Debug.Log($"Student offset set to: {studentOffset}");
                             }
-                            // Geser baseline
-                            float adjustedZeroed = adjusted - studentOffset;
+
+                            //    float adjustedZeroed = Mathf.Max(0f, adjusted - studentOffset);
+                        float adjustedZeroed = adjusted - expertMin;
                             // Optional: hanya selisih positif
                             // adjustedZeroed = Mathf.Max(0f, adjustedZeroed);
+
                             if (float.IsFinite(adjustedZeroed))
                             {
+                                Debug.Log($"deltaForce: {deltaForce}, studentMin: {studentMin}, studentMax: {studentMax}, usableRange: {usableRange}, normalized: {normalized}, adjusted: {adjusted}, studentOffset: {studentOffset}, adjustedZeroed: {adjustedZeroed}");
                                 studentTrial.AddXYData(counter, adjustedZeroed);
+                                // studentTrial.AddXYData(counter, deltaForce);
                                 counter += 1f;
                                 if (((int)counter) % 200 == 0)
                                     lineChart.RefreshChart();

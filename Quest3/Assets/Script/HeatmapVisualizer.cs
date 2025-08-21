@@ -32,7 +32,11 @@ public class HeatmapVisualizer : MonoBehaviour
             var r = heatmap.GetComponent<Renderer>();
             if (r != null) r.material = heatmapMaterial; // ensure correct material is used
         }
-        if (heatmap != null) heatmap.SetActive(false);
+        if (heatmap != null)
+        {
+            heatmap.transform.localScale = new Vector3(0.15f, 0.12f, 0.001f); // z ~ 0
+            heatmap.SetActive(false);
+        }
     }
 
     void Update()
@@ -47,19 +51,7 @@ public class HeatmapVisualizer : MonoBehaviour
             }
             else if (isSpawned)
             {
-                // hide but keep this component alive so Update keeps running
-                if (heatmap != null) heatmap.SetActive(false);
-                isSpawned = false;
-                // optional: clear visual immediately
-                ClearHits();
-                ApplyHits();
-            }
-        }
-
-        // when spawned, drive the heatmap EVERY frame
-        if (isSpawned)
-        {
-            if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
+                if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
                 return;
 
             ClearHits();
@@ -90,7 +82,14 @@ public class HeatmapVisualizer : MonoBehaviour
             }
 
             ApplyHits();
+            }
         }
+
+        // // when spawned, drive the heatmap EVERY frame
+        // if (isSpawned)
+        // {
+            
+        // }
     }
 
     void AddHit(float x, float y, float intensity)
