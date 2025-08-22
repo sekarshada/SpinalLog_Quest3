@@ -76,8 +76,10 @@ public class HeatmapVisualizer : MonoBehaviour
                     {
                     // float x = col * celWidth - planeW / 2f + celWidth / 2f;
                     // float y = row * celHeight - planeH / 2f + celHeight / 2f;
-                        float x = (float)col / (float)(cols - 1);
-                        float y = (float)row / (float)(rows - 1);
+                       float x = col / (float)(cols - 1);         // [0,1]
+                        float y = 1f - row / (float)(rows - 1);    // [0,1] top->bottom
+                        // no aspect scaling here
+
                         AddHit(x, y, smoothed * intensityScale);
                     }
                 }
@@ -112,14 +114,28 @@ public class HeatmapVisualizer : MonoBehaviour
     }
 
     void ApplyHits()
+{
+    Debug.Log($"Applying {hitCount} hits to heatmap material.");
+
+    if (heatmap != null)
     {
-        Debug.Log($"Applying {hitCount} hits to heatmap material.");
-        if (heatmapMaterial != null)
-        {
-            heatmapMaterial.SetFloatArray("_Hits", hits);
-            heatmapMaterial.SetInt("_HitCount", hitCount);
-        }
+        // Get the Renderer from your HeatmapPlane
+        var renderer = heatmap.GetComponent<Renderer>();
+        if (renderer == null) return;
+
+        // Create or reuse the MPB
+        var mpb = new MaterialPropertyBlock();
+        renderer.GetPropertyBlock(mpb);
+
+        // Push your arrays into the MPB
+        mpb.SetFloatArray("_Hits", hits);
+        mpb.SetInt("_HitCount", hitCount);
+        mpb.SetFloat("_PulseSpeed", 0f); // stop pulsing while debugging
+
+        // Apply to the Renderer (per-instance, not shared)
+        renderer.SetPropertyBlock(mpb);
     }
+}
 
     public void Spawncube()
     {

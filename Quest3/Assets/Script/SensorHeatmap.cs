@@ -13,7 +13,7 @@ public class SensorHeatmap : MonoBehaviour
     void Update()
     {
         // Debug.Log("SENSOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        // Debug.Log($"SensorHeatmap Update called. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
+         Debug.Log($"SensorHeatmap Update called. GameObject active: {gameObject.activeInHierarchy}, script enabled: {enabled}");
         if (serialReader == null || serialReader.sensorValues == null || serialReader.sensorValues.Length != numSensor)
             return;
 

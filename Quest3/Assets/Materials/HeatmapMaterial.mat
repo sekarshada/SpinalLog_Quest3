@@ -24,8 +24,10 @@ Material:
   m_Shader: {fileID: 4800000, guid: ecb6a669ea27b844d8af05b236cff8a4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_ValidKeywords:
+  - USE_XY
+  m_InvalidKeywords:
+  - USE_LOG_RESPONSE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -109,10 +111,14 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _Exposure: 1.8
+    - _FlipX: 0
+    - _FlipY: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _NormalizeBySum: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PulseSpeed: 0
@@ -130,6 +136,8 @@ Material:
     - _SrcBlendAlpha: 1
     - _Strength: 1
     - _Surface: 0
+    - _UseLogResponse: 1
+    - _UseXY: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -141,5 +149,7 @@ Material:
     - _Color3: {r: 0.9, g: 0.7, b: 0.09999997, a: 1}
     - _Color4: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LocalMax: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _LocalMin: {r: -0.5, g: -0.5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
