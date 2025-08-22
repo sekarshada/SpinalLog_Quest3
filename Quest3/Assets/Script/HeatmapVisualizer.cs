@@ -35,22 +35,22 @@ public class HeatmapVisualizer : MonoBehaviour
         if (heatmap != null)
         {
             heatmap.transform.localScale = new Vector3(0.15f, 0.12f, 0.001f); // z ~ 0
-            heatmap.SetActive(false);
+            heatmap.SetActive(true);
         }
     }
 
     void Update()
     {
         // single-button toggle behavior
-        if (OVRInput.GetDown(OVRInput.Button.One))
-        {
-            if (!isSpawned && experimentController.condition != 1)
-            {
-                Spawncube();
-                Debug.Log("Spawned heatmap cube");
-            }
-            else if (isSpawned)
-            {
+        // if (OVRInput.GetDown(OVRInput.Button.One))
+        // {
+            // if (!isSpawned && experimentController.condition != 1)
+            // {
+            //     Spawncube();
+            //     Debug.Log("Spawned heatmap cube");
+            // }
+            // else if (isSpawned)
+            // {
                 if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
                 return;
 
@@ -74,16 +74,18 @@ public class HeatmapVisualizer : MonoBehaviour
 
                     if (smoothed > noiseThreshold && hitCount < 32)
                     {
-                        float x = col * celWidth - planeW / 2f + celWidth / 2f;
-                        float y = row * celHeight - planeH / 2f + celHeight / 2f;
+                    // float x = col * celWidth - planeW / 2f + celWidth / 2f;
+                    // float y = row * celHeight - planeH / 2f + celHeight / 2f;
+                        float x = (float)col / (float)(cols - 1);
+                        float y = (float)row / (float)(rows - 1);
                         AddHit(x, y, smoothed * intensityScale);
                     }
                 }
             }
 
             ApplyHits();
-            }
-        }
+            // }
+        
 
         // // when spawned, drive the heatmap EVERY frame
         // if (isSpawned)

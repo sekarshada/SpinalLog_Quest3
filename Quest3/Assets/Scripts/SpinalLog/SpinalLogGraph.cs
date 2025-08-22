@@ -4,6 +4,7 @@ using XCharts.Runtime;
 using System.IO;
 using System;
 using System.Globalization;
+
 public class SpinalLogGraph : MonoBehaviour
 {
     [SerializeField] private SpinalLogBluetoothManager BTManager;
@@ -28,6 +29,9 @@ public class SpinalLogGraph : MonoBehaviour
     private float studentOffset = 0f;
     private bool offsetSet = false;
     private string csvFilePath;
+
+    private float studentBaseline = 0f;
+private bool studentBaselineSet = false;
     void Awake()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -73,7 +77,7 @@ public class SpinalLogGraph : MonoBehaviour
                 studentOffset = 0f;
                 offsetSet = false;
             }
-            if (timer < interval)
+            if (timer < interval && counter < 1500)
             {
                 last_draw_time += Time.deltaTime;
                 if (last_draw_time >= 0.01f)
@@ -107,17 +111,22 @@ public class SpinalLogGraph : MonoBehaviour
                                 offsetSet = true;
                                 Debug.Log($"Student offset set to: {studentOffset}");
                             }
-
-                            //    float adjustedZeroed = Mathf.Max(0f, adjusted - studentOffset);
-                        float adjustedZeroed = adjusted - expertMin;
-                            // Optional: hanya selisih positif
-                            // adjustedZeroed = Mathf.Max(0f, adjustedZeroed);
+                                if (!studentBaselineSet)
+                                {
+                                    studentBaseline = adjusted;
+                                    studentBaselineSet = true;
+                                }
+                                float adjustedZeroed = (adjusted - studentBaseline) * -1;
+                                studentTrial.AddXYData(counter, adjustedZeroed);
+                            //    float adjustedZeroed = Mathf.Max(0f, adjusted - expertMin);
+        
 
                             if (float.IsFinite(adjustedZeroed))
                             {
-                                Debug.Log($"deltaForce: {deltaForce}, studentMin: {studentMin}, studentMax: {studentMax}, usableRange: {usableRange}, normalized: {normalized}, adjusted: {adjusted}, studentOffset: {studentOffset}, adjustedZeroed: {adjustedZeroed}");
                                 studentTrial.AddXYData(counter, adjustedZeroed);
-                                // studentTrial.AddXYData(counter, deltaForce);
+                                Debug.Log($"deltaForce: {deltaForce}, studentMin: {studentMin}, studentMax: {studentMax}, usableRange: {usableRange}, normalized: {normalized}, adjusted: {adjusted}, studentOffset: {studentOffset}, adjustedZeroed: {adjustedZeroed}");
+                               
+                               
                                 counter += 1f;
                                 if (((int)counter) % 200 == 0)
                                     lineChart.RefreshChart();
@@ -130,6 +139,7 @@ public class SpinalLogGraph : MonoBehaviour
                     }
                     last_draw_time = 0f;
                 }
+                
                 timer += Time.deltaTime;
             }
             else

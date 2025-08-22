@@ -12,7 +12,7 @@ public class BoneController : MonoBehaviour
     public float averageDepth;
     private float initialLeftDepth;
     private float initialRightDepth;
-
+    private float THRESHOLD = 0.015f;
     public Material objectMaterial;
     public Material whiteMaterial;
     public Material redMaterial;
