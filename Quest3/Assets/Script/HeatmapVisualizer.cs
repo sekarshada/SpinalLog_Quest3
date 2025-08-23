@@ -30,13 +30,39 @@ public class HeatmapVisualizer : MonoBehaviour
         if (heatmap != null && heatmapMaterial != null)
         {
             var r = heatmap.GetComponent<Renderer>();
-            if (r != null) r.material = heatmapMaterial; // ensure correct material is used
+            if (r != null)
+            {
+                r.material = heatmapMaterial; // ensure correct material is used
+                var mf = heatmap.GetComponent<MeshFilter>();
+        if (mf && mf.sharedMesh)
+        {
+            var b = mf.sharedMesh.bounds;                   // mesh-local bounds (pre-transform)
+            var size = b.size;                              // span in local X/Y/Z
+            bool useXY = /* same as your material toggle */ true; // or false for XZ
+
+            var span = useXY ? new Vector2(size.x, size.y) : new Vector2(size.x, size.z);
+            Vector4 localMin = r.sharedMaterial.GetVector("_LocalMin");
+            Vector4 localMax = r.sharedMaterial.GetVector("_LocalMax");
+            Debug.Log($"[Heatmap] Mesh local span {(useXY ? "XY" : "XZ")} = {span}");
+            Debug.Log($"[Heatmap] Shader LocalMin = {localMin}, LocalMax = {localMax} (check in material)");
+
+            // Optional: compare aspect vs your physical matrix (e.g., 0.15m x 0.12m)
+            float meshAspect = span.x / Mathf.Max(1e-6f, span.y);
+            float physAspect = 0.15f / 0.12f; // your fabric width/height if that's correct
+            Debug.Log($"[Heatmap] Mesh aspect={meshAspect:F3} vs Physical aspect={physAspect:F3}");
+        }
+
+            }
         }
         if (heatmap != null)
         {
             heatmap.transform.localScale = new Vector3(0.15f, 0.12f, 0.001f); // z ~ 0
             heatmap.SetActive(true);
         }
+
+    
+
+        
     }
 
     void Update()
