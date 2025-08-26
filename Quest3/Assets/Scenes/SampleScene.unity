@@ -3360,7 +3360,7 @@ PlayableDirector:
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: f380783aceb41ee4db065a1ab982ba70, type: 2}
   m_InitialState: 0
-  m_WrapMode: 2
+  m_WrapMode: 1
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -83308,7 +83308,7 @@ MonoBehaviour:
         hand:
           fingerChainIds: 0200000003000000050000000400000006000000
           fingerChainIdsUsed: 0
-          handMotion: 4
+          handMotion: 0
         foot:
           toeChainIds: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
           toeChainIdsUsed: 0
@@ -92619,7 +92619,7 @@ MonoBehaviour:
         hand:
           fingerChainIds: 0200000003000000040000000500000006000000
           fingerChainIdsUsed: 0
-          handMotion: 4
+          handMotion: 0
         foot:
           toeChainIds: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
           toeChainIdsUsed: 0
@@ -97643,8 +97643,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eac8659dab14e0e4ab29567ffde77cbb, type: 2}
-  - {fileID: 2100000, guid: d4637a65b9bfc844c86d21f4eebd8b2d, type: 2}
+  - {fileID: 2100000, guid: 5a4f2e90dcce1de42bd53d03d43e1dea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98044,14 +98043,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7528559783423791299}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.017187307, y: -0.1736218, z: 0.003030587, w: 0.98465776}
+  m_LocalPosition: {x: -0.4, y: -0.15, z: -0.12}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4106591065436653816}
   m_Father: {fileID: 1607924686}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 2, y: -20, z: 0}
 --- !u!1 &7547755804479817454
 GameObject:
   m_ObjectHideFlags: 0
