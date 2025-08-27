@@ -13,14 +13,10 @@ public class ExperimentController : MonoBehaviour
     [Range(1, 4)]
     public int condition = 1;
     void Start()
-    {
-        ApplyCondition(condition);
-        forceGraph.SetActive(false);
-        // heatmap.SetActive(false);
-        robotFeedback.SetActive(false);
+    {   
 
+        ApplyCondition(condition);
         Debug.Log("ExperimentController started with condition: " + condition);
-        // Debug.Log(CanvasVideo.activeSelf ? "CanvasVideo is active." : "CanvasVideo is not active.");
         
     }
     public void ApplyCondition(int cond)
@@ -28,32 +24,18 @@ public class ExperimentController : MonoBehaviour
         switch (cond)
         {
             case 1: // Graph only
-                forceGraph.SetActive(true);
-                // heatmap.SetActive(false);
                 robotFeedback.SetActive(false);
                 break;
             case 2: // Graph + Heatmap
-                forceGraph.SetActive(true);
-                // heatmap.SetActive(true);
-                // handInstruction.SetActive(true);
                 robotFeedback.SetActive(false);
                 instruction.Spawncube();
-                // heatmap.GetComponent<HeatmapVisualizer>().Spawncube();
-                
-                // CanvasVideo.SetActive(true);
-                // videoUIManager.ShowVideo();
                 break;
             case 3: // Graph + Robot
-                forceGraph.SetActive(true);
-                // heatmap.SetActive(false);
                 robotFeedback.SetActive(true);
-                // handInstruction.SetActive(true);
                 break;
-            case 4: // Graph + Robot + Heatmap
-                forceGraph.SetActive(true);
-                // heatmap.SetActive(true);
+            case 4: // Graph + Robot + Heatmap              
                 robotFeedback.SetActive(true);
-                // handInstruction.SetActive(true);
+                instruction.Spawncube();
                 break;
             default:
                 Debug.LogWarning("Unknown condition value: " + cond);

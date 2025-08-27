@@ -34,7 +34,7 @@ public class Instruction: MonoBehaviour
             }
         } else
         {
-            if (OVRInput.GetDown(OVRInput.Button.One) && experimentController.condition != 1)
+            if (OVRInput.GetDown(OVRInput.Button.One) && experimentController.condition != 1 && experimentController.condition != 3)
             {
                 Spawncube();
                 Debug.Log("Spawned cube instruction hand");
