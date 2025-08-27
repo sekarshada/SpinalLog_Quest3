@@ -29100,7 +29100,7 @@ MonoBehaviour:
   CanvasVideo: {fileID: 0}
   instruction: {fileID: 915909437}
   videoUIManager: {fileID: 0}
-  condition: 2
+  condition: 4
 --- !u!4 &808302981
 Transform:
   m_ObjectHideFlags: 0
@@ -63348,6 +63348,30 @@ MonoBehaviour:
       - m_Target: {fileID: 50618184}
         m_TargetAssemblyTypeName: spawnGraph, Assembly-CSharp
         m_MethodName: GraphOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4881844543281231878}
+        m_TargetAssemblyTypeName: HeatmapVisualizer, Assembly-CSharp
+        m_MethodName: FixPosition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 915909437}
+        m_TargetAssemblyTypeName: Instruction, Assembly-CSharp
+        m_MethodName: FixPosition
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -97643,7 +97667,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a4f2e90dcce1de42bd53d03d43e1dea, type: 2}
+  - {fileID: 2100000, guid: eac8659dab14e0e4ab29567ffde77cbb, type: 2}
+  - {fileID: 2100000, guid: d4637a65b9bfc844c86d21f4eebd8b2d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100992,7 +101017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &9003144392453453106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101010,6 +101035,7 @@ MonoBehaviour:
   lowThreshold: 0.05
   rightMostSensorIndex: 15
   coolDownTime: 2.5
+  experimentController: {fileID: 0}
 --- !u!1 &9008632809370525213
 GameObject:
   m_ObjectHideFlags: 0
