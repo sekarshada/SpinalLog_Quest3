@@ -24524,7 +24524,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 676035708}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b023183069df224080314a560e6e1ff, type: 3}
   m_Name: 
@@ -87935,7 +87935,7 @@ Transform:
   m_GameObject: {fileID: 7387284249751441554}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6842219, y: 0.015161023, z: -0.037677243, w: 0.72814214}
-  m_LocalPosition: {x: 0.028185, y: -0.333, z: 0.05581523}
+  m_LocalPosition: {x: -0.002, y: -0.115, z: 0.045}
   m_LocalScale: {x: 0.15, y: 0.120000005, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88540,6 +88540,9 @@ MonoBehaviour:
   intensityScale: 0.8
   experimentController: {fileID: 808302980}
   heatmap: {fileID: 7387284249751441554}
+  grabbable: {fileID: 2298696023612812188}
+  grabInteractable: {fileID: 6903357924763074255}
+  handGrabInteractable: {fileID: 5703432665391569934}
 --- !u!1 &4904362388788927133
 GameObject:
   m_ObjectHideFlags: 0
@@ -89080,6 +89083,9 @@ MonoBehaviour:
   intensityScale: 3
   experimentController: {fileID: 808302980}
   heatmap: {fileID: 7387284249751441554}
+  grabbable: {fileID: 0}
+  grabInteractable: {fileID: 0}
+  handGrabInteractable: {fileID: 0}
 --- !u!4 &5290549644901714994
 Transform:
   m_ObjectHideFlags: 0
@@ -93129,21 +93135,21 @@ MonoBehaviour:
   _slippiness: 0
   _supportedGrabTypes: 3
   _pinchGrabRules:
-    _thumbRequirement: 1
+    _thumbRequirement: 0
     _indexRequirement: 1
     _middleRequirement: 1
     _ringRequirement: 0
     _pinkyRequirement: 0
     _unselectMode: 0
   _palmGrabRules:
-    _thumbRequirement: 1
+    _thumbRequirement: 0
     _indexRequirement: 2
-    _middleRequirement: 2
-    _ringRequirement: 2
+    _middleRequirement: 0
+    _ringRequirement: 0
     _pinkyRequirement: 1
     _unselectMode: 0
   _movementProvider: {fileID: 0}
-  _handAligment: 1
+  _handAligment: 3
   _handGrabPoses: []
 --- !u!114 &5711937245556949041
 MonoBehaviour:
