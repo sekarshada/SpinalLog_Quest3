@@ -1,3 +1,5 @@
+using Oculus.Interaction;
+using Oculus.Interaction.HandGrab;
 using UnityEngine;
 public class HeatmapVisualizer : MonoBehaviour
 {
@@ -23,7 +25,13 @@ public class HeatmapVisualizer : MonoBehaviour
     private bool isSpawned = false;
 
     public GameObject heatmap;
+    private Transform grabFunction;
 
+    public Grabbable grabbable;
+    public GrabInteractable grabInteractable;
+
+    public HandGrabInteractable handGrabInteractable;
+    private Vector3 latestHeatmapPosition;
     void Start()
     {
         transform.localScale = new Vector3(0.15f, 0.12f, 1f); // Adjust to fit the fabric
@@ -170,6 +178,7 @@ public class HeatmapVisualizer : MonoBehaviour
             Vector3 handPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
             handPosition.x -= 0.1f;
             heatmap.transform.position = handPosition;
+
             Debug.Log("Heatmap cube spawned at position: " + handPosition);
             heatmap.SetActive(true);
             isSpawned = true;
@@ -177,6 +186,45 @@ public class HeatmapVisualizer : MonoBehaviour
         else
         {
             Debug.LogError("Prefab or RightHandAnchor is not set.");
+        }
+    }
+
+        public void FixPosition() {
+        Debug.Log("clickedHeatMapFix");
+    
+        // Fix the position of heatmapplane (example: set to origin, or any desired position)
+        if (heatmap != null)
+        {
+            // Vector3 handPosition = OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+            // handPosition.x -= 0.1f;
+            // heatmap.transform.position = handPosition;
+            // Debug.Log("Heatmap position fixed at: " + heatmap.transform.position);
+    
+            
+            var handGrab = heatmap.GetComponent<HandGrabInteractable>();
+            if (handGrab != null)
+            {
+                handGrab.enabled = false;
+                Debug.Log("HandGrabInteractable disabled.");
+            }
+    
+            var grabbable = heatmap.GetComponent<Grabbable>();
+            if (grabbable != null)
+            {
+                grabbable.enabled = false;
+                Debug.Log("Grabbable disabled.");
+            }
+    
+            var grabInteractable = heatmap.GetComponent<GrabInteractable>();
+            if (grabInteractable != null)
+            {
+                grabInteractable.enabled = false;
+                Debug.Log("GrabInteractable disabled.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Heatmap GameObject not assigned!");
         }
     }
 

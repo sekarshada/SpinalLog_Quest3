@@ -84,7 +84,7 @@ public class Instruction: MonoBehaviour
     }
 
     public void FixPosition() {
-        Debug.Log("clicked1");
+        Debug.Log("clickedInstructionFix");
         //Transform grabFunction = null;
         if (cube.activeInHierarchy) {
             grabFunction = cube.transform.Find("[BuildingBlock] HandGrab");
