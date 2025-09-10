@@ -32,6 +32,15 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         _OutlineThickness("Outline Thickness (in UV)", Range(0.0005, 0.05)) = 0.003
         _OutlineSoftness("Outline Softness", Range(0.0001, 0.05)) = 0.0015
         _OutlineColor("Outline Color", Color) = (0,0,0,1)
+
+ // Center lines (vertical in 0..1 UV)
+        [Toggle] _LineEnabled("Enable Center Lines", Float) = 1
+        _LineX1("Line 1 X (0..1)", Range(0,1)) = 0.342
+        _LineX2("Line 2 X (0..1)", Range(0,1)) = 0.624
+        _LineThickness("Line Thickness (UV)", Range(0.0001, 0.02)) = 0.002
+        _LineSoftness("Line Softness (UV)", Range(0.0000, 0.02)) = 0.0008
+        _LineColor("Line Color", Color) = (1,1,1,1)
+
     }
 
     SubShader
@@ -94,6 +103,12 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
             float  _OutlineSoftness;
             float4 _OutlineColor;
 
+            // Center lines
+            float  _LineEnabled;
+            float  _LineX1, _LineX2;
+            float  _LineThickness;
+            float  _LineSoftness;
+            float4 _LineColor;
             // soft circular falloff normalized by _Diameter
             float distsq(float2 a, float2 b)
             {
@@ -188,6 +203,22 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
                 // Combine: draw outline over heat
                 float3 outRgb = lerp(heatRgb, _OutlineColor.rgb, outlineMask);
                 float outA    = max(alpha, outlineMask * _OutlineColor.a);
+
+                // Center vertical lines (in uv01 space)
+                float lineMask = 0.0;
+                if (_LineEnabled > 0.5)
+                {
+                    float dx1 = abs(uv.x - _LineX1);
+                    float dx2 = abs(uv.x - _LineX2);
+                    float l1 = 1.0 - smoothstep(_LineThickness, _LineThickness + _LineSoftness, dx1);
+                    float l2 = 1.0 - smoothstep(_LineThickness, _LineThickness + _LineSoftness, dx2);
+                    lineMask = saturate(max(l1, l2));
+                }
+
+                // Overlay lines above heat/outline
+                outRgb = lerp(outRgb, _LineColor.rgb, lineMask * _LineColor.a);
+                outA   = max(outA, lineMask * _LineColor.a);
+
 
                 return float4(outRgb, outA);
             }
