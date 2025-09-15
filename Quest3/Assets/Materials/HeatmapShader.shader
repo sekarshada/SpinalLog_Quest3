@@ -37,6 +37,7 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         [Toggle] _LineEnabled("Enable Center Lines", Float) = 1
         _LineX1("Line 1 X (0..1)", Range(0,1)) = 0.342
         _LineX2("Line 2 X (0..1)", Range(0,1)) = 0.624
+         _LineX3("Line 3 X (0..1)", Range(0,1)) = 0.5
         _LineThickness("Line Thickness (UV)", Range(0.0001, 0.02)) = 0.002
         _LineSoftness("Line Softness (UV)", Range(0.0000, 0.02)) = 0.0008
         _LineColor("Line Color", Color) = (1,1,1,1)
@@ -105,7 +106,7 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
 
             // Center lines
             float  _LineEnabled;
-            float  _LineX1, _LineX2;
+            float  _LineX1, _LineX2, _LineX3;
             float  _LineThickness;
             float  _LineSoftness;
             float4 _LineColor;
@@ -210,9 +211,11 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
                 {
                     float dx1 = abs(uv.x - _LineX1);
                     float dx2 = abs(uv.x - _LineX2);
+                    float dx3 = abs(uv.x - _LineX3);
                     float l1 = 1.0 - smoothstep(_LineThickness, _LineThickness + _LineSoftness, dx1);
                     float l2 = 1.0 - smoothstep(_LineThickness, _LineThickness + _LineSoftness, dx2);
-                    lineMask = saturate(max(l1, l2));
+                    float l3 = 1.0 - smoothstep(_LineThickness, _LineThickness + _LineSoftness, dx3);
+                    lineMask = saturate(max(max(l1, l2), l3));
                 }
 
                 // Overlay lines above heat/outline
