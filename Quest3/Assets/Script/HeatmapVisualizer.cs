@@ -14,7 +14,8 @@ public class HeatmapVisualizer : MonoBehaviour
     [Header("Heatmap Tuning")]
     public float noiseThreshold = 0.15f;    // Ignore very small pressure
     public float intensityScale = 0.1f;     // Boost how "hot" the colors appear
-    private float[] hits = new float[64 * 3]; // 32 points max (x, y, intensity)
+    private const int maxHits = 99;        // Max points to send to shader
+    private float[] hits = new float[maxHits * 3]; // 32 points max (x, y, intensity)
     private int hitCount = 0;
 
     private float[] previousFrameValues = new float[99];
@@ -32,6 +33,10 @@ public class HeatmapVisualizer : MonoBehaviour
 
     public HandGrabInteractable handGrabInteractable;
     private Vector3 latestHeatmapPosition;
+    private bool firstFrame = true;
+    [Header("Visual Size")]
+    public float blobDiameter = 0.06f;
+    public float blobStrength = 4f;
     void Start()
     {
         transform.localScale = new Vector3(0.15f, 0.12f, 1f); // Adjust to fit the fabric
@@ -42,23 +47,30 @@ public class HeatmapVisualizer : MonoBehaviour
             {
                 r.material = heatmapMaterial; // ensure correct material is used
                 var mf = heatmap.GetComponent<MeshFilter>();
+
+                if (heatmapMaterial)
+                {
+                    heatmapMaterial.SetVector("_LocalMin", new Vector4(-0.075f, -0.06f, 0, 0));
+                    heatmapMaterial.SetVector("_LocalMax", new Vector4(0.075f, 0.06f, 0, 0));
+                }
+
         if (mf && mf.sharedMesh)
-        {
-            var b = mf.sharedMesh.bounds;                   // mesh-local bounds (pre-transform)
-            var size = b.size;                              // span in local X/Y/Z
-            bool useXY = /* same as your material toggle */ true; // or false for XZ
+                {
+                    var b = mf.sharedMesh.bounds;                   // mesh-local bounds (pre-transform)
+                    var size = b.size;                              // span in local X/Y/Z
+                    bool useXY = /* same as your material toggle */ true; // or false for XZ
 
-            var span = useXY ? new Vector2(size.x, size.y) : new Vector2(size.x, size.z);
-            Vector4 localMin = r.sharedMaterial.GetVector("_LocalMin");
-            Vector4 localMax = r.sharedMaterial.GetVector("_LocalMax");
-            Debug.Log($"[Heatmap] Mesh local span {(useXY ? "XY" : "XZ")} = {span}");
-            Debug.Log($"[Heatmap] Shader LocalMin = {localMin}, LocalMax = {localMax} (check in material)");
+                    var span = useXY ? new Vector2(size.x, size.y) : new Vector2(size.x, size.z);
+                    Vector4 localMin = r.sharedMaterial.GetVector("_LocalMin");
+                    Vector4 localMax = r.sharedMaterial.GetVector("_LocalMax");
+                    Debug.Log($"[Heatmap] Mesh local span {(useXY ? "XY" : "XZ")} = {span}");
+                    Debug.Log($"[Heatmap] Shader LocalMin = {localMin}, LocalMax = {localMax} (check in material)");
 
-            // Optional: compare aspect vs your physical matrix (e.g., 0.15m x 0.12m)
-            float meshAspect = span.x / Mathf.Max(1e-6f, span.y);
-            float physAspect = 0.15f / 0.12f; // your fabric width/height if that's correct
-            Debug.Log($"[Heatmap] Mesh aspect={meshAspect:F3} vs Physical aspect={physAspect:F3}");
-        }
+                    // Optional: compare aspect vs your physical matrix (e.g., 0.15m x 0.12m)
+                    float meshAspect = span.x / Mathf.Max(1e-6f, span.y);
+                    float physAspect = 0.15f / 0.12f; // your fabric width/height if that's correct
+                    Debug.Log($"[Heatmap] Mesh aspect={meshAspect:F3} vs Physical aspect={physAspect:F3}");
+                }
 
             }
         }
@@ -89,6 +101,17 @@ public class HeatmapVisualizer : MonoBehaviour
                 return;
 
             ClearHits();
+            // float maxRaw = 0f;
+            // for (int row = 0; row < rows; row++)
+            // {
+            //     for (int col = 0; col < cols; col++)
+            //     {
+            //         int idx = row * cols + col;
+            //         float val = serialReader.normalizedValues[idx];
+            //         if (val > maxRaw) maxRaw = val;
+            //     }
+            // }
+            // Debug.Log($"[Heatmap] MaxRawFrame={maxRaw:F3}");
 
             float planeW = 0.15f;
             float planeH = 0.12f;
@@ -102,11 +125,20 @@ public class HeatmapVisualizer : MonoBehaviour
                     int index = row * cols + col;
                     float current = serialReader.normalizedValues[index];
 
-                    // exponential smoothing
-                    float smoothed = Mathf.Lerp(previousFrameValues[index], current, 1f - decayRate);
-                    previousFrameValues[index] = smoothed;
+                // exponential smoothing
+                // float smoothed = Mathf.Lerp(previousFrameValues[index], current, 1f - decayRate);
+                float smoothed;
+                if (firstFrame) 
+                {
+                    smoothed = current;
+                }
+                else
+                {
+                    smoothed = Mathf.Lerp(previousFrameValues[index], current, 1f - decayRate);
+                }
+                previousFrameValues[index] = smoothed;
 
-                    if (smoothed > noiseThreshold && hitCount < 32)
+                    if (smoothed > noiseThreshold && hitCount < maxHits)
                     {
                     // float x = col * celWidth - planeW / 2f + celWidth / 2f;
                     // float y = row * celHeight - planeH / 2f + celHeight / 2f;
@@ -118,7 +150,11 @@ public class HeatmapVisualizer : MonoBehaviour
                     }
                 }
             }
-
+        if (hitCount == 0)
+        {
+                Debug.Log("[Heatmap] No hits passed threshold this frame.");
+                // AddHit(0.5f, 0.5f, 1f); // debug forced point
+        }
             ApplyHits();
             // }
         
@@ -132,7 +168,7 @@ public class HeatmapVisualizer : MonoBehaviour
 
     void AddHit(float x, float y, float intensity)
     {
-        if (hitCount >= 32) return;
+        if (hitCount >= maxHits) return;
         hits[hitCount * 3 + 0] = x;
         hits[hitCount * 3 + 1] = y;
         hits[hitCount * 3 + 2] = intensity;
@@ -148,28 +184,24 @@ public class HeatmapVisualizer : MonoBehaviour
     }
 
     void ApplyHits()
-{
-    Debug.Log($"Applying {hitCount} hits to heatmap material.");
-
-    if (heatmap != null)
     {
-        // Get the Renderer from your HeatmapPlane
+        
+        Debug.Log($"Applying {hitCount} hits to heatmap material.");
+        if (heatmap == null) return;
         var renderer = heatmap.GetComponent<Renderer>();
-        if (renderer == null) return;
+        if (!renderer) return;
 
-        // Create or reuse the MPB
         var mpb = new MaterialPropertyBlock();
         renderer.GetPropertyBlock(mpb);
 
-        // Push your arrays into the MPB
         mpb.SetFloatArray("_Hits", hits);
         mpb.SetInt("_HitCount", hitCount);
-        mpb.SetFloat("_PulseSpeed", 0f); // stop pulsing while debugging
+        mpb.SetFloat("_PulseSpeed", 0f);
+        mpb.SetFloat("_Diameter", blobDiameter);
+        mpb.SetFloat("_Strength", blobStrength);
 
-        // Apply to the Renderer (per-instance, not shared)
         renderer.SetPropertyBlock(mpb);
     }
-}
 
     public void Spawncube()
     {

@@ -15,8 +15,10 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         _Range3("Range 3", Range(0,1)) = 0.35
         _Range4("Range 4", Range(0,1)) = 0.6
 
-        _Diameter("Blob Diameter (0..1)", Range(0.01,1)) = 0.012
-        _Strength("Strength", Range(0.01,8)) = 0.7
+        _Diameter("Blob Diameter (0..1)  (NOTE: acts as radius unless toggle below)", Range(0.001,1)) = 0.06
+        [Toggle(USE_TRUE_DIAMETER)] _UseTrueDiameter("Treat value above as true diameter", Float) = 0
+        _FalloffPower("Falloff Power (sharper > 2)", Range(1,16)) = 3.87
+        _Strength("Strength", Range(0.01,8)) = 4
         _PulseSpeed("Pulse Speed", Range(0,5)) = 0
 
         // Mapping from local position to [0..1]^2
@@ -25,8 +27,8 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         _LocalMax("Local Max (x,y or x,z)", Vector) = ( 0.5,  0.5, 0, 0)
 
         // Transparency controls
-        _AlphaBoost("Alpha Boost", Range(0,4)) = 1.0
-        _AlphaCutoff("Alpha Cutoff (hide base)", Range(0,1)) = 0.02
+        _AlphaBoost("Alpha Boost", Range(0,4)) = 0.92
+        _AlphaCutoff("Alpha Cutoff (hide base)", Range(0,1)) = 0
 
         // Outline
         _OutlineThickness("Outline Thickness (in UV)", Range(0.0005, 0.05)) = 0.003
@@ -41,6 +43,22 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         _LineThickness("Line Thickness (UV)", Range(0.0001, 0.02)) = 0.002
         _LineSoftness("Line Softness (UV)", Range(0.0000, 0.02)) = 0.0008
         _LineColor("Line Color", Color) = (1,1,1,1)
+
+
+        ///////////////////////////////////////////
+
+        _HaloScale("Halo Radius Multiplier", Range(1,10)) = 7.6
+        _HaloFactor("Halo Strength (relative)", Range(0,2)) = 1.24
+        _HaloPower("Halo Falloff Power", Range(1,16)) = 4.5
+
+        //===========================//
+         // Smooth blend options
+        [Toggle(USE_GAUSS)] _UseGaussian("Use Gaussian Falloff", Float) = 1
+        _GaussSharpness("Gaussian Sharpness", Range(0.5,10)) = 4.98
+        _WeightScale("Weight Scale (lower = less red)", Range(0.05,2)) = 0.346
+
+        //===========================//
+        //////////////////////////////////////////
 
     }
 
@@ -87,9 +105,10 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
 
             // Heat params
             float  _Diameter, _Strength, _PulseSpeed;
-
+            float  _UseTrueDiameter;
+            float  _FalloffPower;
             // Hits
-            float  _Hits[192];
+            float  _Hits[300];
             int    _HitCount;
 
             float4 _LocalMin;
@@ -111,11 +130,27 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
             float  _LineSoftness;
             float4 _LineColor;
             // soft circular falloff normalized by _Diameter
-            float distsq(float2 a, float2 b)
-            {
-                float r = distance(a, b) / _Diameter;
-                return pow(max(0.0, 1.0 - r), 2.0);
-            }
+
+            /////////////////////////////////
+            float  _HaloScale;
+            float  _HaloFactor;
+            float  _HaloPower;
+            //===========================//
+            float  _UseGaussian;
+            float  _GaussSharpness;
+            float _WeightScale;
+
+            //===========================//
+            /////////////////////////////////
+
+            // float distsq(float2 a, float2 b)
+            // {
+            //     // distance based normalized radius
+            //     float radius = (_UseTrueDiameter > 0.5) ? max(1e-6, _Diameter * 0.5) : max(1e-6, _Diameter);
+            //     float r = distance(a, b) / radius;          // r = 1 at edge of influence
+            //     float v = max(0.0, 1.0 - r);                // linear falloff to 0
+            //     return pow(v, _FalloffPower);               // adjustable sharpness
+            // }
 
             float3 heatColor(float w)
             {
@@ -168,25 +203,69 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
             fixed4 frag (v2f i) : SV_Target
             {
 
-                // Ensure correct per-eye constants in SPI
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
-
                 float2 uv = i.uv01;
-
-                // Optional pulsing
                 float pulse = (_PulseSpeed > 0.0) ? (0.5 + 0.5 * sin(_Time.y * _PulseSpeed)) : 1.0;
 
-                // Accumulate heat
+                float baseRadius = (_UseTrueDiameter > 0.5) ? max(1e-6, _Diameter * 0.5) : max(1e-6, _Diameter);
+
                 float weight = 0.0;
+                int count = min(_HitCount, 100);   // 300 floats / 3 per hit
+                float radius = (_UseTrueDiameter > 0.5) ? max(1e-6, _Diameter * 0.5) : max(1e-6, _Diameter);
+                float invR2 = 1.0 / (radius * radius);
                 [loop]
-                for (int j = 0; j < _HitCount; j++)
+                for (int j = 0; j < count; j++)
                 {
                     float2 pt = float2(_Hits[j * 3 + 0], _Hits[j * 3 + 1]);
                     float intensity = _Hits[j * 3 + 2];
-                    weight += distsq(uv, pt) * intensity * _Strength * pulse;
-                }
-                weight = clamp(weight, 0.0, _Range4);
 
+                    //////////////////////////////////
+                    // float perRadiusScale = saturate(intensity);
+                    // perRadiusScale = max(0.05, perRadiusScale); // prevent zero
+                    //////////////////////////////////
+                    // float radiusScale = 1.0; // ini berhasil terakhir
+                     float2 d = uv - pt;
+                    // float r = distance(uv, pt) / baseRadius;
+                    // float r = length(d) / (baseRadius * radiusScale); // ini berhasil terakhir
+                   
+                    float r2 = dot(d,d) * invR2;
+                    float r = sqrt(r2);
+                    // float core = pow(saturate(1.0 - r), _FalloffPower);
+                    // float core; // ini berhasil terakhir
+                    float core = exp(-_GaussSharpness * r2);
+                    
+                    //===========================//
+                    // if (_UseGaussian > 0.5)
+                    // {
+                    //     // Gaussian falloff
+                    //     float gaussR = r * _GaussSharpness;
+                    //     core = exp(-gaussR * gaussR);
+                    // }
+                    // else
+                    // {
+                    //     // power falloff
+                    //     core = pow(saturate(1.0 - r), _FalloffPower);
+                    // }
+                    //===========================//
+
+
+                    float halo = 0.0;
+                    if (_HaloScale > 1.01 && _HaloFactor > 0.001)
+                    {
+                        float rHalo = r / _HaloScale;
+                        halo = pow(saturate(1.0 - rHalo), _HaloPower) * _HaloFactor;
+                    }
+
+                    // weight += (core + halo) * intensity * _Strength * pulse;
+                    // weight += (core + halo) * _Strength * pulse;
+                    // Optional early out (slightly divergent, skip if you prefer)
+
+                    weight += (core + halo) * intensity * _Strength * pulse;
+                    // if (weight > _Range4 * 1.2) break;
+                }
+
+                // weight = min(weight, _Range4 * 1.2);
+                weight *= _WeightScale;
                 // Color from ramp (green->yellow->red); base (near zero) will be invisible via alpha below
                 float3 heatRgb = heatColor(weight);
 

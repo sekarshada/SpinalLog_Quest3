@@ -34,7 +34,7 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         try
         {
             UnityDebug.Log("SpinalLogBluetoothManager Start");
-            BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Gabriella"); 
+            BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Sekar"); //device name
             // BTHelper.setDeviceName("ESP32-vARtebrae-Gabriella");
             BTHelper.OnConnected += OnConnected;
             BTHelper.setTerminatorBasedStream("\n");
@@ -100,15 +100,15 @@ public class SpinalLogBluetoothManager : MonoBehaviour
         
         // Disable the script
         //BTHelper = BluetoothHelper.GetNewInstance("ESP32-SpinalLog-Kiichiro");
-        BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Gabriella"); //device name
-        BTHelper.setDeviceName("ESP32-vARtebrae-Gabriella");
+        BTHelper = BluetoothHelper.GetInstance("ESP32-vARtebrae-Sekar"); //device name
+        BTHelper.setDeviceName("ESP32-vARtebrae-Sekar");
         BTHelper.OnConnected += OnConnected;
         BTHelper.setTerminatorBasedStream("\n");
         UnityDebug.Log("connect to" + BTHelper.getDeviceName());
         if (BTHelper.isConnected()) {
             BTHelper.Disconnect();
             UnityDebug.Log("L3 DisConnected.");
-            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-vARtebrae-Gabriella") {
+            if (BTHelper.isDevicePaired() && BTHelper.getDeviceName() == "ESP32-vARtebrae-Sekar") {
                 BTHelper.Connect(); // tries to connect
                 UnityDebug.Log("spinallog Connected!!!");
                 spinalLogCube.SetActive(true);
