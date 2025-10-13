@@ -10,7 +10,7 @@ public class SerialReader : MonoBehaviour
     private bool baselineInitialized = false;
     private const float maxDelta = 500f;
     private const float baselineLerpSpeed = 0.01f;
-
+    public float firstRowScale = 0.5f;
     public SpinalLogBluetoothManager bluetoothManager;
     void Start()
     {
@@ -44,7 +44,10 @@ public class SerialReader : MonoBehaviour
             sensorValues[i] = Mathf.Max(0, delta);
             normalizedValues[i] = Mathf.Clamp01(sensorValues[i] / maxDelta);
         }
-        // Debug.Log("Normalized[0..4]: " + string.Join(", ", normalizedValues.Take(99).Select(v => v.ToString("F2"))));
+         float scale = Mathf.Clamp01(firstRowScale);
+        for (int i = 0; i < 11 && i < normalizedValues.Length; i++)
+            normalizedValues[i] = Mathf.Clamp01(normalizedValues[i] * scale);
+        Debug.Log("Normalized[0..4]: " + string.Join(", ", normalizedValues.Take(99).Select(v => v.ToString("F2"))));
     }
 
 }
