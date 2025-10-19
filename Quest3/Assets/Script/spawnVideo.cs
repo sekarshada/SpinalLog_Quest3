@@ -35,7 +35,9 @@ public class spawnVideo : MonoBehaviour
         // Make the graph face the same direction as the camera
         transform.rotation = Camera2Follow.transform.rotation;
         transform.rotation *= Quaternion.Euler(0, 0, 0);
-            
+        var lp = transform.localPosition;
+        lp.y = -0.5f;
+        transform.localPosition = lp;
    
     }
 
