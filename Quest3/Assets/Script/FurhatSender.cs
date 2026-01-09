@@ -6,16 +6,18 @@ using System.Linq;
 public class FurhatSender : MonoBehaviour
 {
     public SerialReader serialReader; // Drag the SerialReader GameObject here
-    public float highThreshold = 0.9f; // Red
-    public float lowThreshold = 0.1f;  //  Yellow (very low)
+    public float highThreshold = 188f; // Red
+    public float lowThreshold = 190f;  //  Yellow (very low)
     public int rightMostSensorIndex = 15; // Rightmost sensor = index 15
     private float lastSpokenTime = 0f;
-    public float coolDownTime = 1.5f;
+    public float coolDownTime = 2.5f;
     private int responseCount = 0;
-    public int maxResponses = 0;
+    public int maxResponses = 4;
     public GameObject experimentController;
     private bool wasAboveHigh = false; // edge detection
-    public float responseInterval = 1.5f;
+    public float responseInterval = 2.3f;
+
+    [SerializeField] private SpinalLogBluetoothManager BTManager;
     void Start()
     {
         Debug.Log("Start Furhat");
@@ -27,8 +29,8 @@ public class FurhatSender : MonoBehaviour
 
     IEnumerator TestConnection()
     {
-        // string url = "http://localhost:54321/furhat"; // ini yang untuk physical robot
-        string url = "http://192.168.137.1:54321/furhat";
+        string url = "http://localhost:54321/furhat"; // ini yang untuk physical robot
+        // string url = "http://172.20.10.2:54321/furhat";
         using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
             Debug.Log("Testing connection to " + url);
@@ -51,26 +53,24 @@ public class FurhatSender : MonoBehaviour
     void Update()
     {
         SendFurhatResponse();
+        Debug.Log("Force Sum in Update: " + BTManager.forceSum);
         // SendGestureResponse();
    
     }
     public void SendFurhatResponse()
     {
-        if (serialReader == null || serialReader.normalizedValues == null)
+        if (BTManager == null || BTManager.forceSum == 0f )
             return;
         if (responseCount >= maxResponses)
             return;
 
-
-        float[] values = serialReader.normalizedValues;
-        Debug.Log("Sensor values!!1: " + string.Join(", ", values.Select(v => v.ToString("F2"))));
-
-
+        float values = BTManager.forceSum;
+        Debug.Log("Force Sum in SendFurhatResponse: " + values);
 
 
         if (Time.time - lastSpokenTime > coolDownTime)
         {
-            bool aboveHigh = values.Any(v => v > highThreshold);
+            bool aboveHigh = values <= highThreshold;
 
             // Fire every responseInterval seconds while above threshold
             if (aboveHigh && (Time.time - lastSpokenTime) >= responseInterval)
@@ -79,7 +79,17 @@ public class FurhatSender : MonoBehaviour
                 StartCoroutine(SendSGestureRequest("ExpressDisgust"));
                 responseCount++;
                 lastSpokenTime = Time.time;
+                Debug.Log("Sent Furhat response for high pressure. Count: " + responseCount);
             }
+      
+        
+            // else if (values > lowThreshold)
+            // {
+            //     Debug.Log("No pressure felt.");
+            //     StartCoroutine(SendSayRequest("I do not feel anything"));
+            //     responseCount++;
+            //     lastSpokenTime = Time.time;
+            // }
 
             // Only trigger on rising edge and respect cooldown
             // if (aboveHigh && !wasAboveHigh && (Time.time - lastSpokenTime) > coolDownTime)
@@ -108,16 +118,14 @@ public class FurhatSender : MonoBehaviour
             // }
             // }
 
-
-
         }
 
 
         IEnumerator SendSayRequest(string text)
         {
-            // string url = "http://localhost:54321/furhat/say?text=" + UnityWebRequest.EscapeURL(text); // ini yang untuk physical robot
+            string url = "http://localhost:54321/furhat/say?text=" + UnityWebRequest.EscapeURL(text); // ini yang untuk physical robot
             // string url = "http://localhost:8080/furhat/say?text=" + UnityWebRequest.EscapeURL(text);
-            string url = "http://192.168.137.1:54321/furhat/say?text=" + UnityWebRequest.EscapeURL(text);
+            // string url = "http://172.20.10.2:54321/furhat/say?text=" + UnityWebRequest.EscapeURL(text);
             string json = "{\"text\": \"" + text + "\"}";
             UnityWebRequest request = new UnityWebRequest(url, "POST");
             byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(json); // Empty body is okay
@@ -154,9 +162,9 @@ public class FurhatSender : MonoBehaviour
 
         IEnumerator SendSGestureRequest(string gestureName)
         {
-            // string url = "http://localhost:54321/furhat/gesture?name=" + UnityWebRequest.EscapeURL(gestureName); // ini yang untuk physical robot
+            string url = "http://localhost:54321/furhat/gesture?name=" + UnityWebRequest.EscapeURL(gestureName); // ini yang untuk physical robot
             // string url = "http://localhost:8080/furhat/gesture?name=" + UnityWebRequest.EscapeURL(gestureName);
-            string url = "http://192.168.137.1:54321/furhat/gesture?name=" + UnityWebRequest.EscapeURL(gestureName);
+            // string url = "http://172.20.10.2:54321/furhat/gesture?name=" + UnityWebRequest.EscapeURL(gestureName);
             UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "");
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)

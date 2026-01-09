@@ -40,9 +40,13 @@ public class SpinalLogGraph : MonoBehaviour
     void Awake()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        // csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        // csvFilePath = Path.Combine(Application.persistentDataPath, "ascending.csv");
+        csvFilePath = Path.Combine(Application.persistentDataPath, "descending.csv");
 #else
-        csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        // csvFilePath = Path.Combine(Application.streamingAssetsPath, "expertTrial2.csv");
+        // csvFilePath = Path.Combine(Application.streamingAssetsPath, "ascending.csv");
+        csvFilePath = Path.Combine(Application.streamingAssetsPath, "descending.csv");
 #endif
         SetupChart();
 
@@ -90,12 +94,12 @@ public class SpinalLogGraph : MonoBehaviour
         {
             initialForce = currentForce;     // store initial value
             initialSet = true;
-            smoothedDelta = 4.7f;              // start smoothing from 4.7
+            smoothedDelta = 2.0f;              // start smoothing from 2.0
             Debug.Log($"Initial baseline captured: {initialForce}");
         }
 
         // (3) Compute absolute difference from the initial baseline
-        float rawDelta = Mathf.Abs(currentForce - initialForce) * 2 + 4.7f;
+        float rawDelta = Mathf.Abs(currentForce - initialForce) * 2.0f; // scale factor to enhance visibility
 
         // (4) Smooth the difference, then plot
         // Use exponential smoothing (tweak alpha if you want more/less smoothing)
@@ -104,17 +108,17 @@ public class SpinalLogGraph : MonoBehaviour
 
         // Draw at ~100 Hz (every 0.01s) to match your original cadence
         lastDrawTime += Time.deltaTime;
-        if (lastDrawTime >= 0.01f && initialSet && counter < 1500) 
-        {
-            studentTrial.AddXYData(counter, smoothedDelta);
-            counter += 1f;
+        // if (lastDrawTime >= 0.01f && initialSet && counter < 1500) 
+        // {
+        //     studentTrial.AddXYData(counter, smoothedDelta);
+        //     counter += 1f;
 
-            // Refresh occasionally for performance
-            if (((int)counter) % 200 == 0)
-                lineChart.RefreshChart();
+        //     // Refresh occasionally for performance
+        //     if (((int)counter) % 200 == 0)
+        //         lineChart.RefreshChart();
 
-            lastDrawTime = 0f;
-        }
+        //     lastDrawTime = 0f;
+        // }
 
         // Optional: keep each session to a window (e.g., 30s), then restart cleanly
         timer += Time.deltaTime;

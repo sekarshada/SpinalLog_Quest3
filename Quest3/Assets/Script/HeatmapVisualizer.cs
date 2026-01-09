@@ -1,6 +1,7 @@
 using Oculus.Interaction;
 using Oculus.Interaction.HandGrab;
 using UnityEngine;
+using System;
 public class HeatmapVisualizer : MonoBehaviour
 {
     [Header("Dependencies")]
@@ -12,8 +13,8 @@ public class HeatmapVisualizer : MonoBehaviour
     public int rows = 9;// 9 rows for 99 sensors
 
     [Header("Heatmap Tuning")]
-    public float noiseThreshold = 0.15f;    // Ignore very small pressure
-    public float intensityScale = 0.1f;     // Boost how "hot" the colors appear
+    public float noiseThreshold = 0.1f;    // Ignore very small pressure
+    public float intensityScale = 0.05f;     // Boost how "hot" the colors appear
     private const int maxHits = 99;        // Max points to send to shader
     private float[] hits = new float[maxHits * 3]; // 32 points max (x, y, intensity)
     private int hitCount = 0;
@@ -100,7 +101,9 @@ public class HeatmapVisualizer : MonoBehaviour
                 if (serialReader == null || serialReader.normalizedValues == null || serialReader.normalizedValues.Length != 99)
                 return;
 
-            ClearHits();
+        Debug.Log("Heatmap Update called. GameObject active: " + gameObject.activeInHierarchy + ", script enabled: " + enabled);
+            Debug.Log("All serialReader.normalizedValues: " + string.Join(", ", serialReader.normalizedValues));
+        ClearHits();
             // float maxRaw = 0f;
             // for (int row = 0; row < rows; row++)
             // {
@@ -252,6 +255,18 @@ public class HeatmapVisualizer : MonoBehaviour
             {
                 grabInteractable.enabled = false;
                 Debug.Log("GrabInteractable disabled.");
+            }
+
+            // Start CSV logging when fixed
+            if (serialReader != null)
+            {
+                string suffix = "fixed_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                serialReader.StartCsvLogging(suffix);
+                serialReader.LogOneRowNow(suffix); // write first row immediately
+            }
+            else
+            {
+                Debug.LogWarning("SerialReader not assigned; CSV logging not started.");
             }
         }
         else

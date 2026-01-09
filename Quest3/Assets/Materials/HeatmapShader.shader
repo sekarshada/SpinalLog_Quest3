@@ -18,7 +18,7 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         _Diameter("Blob Diameter (0..1)  (NOTE: acts as radius unless toggle below)", Range(0.001,1)) = 0.06
         [Toggle(USE_TRUE_DIAMETER)] _UseTrueDiameter("Treat value above as true diameter", Float) = 0
         _FalloffPower("Falloff Power (sharper > 2)", Range(1,16)) = 3.87
-        _Strength("Strength", Range(0.01,8)) = 4
+        _Strength("Strength", Range(0.01,8)) = 2
         _PulseSpeed("Pulse Speed", Range(0,5)) = 0
 
         // Mapping from local position to [0..1]^2
@@ -40,7 +40,7 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
         _LineX1("Line 1 X (0..1)", Range(0,1)) = 0.342
         _LineX2("Line 2 X (0..1)", Range(0,1)) = 0.624
          _LineX3("Line 3 X (0..1)", Range(0,1)) = 0.5
-        _LineThickness("Line Thickness (UV)", Range(0.0001, 0.02)) = 0.002
+        _LineThickness("Line Thickness (UV)", Range(0.0001, 0.02)) = 0.004
         _LineSoftness("Line Softness (UV)", Range(0.0000, 0.02)) = 0.0008
         _LineColor("Line Color", Color) = (1,1,1,1)
 
@@ -55,7 +55,7 @@ Shader "Unlit/HeatmapObjectSpace_TransparentOutline"
          // Smooth blend options
         [Toggle(USE_GAUSS)] _UseGaussian("Use Gaussian Falloff", Float) = 1
         _GaussSharpness("Gaussian Sharpness", Range(0.5,10)) = 4.98
-        _WeightScale("Weight Scale (lower = less red)", Range(0.05,2)) = 0.346
+        _WeightScale("Weight Scale (lower = less red)", Range(0.05,2)) = 0.349
 
         //===========================//
         //////////////////////////////////////////

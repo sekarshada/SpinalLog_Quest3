@@ -56638,7 +56638,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607924679}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0009964636, y: 0.3162616, z: -0.0063827904, w: 0.94865}
+  m_LocalRotation: {x: -0.0020146887, y: 0.31625527, z: -0.0060433457, w: 0.94865274}
   m_LocalPosition: {x: 0, y: 0.000051371702, z: 1}
   m_LocalScale: {x: 0.17, y: 0.13, z: 0.15}
   m_ConstrainProportionsScale: 0
@@ -56650,7 +56650,7 @@ Transform:
   - {fileID: 7528559783423791309}
   - {fileID: 1935599369}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0.123, y: 36.874, z: -0.73}
+  m_LocalEulerAnglesHint: {x: 0, y: 36.874, z: -0.73}
 --- !u!1 &1608094682
 GameObject:
   m_ObjectHideFlags: 0
@@ -74214,8 +74214,8 @@ RectTransform:
   - {fileID: 1813044238}
   - {fileID: 1923722604}
   - {fileID: 1292540762}
-  - {fileID: 1262110361}
   - {fileID: 1787151182}
+  - {fileID: 1262110361}
   m_Father: {fileID: 193929531}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -81623,7 +81623,7 @@ Transform:
   m_GameObject: {fileID: 3113439189997919745}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.02, y: -0.04, z: 0}
+  m_LocalPosition: {x: -0.02, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -98815,7 +98815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7448507102786606928
 Transform:
   m_ObjectHideFlags: 0
@@ -99003,7 +99003,7 @@ Transform:
   m_GameObject: {fileID: 7528559783423791299}
   serializedVersion: 2
   m_LocalRotation: {x: 0.017187307, y: -0.1736218, z: 0.003030587, w: 0.98465776}
-  m_LocalPosition: {x: -0.4, y: -0.15, z: -0.12}
+  m_LocalPosition: {x: -0.39, y: -0.12, z: -0.13}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -101965,13 +101965,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serialReader: {fileID: 5958677542166545135}
-  highThreshold: 0.2
-  lowThreshold: 0.05
+  highThreshold: 187
+  lowThreshold: 219
   rightMostSensorIndex: 15
   coolDownTime: 2.5
   maxResponses: 20
   experimentController: {fileID: 0}
   responseInterval: 1.5
+  BTManager: {fileID: 723887340}
 --- !u!1 &9008632809370525213
 GameObject:
   m_ObjectHideFlags: 0
