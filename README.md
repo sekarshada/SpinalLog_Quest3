@@ -24,7 +24,16 @@
 
 ## Overview
 
-An integrated system using a **Social Robot (Furhat)** and **Mixed Reality app** to provide multisensory feedback for physiotherapy students learning spinal mobilisation techniques.
+## Overview
+
+Back pain is the world's leading cause of disability, yet physiotherapy training still relies 
+heavily on peer practice and verbal feedback — lacking the precision needed to develop fine 
+tactile control and clinical empathy.
+
+This project presents a **Mixed Reality training system** for spinal mobilisation that combines:
+- 🔴 **Pressure sensing** — visualised as heatmaps, force graphs, and bone deformation overlays
+- 🤖 **Social robot (Furhat)** — simulates a real patient with affective facial and voice responses
+- 🖐️ **Ghost hand guidance** — instructs correct hand technique in MR
 
 <img width="4494" height="3179" alt="Social Robot and Visualisation for Medical Training_Poster_9 Oct (1)" src="https://github.com/user-attachments/assets/54b4e3c8-9525-4293-b33b-e074b6bb6d81" />
 
