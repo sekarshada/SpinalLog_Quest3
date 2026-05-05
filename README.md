@@ -24,8 +24,6 @@
 
 ## Overview
 
-## Overview
-
 Back pain is the world's leading cause of disability, yet physiotherapy training still relies 
 heavily on peer practice and verbal feedback — lacking the precision needed to develop fine 
 tactile control and clinical empathy.
@@ -35,9 +33,65 @@ This project presents a **Mixed Reality training system** for spinal mobilisatio
 - 🤖 **Social robot (Furhat)** — simulates a real patient with affective facial and voice responses
 - 🖐️ **Ghost hand guidance** — instructs correct hand technique in MR
 
-<img width="4494" height="3179" alt="Social Robot and Visualisation for Medical Training_Poster_9 Oct (1)" src="https://github.com/user-attachments/assets/54b4e3c8-9525-4293-b33b-e074b6bb6d81" />
+## 🔍 Research Problem  
+
+Physiotherapy training, especially spinal mobilisation, relies heavily on peer practice and verbal instruction, which lacks:
+- precise feedback on applied force  
+- visibility into internal body response  
+- patient-like interaction for empathy development
+- safety during peers manual skill training 
+
+While prior research explores feedback modalities individually, **their combined effect in immersive learning environments remains underexplored**.
+
+---
+
+## ✨ Research Contributions  
+
+This work contributes across multiple dimensions:
+
+**Empirical:** Provides evidence on how **instructional guidance and multimodal feedback** (visual + robotic) influence cognitive load, task clarity and user engagement  
+
+**Theoretical:** Proposes a conceptual understanding of how preview guidance, real-time visualisation, embodied robotic feedback may help to shape perception and learning in MR environments  
+
+**Methodological:** Introduces a **mixed-method evaluation framework** combining workload metrics, structured questionnaires, qualitative reflection and designed for **early-stage XR learning system evaluation**
+
+**Artefact:** Develops a novel integrated platform combining Mixed Reality (Unity + Meta Quest 3), Real-time pressure sensing (ESP32) and Social robotics (Furhat) for affective feedback  
+
+**Design Insights:** Provides actionable guidelines for when to use preview guidance vs real-time feedback, how social cues influence engagement, designing immersive healthcare training systems  
+
+---
+
+## 🧪 Methodology  
+
+- **Study Design:** Within-subject, task-based experiment  
+- **Approach:** Mixed-method (quantitative + qualitative)  
+- **Focus:** Interaction between guidance and feedback modalities  
+
+**Outcome Measures:**
+- perceived workload  
+- task clarity and understanding  
+- user engagement  
+
+## Participatory Design Insights  
+
+To explore future directions beyond the current prototype, participants were invited to sketch their preferred system configurations after completing the study.  
+
+These user-generated designs provided insight into how learners envision ideal training environments, revealing preferences that extend beyond the constraints of the implemented system.  
+
+Across sketches, participants consistently expressed a desire for more adaptive, personalised feedback, often combining visual, embodied, and social cues. Many proposals also suggested increased realism and responsiveness, indicating the importance of both technical precision and experiential engagement in training design.  
+
+These findings complement the experimental results by uncovering latent user needs and informing future directions for immersive healthcare training systems.
+
+## Thesis  
+
+📎 [Read Full Thesis (PDF)](https://bit.ly/GabriellaThesis)
+
+<img width="5056" height="3576" alt="GITHUB" src="https://github.com/user-attachments/assets/a9cfe196-c276-4b0d-a6c0-ec343fca83a9" />
 
 <!-- Replace with your actual poster image path or link -->
+
+
+
 
 🎥 **Demo Video**  
 [![Watch the demo](https://img.shields.io/badge/Watch-Demo%20Video-red?logo=youtube)](https://youtu.be/6Exh7WmIQsI)
@@ -69,3 +123,11 @@ This project presents a **Mixed Reality training system** for spinal mobilisatio
 <img width="800" height="450" alt="spatial data comparison data usability empathy assesment (6)" src="https://github.com/user-attachments/assets/55331cea-1dbe-4462-9841-2913bd87f015" />
 
 *5-camera OptiTrack system with Motive software used to capture hand instruction movements via Manus XR gloves*
+
+---
+
+## Author  
+
+**Gabriella Sekar Shada**  
+XR / HCI Researcher with 5+ years of software engineering experience  
+Interested in immersive visualisation, human-centered systems, and AI-assisted education  
