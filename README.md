@@ -33,6 +33,10 @@ This project presents a **Mixed Reality training system** for spinal mobilisatio
 - 🤖 **Social robot (Furhat)** — simulates a real patient with affective facial and voice responses
 - 🖐️ **Ghost hand guidance** — instructs correct hand technique in MR
 
+The study shows that immersive training systems can maintain _**stable cognitive load**_ across different feedback configurations, indicating good usability and integration. While all feedback types were perceived as clear and helpful, _**presenting too many cues simultaneously increased cognitive effort**_, highlighting the importance of timing and simplicity in interface design. The inclusion of a socially expressive robot enhanced engagement and encouraged _**patient-centred awareness**_, supporting empathy without adding mental load.  
+Additionally, participants expressed a strong preference for **adaptive feedback systems**—valuing multiple feedback types, but only when presented selectively rather than all at once.
+  
+
 ## 🔍 Research Problem  
 
 Physiotherapy training, especially spinal mobilisation, relies heavily on peer practice and verbal instruction, which lacks:
